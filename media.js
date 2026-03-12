@@ -124,6 +124,29 @@ function formatDateTime(isoString) {
   }).format(date);
 }
 
+function getPostSortValue(post) {
+  const publishedTimestamp = Date.parse(post?.publishedAt || "");
+
+  if (Number.isFinite(publishedTimestamp)) {
+    return publishedTimestamp;
+  }
+
+  const numericId = Number.parseInt(post?.id, 10);
+  return Number.isFinite(numericId) ? numericId : 0;
+}
+
+function sortPostsByNewest(posts) {
+  return [...posts].sort((firstPost, secondPost) => {
+    const timestampDelta = getPostSortValue(secondPost) - getPostSortValue(firstPost);
+
+    if (timestampDelta !== 0) {
+      return timestampDelta;
+    }
+
+    return String(secondPost?.id || "").localeCompare(String(firstPost?.id || ""), "ru");
+  });
+}
+
 function createPostTitle(text) {
   const firstMeaningfulLine = String(text || "")
     .split("\n")
@@ -208,7 +231,7 @@ function renderPosts(posts) {
     return;
   }
 
-  elements.feed.innerHTML = posts.map(createPostMarkup).join("");
+  elements.feed.innerHTML = sortPostsByNewest(posts).map(createPostMarkup).join("");
 }
 
 function showFallback() {

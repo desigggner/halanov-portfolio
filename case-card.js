@@ -45,7 +45,6 @@
     const activeCornerColor = "#111111";
 
     card.className = "case-card case-card--managed";
-    card.style.setProperty("--case-card-base", caseItem.backgroundColor || "transparent");
     card.style.setProperty("--case-card-bg", buildCaseBackground(caseItem));
     card.style.setProperty("--case-bg-scale", "1");
     card.style.setProperty("--case-bg-shift-x", "0px");

@@ -14,6 +14,7 @@
     {
       id: "invert",
       title: "Увеличил CTR за счет редизайна в приложении Invert",
+      year: "",
       image: "./assets/invert-case-bg.png",
       column: "left",
       size: "medium",
@@ -27,6 +28,7 @@
     {
       id: "market",
       title: "Интерфейсы для Яндекс Маркета",
+      year: "",
       image: "./assets/10Q.png",
       column: "left",
       size: "medium",
@@ -40,6 +42,7 @@
     {
       id: "storeez",
       title: "Дизайн iOS-приложения 12 Storeez",
+      year: "",
       image: "./assets/pulse.png",
       column: "right",
       size: "tall",
@@ -53,6 +56,7 @@
     {
       id: "avito",
       title: "Авито Подработка. Дизайн поиска сменных подработок",
+      year: "",
       image: "./assets/szu.png",
       column: "right",
       size: "medium",
@@ -82,6 +86,29 @@
       : fallback;
   }
 
+  function normalizeCaseYear(year, fallback = "") {
+    const fallbackYear =
+      typeof fallback === "number" && Number.isFinite(fallback)
+        ? String(Math.trunc(fallback))
+        : typeof fallback === "string"
+          ? fallback.trim()
+          : "";
+
+    if (typeof year === "number" && Number.isFinite(year)) {
+      return String(Math.trunc(year));
+    }
+
+    if (typeof year === "string") {
+      const trimmedYear = year.trim();
+
+      if (/^\d{4}$/.test(trimmedYear)) {
+        return trimmedYear;
+      }
+    }
+
+    return /^\d{4}$/.test(fallbackYear) ? fallbackYear : "";
+  }
+
   function normalizeCase(item, fallback = {}) {
     return {
       id: typeof item?.id === "string" && item.id.trim() ? item.id : createCaseId(),
@@ -89,6 +116,7 @@
         typeof item?.title === "string" && item.title.trim()
           ? item.title.trim()
           : fallback.title || "Новый кейс",
+      year: normalizeCaseYear(item?.year, fallback.year || ""),
       image: typeof item?.image === "string" ? item.image : fallback.image || "",
       column: item?.column === "right" ? "right" : "left",
       size: item?.size === "tall" ? "tall" : "medium",
@@ -145,6 +173,7 @@
     cloneDefaultCases,
     createCaseId,
     normalizeCategory,
+    normalizeCaseYear,
     normalizeCase,
     loadCases,
     saveCases,

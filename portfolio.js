@@ -3,6 +3,7 @@ const toggleButton = document.querySelector(".theme-toggle");
 const store = window.PortfolioStore;
 const caseCard = window.PortfolioCaseCard;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const layoutStorageKey = "portfolio-layout";
 
 const portfolioColumns = {
   left: document.querySelector('[data-portfolio-column="left"]'),
@@ -14,10 +15,15 @@ const portfolioElements = {
   yearsText: document.querySelector("[data-portfolio-years-text]"),
   activeText: document.querySelector("[data-portfolio-active-text]"),
   filters: document.querySelector("[data-portfolio-filters]"),
+  grid: document.querySelector("[data-portfolio-grid]"),
+  list: document.querySelector("[data-portfolio-list]"),
+  listBody: document.querySelector("[data-portfolio-list-body]"),
+  layoutButtons: Array.from(document.querySelectorAll("[data-portfolio-layout-button]")),
   empty: document.querySelector("[data-portfolio-empty]"),
 };
 
 let activeCategory = "all";
+let activeLayout = loadLayoutPreference();
 let caseRevealObserver = null;
 
 function applyTheme(theme) {
@@ -104,6 +110,49 @@ function getFilterCategories() {
   return [{ id: "all", label: "Все" }, ...(store?.portfolioCategories || [])];
 }
 
+function normalizeLayout(layout) {
+  return layout === "list" ? "list" : "grid";
+}
+
+function loadLayoutPreference() {
+  try {
+    return normalizeLayout(window.localStorage.getItem(layoutStorageKey));
+  } catch (error) {
+    return "grid";
+  }
+}
+
+function syncLayoutState() {
+  for (const button of portfolioElements.layoutButtons) {
+    const isActive = button.dataset.portfolioLayoutButton === activeLayout;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  }
+
+  if (portfolioElements.grid) {
+    portfolioElements.grid.hidden = activeLayout !== "grid";
+  }
+
+  if (portfolioElements.list) {
+    portfolioElements.list.hidden = activeLayout !== "list";
+  }
+}
+
+function setActiveLayout(layout, { persist = true } = {}) {
+  activeLayout = normalizeLayout(layout);
+  syncLayoutState();
+
+  if (!persist) {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(layoutStorageKey, activeLayout);
+  } catch (error) {
+    return;
+  }
+}
+
 function renderStats(cases) {
   if (!portfolioElements.totalText || !portfolioElements.yearsText || !portfolioElements.activeText) {
     return;
@@ -167,23 +216,36 @@ function getVisibleCases(cases) {
   return cases.filter((caseItem) => caseItem.category === activeCategory);
 }
 
-function setupCaseReveal(cards) {
-  if (caseRevealObserver) {
-    caseRevealObserver.disconnect();
-    caseRevealObserver = null;
+function getCategoryLabel(categoryId) {
+  return (
+    (store?.portfolioCategories || []).find((category) => category.id === categoryId)?.label ||
+    "Без категории"
+  );
+}
+
+function disconnectCaseReveal() {
+  if (!caseRevealObserver) {
+    return;
   }
+
+  caseRevealObserver.disconnect();
+  caseRevealObserver = null;
+}
+
+function setupCaseReveal(cards) {
+  disconnectCaseReveal();
 
   const revealAll = prefersReducedMotion.matches || !("IntersectionObserver" in window);
 
-  for (const [index, card] of cards.entries()) {
-    card.style.setProperty("--case-reveal-delay", `${index * 110}ms`);
+  for (const [index, cardElement] of cards.entries()) {
+    cardElement.style.setProperty("--case-reveal-delay", `${index * 110}ms`);
 
     if (revealAll) {
-      card.classList.remove("is-reveal-pending");
-      card.classList.add("is-revealed");
+      cardElement.classList.remove("is-reveal-pending");
+      cardElement.classList.add("is-revealed");
     } else {
-      card.classList.remove("is-revealed");
-      card.classList.add("is-reveal-pending");
+      cardElement.classList.remove("is-revealed");
+      cardElement.classList.add("is-reveal-pending");
     }
   }
 
@@ -216,8 +278,8 @@ function setupCaseReveal(cards) {
     },
   );
 
-  for (const card of cards) {
-    caseRevealObserver.observe(card);
+  for (const cardElement of cards) {
+    caseRevealObserver.observe(cardElement);
   }
 }
 
@@ -225,14 +287,69 @@ function setupCaseMotion() {
   const cards = Array.from(document.querySelectorAll("[data-portfolio-grid] .case-card"));
 
   if (!cards.length) {
+    disconnectCaseReveal();
     return;
   }
 
   setupCaseReveal(cards);
 }
 
+function createListCell(label, value, className = "", isMuted = false) {
+  const cell = document.createElement("div");
+  const cellLabel = document.createElement("span");
+  const cellValue = document.createElement(
+    className === "portfolio-list__cell--title" ? "h3" : "span",
+  );
+
+  cell.className = `portfolio-list__cell ${className}`.trim();
+  cellLabel.className = "portfolio-list__label";
+  cellLabel.textContent = label;
+
+  cellValue.className =
+    className === "portfolio-list__cell--title"
+      ? "portfolio-list__value portfolio-list__value--title"
+      : "portfolio-list__value";
+  cellValue.textContent = value;
+
+  if (isMuted) {
+    cellValue.classList.add("portfolio-list__value--muted");
+  }
+
+  cell.append(cellLabel, cellValue);
+
+  return cell;
+}
+
+function createCaseListRow(caseItem) {
+  const row = document.createElement("article");
+  const year = caseItem.year || "—";
+  const status = caseItem.status || "—";
+
+  row.className = "portfolio-list__row";
+  row.append(
+    createListCell("Год", year, "portfolio-list__cell--year", year === "—"),
+    createListCell(
+      "Категория",
+      getCategoryLabel(caseItem.category),
+      "portfolio-list__cell--category",
+    ),
+    createListCell("Кейс", caseItem.title, "portfolio-list__cell--title"),
+    createListCell("Статус", status, "portfolio-list__cell--status", status === "—"),
+  );
+
+  return row;
+}
+
 function renderCases() {
-  if (!store || !caseCard || !portfolioColumns.left || !portfolioColumns.right) {
+  if (
+    !store ||
+    !caseCard ||
+    !portfolioColumns.left ||
+    !portfolioColumns.right ||
+    !portfolioElements.grid ||
+    !portfolioElements.list ||
+    !portfolioElements.listBody
+  ) {
     return;
   }
 
@@ -245,12 +362,12 @@ function renderCases() {
 
   portfolioColumns.left.innerHTML = "";
   portfolioColumns.right.innerHTML = "";
+  portfolioElements.listBody.innerHTML = "";
 
   if (!visibleCases.length) {
-    if (caseRevealObserver) {
-      caseRevealObserver.disconnect();
-      caseRevealObserver = null;
-    }
+    disconnectCaseReveal();
+    portfolioElements.grid.hidden = true;
+    portfolioElements.list.hidden = true;
 
     if (portfolioElements.empty) {
       portfolioElements.empty.hidden = false;
@@ -261,6 +378,18 @@ function renderCases() {
 
   if (portfolioElements.empty) {
     portfolioElements.empty.hidden = true;
+  }
+
+  syncLayoutState();
+
+  if (activeLayout === "list") {
+    disconnectCaseReveal();
+
+    for (const caseItem of visibleCases) {
+      portfolioElements.listBody.append(createCaseListRow(caseItem));
+    }
+
+    return;
   }
 
   for (const caseItem of visibleCases) {
@@ -295,6 +424,19 @@ if (portfolioElements.filters) {
   });
 }
 
+for (const button of portfolioElements.layoutButtons) {
+  button.addEventListener("click", () => {
+    const nextLayout = button.dataset.portfolioLayoutButton || "grid";
+
+    if (nextLayout === activeLayout) {
+      return;
+    }
+
+    setActiveLayout(nextLayout);
+    renderCases();
+  });
+}
+
 window.addEventListener("storage", (event) => {
   if (!store) {
     return;
@@ -307,7 +449,13 @@ window.addEventListener("storage", (event) => {
   if (event.key === store.themeStorageKey && event.newValue) {
     applyTheme(event.newValue);
   }
+
+  if (event.key === layoutStorageKey) {
+    setActiveLayout(event.newValue || "grid", { persist: false });
+    renderCases();
+  }
 });
 
 ensureTopOnInitialLoad();
+syncLayoutState();
 renderCases();

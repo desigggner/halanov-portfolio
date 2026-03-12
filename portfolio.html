@@ -211,22 +211,34 @@
         <section class="portfolio-toolbar container" aria-label="Фильтры портфолио">
           <div class="portfolio-filters" data-portfolio-filters></div>
 
-          <div class="portfolio-layout" aria-hidden="true">
-            <span class="portfolio-layout__button is-active">
+          <div class="portfolio-layout" aria-label="Режим отображения кейсов">
+            <button
+              class="portfolio-layout__button is-active"
+              type="button"
+              data-portfolio-layout-button="grid"
+              aria-label="Показать кейсы сеткой"
+              aria-pressed="true"
+            >
               <svg viewBox="0 0 16 16" focusable="false" fill="none">
                 <rect x="1.5" y="1.5" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
                 <rect x="10" y="1.5" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
                 <rect x="1.5" y="10" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
                 <rect x="10" y="10" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
               </svg>
-            </span>
-            <span class="portfolio-layout__button">
+            </button>
+            <button
+              class="portfolio-layout__button"
+              type="button"
+              data-portfolio-layout-button="list"
+              aria-label="Показать кейсы списком"
+              aria-pressed="false"
+            >
               <svg viewBox="0 0 16 16" focusable="false" fill="none">
                 <path d="M3 4H13" stroke="currentColor" stroke-linecap="round" />
                 <path d="M3 8H13" stroke="currentColor" stroke-linecap="round" />
                 <path d="M3 12H13" stroke="currentColor" stroke-linecap="round" />
               </svg>
-            </span>
+            </button>
           </div>
         </section>
 
@@ -241,9 +253,68 @@
           <div class="cases__column cases__column--right" data-portfolio-column="right"></div>
         </section>
 
+        <section class="portfolio-list container" data-portfolio-list hidden>
+          <h2 class="sr-only">Все кейсы списком</h2>
+
+          <div class="portfolio-list__header" aria-hidden="true">
+            <span>Год</span>
+            <span>Категория</span>
+            <span>Кейс</span>
+            <span>Статус</span>
+          </div>
+
+          <div class="portfolio-list__body" data-portfolio-list-body></div>
+        </section>
+
         <p class="portfolio-empty container" data-portfolio-empty hidden>
           В этой категории пока нет кейсов.
         </p>
+
+        <section class="portfolio-approach container" aria-labelledby="portfolio-approach-title">
+          <div class="portfolio-approach__intro">
+            <p class="portfolio-approach__eyebrow">4. Подход к продуктовому дизайну</p>
+            <h2 class="portfolio-approach__title" id="portfolio-approach-title">
+              Как я работаю с продуктом
+            </h2>
+          </div>
+
+          <div class="portfolio-approach__grid">
+            <article class="portfolio-approach__card portfolio-approach__card--product">
+              <h3 class="portfolio-approach__card-title">Продуктовое мышление</h3>
+              <ul class="portfolio-approach__list">
+                <li>формулировка проблемы</li>
+                <li>метрики</li>
+                <li>продуктовая логика</li>
+              </ul>
+            </article>
+
+            <article class="portfolio-approach__card portfolio-approach__card--research">
+              <h3 class="portfolio-approach__card-title">UX-исследования</h3>
+              <ul class="portfolio-approach__list">
+                <li>интервью</li>
+                <li>тестирование</li>
+                <li>анализ поведения пользователей</li>
+              </ul>
+            </article>
+
+            <article class="portfolio-approach__card portfolio-approach__card--systems">
+              <h3 class="portfolio-approach__card-title">Системный дизайн</h3>
+              <ul class="portfolio-approach__list">
+                <li>дизайн-системы</li>
+                <li>масштабируемые интерфейсы</li>
+              </ul>
+            </article>
+
+            <article class="portfolio-approach__card portfolio-approach__card--ai">
+              <h3 class="portfolio-approach__card-title">Использование AI</h3>
+              <ul class="portfolio-approach__list">
+                <li>ускорение процессов дизайна</li>
+                <li>генерация прототипов</li>
+                <li>автоматизация задач</li>
+              </ul>
+            </article>
+          </div>
+        </section>
       </main>
     </div>
 

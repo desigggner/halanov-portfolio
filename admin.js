@@ -5,6 +5,7 @@ const defaultAdminMessage = "Изменения кейса сохраняютс�
 const comparableCaseFields = [
   "id",
   "title",
+  "year",
   "image",
   "column",
   "size",
@@ -201,6 +202,7 @@ function createEmptyCase() {
   return {
     id: store ? store.createCaseId() : `case-${Date.now()}`,
     title: "Новый кейс",
+    year: "",
     image: "",
     column: getNextColumn(),
     size: "medium",
@@ -237,14 +239,6 @@ function renderCategoryOptions(selectedCategory) {
       `;
     })
     .join("");
-}
-
-function createImagePreview(caseItem, index) {
-  if (caseItem.image) {
-    return `<img src="${escapeHtml(caseItem.image)}" alt="Превью кейса ${index + 1}" />`;
-  }
-
-  return "<span>Изображение не выбрано</span>";
 }
 
 function renderCasePreview(caseElement, caseItem) {
@@ -352,128 +346,138 @@ function renderEditor() {
           id="${escapeHtml(getCaseEditorId(caseItem.id))}"
           data-case-id="${escapeHtml(caseItem.id)}"
         >
-          <div class="admin-case__header">
-            <div>
-              <p class="admin-case__eyebrow">Кейс ${index + 1}</p>
-              <div class="admin-case__meta">
-                <p class="admin-case__placement" data-case-placement>
-                  ${getCasePlacementLabel(caseItem)}
+          <div class="admin-case__layout">
+            <div class="admin-case__controls">
+              <div class="admin-case__header">
+                <div>
+                  <p class="admin-case__eyebrow">Кейс ${index + 1}</p>
+                  <div class="admin-case__meta">
+                    <p class="admin-case__placement" data-case-placement>
+                      ${getCasePlacementLabel(caseItem)}
+                    </p>
+                    <p class="admin-case__surface" data-case-visibility>
+                      ${getCaseVisibilityLabel(caseItem)}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  class="admin-button admin-button--danger"
+                  type="button"
+                  data-case-remove
+                  ${draftCases.length === 1 ? "disabled" : ""}
+                >
+                  Удалить
+                </button>
+              </div>
+
+              <div class="admin-case__panel">
+                <label class="admin-field">
+                  <span class="admin-field__label">Название</span>
+                  <input
+                    class="admin-input"
+                    type="text"
+                    data-field="title"
+                    value="${escapeHtml(caseItem.title)}"
+                    placeholder="Напиши название кейса"
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">Тег справа сверху</span>
+                  <input
+                    class="admin-input"
+                    type="text"
+                    data-field="status"
+                    value="${escapeHtml(caseItem.status)}"
+                    placeholder="Например: в работе"
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">Год для списка</span>
+                  <input
+                    class="admin-input"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="4"
+                    data-field="year"
+                    value="${escapeHtml(caseItem.year || "")}"
+                    placeholder="Например: 2025"
+                  />
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">Категория в портфолио</span>
+                  <select class="admin-input" data-field="category">
+                    ${renderCategoryOptions(caseItem.category)}
+                  </select>
+                </label>
+
+                <label class="admin-field">
+                  <span class="admin-field__label">Изображение</span>
+                  <input
+                    class="admin-input admin-input--file"
+                    type="file"
+                    accept="image/*"
+                    data-field="image"
+                  />
+                </label>
+
+                <div class="admin-case__toggles">
+                  <label class="admin-check">
+                    <input
+                      type="checkbox"
+                      data-field="showOnHome"
+                      ${caseItem.showOnHome ? "checked" : ""}
+                    />
+                    <span>Показать на главной</span>
+                  </label>
+
+                  <label class="admin-check">
+                    <input type="checkbox" data-field="lightUi" ${caseItem.lightUi ? "checked" : ""} />
+                    <span>Светлый текст и стрелка</span>
+                  </label>
+
+                  <label class="admin-check">
+                    <input type="checkbox" data-field="size" ${caseItem.size === "tall" ? "checked" : ""} />
+                    <span>Высокая карточка</span>
+                  </label>
+
+                  <label class="admin-check">
+                    <input type="checkbox" data-field="column" ${caseItem.column === "right" ? "checked" : ""} />
+                    <span>Правая колонка</span>
+                  </label>
+                </div>
+
+                <p
+                  class="admin-case__save-state ${saveState.dirty ? "is-dirty" : ""}"
+                  data-case-save-state
+                >
+                  ${saveState.text}
                 </p>
-                <p class="admin-case__surface" data-case-visibility>
-                  ${getCaseVisibilityLabel(caseItem)}
-                </p>
+
+                <div class="admin-case__footer">
+                  <button
+                    class="admin-button"
+                    type="button"
+                    data-case-save
+                    ${saveState.dirty ? "" : "disabled"}
+                  >
+                    Сохранить изменения
+                  </button>
+
+                  <button class="admin-button admin-button--ghost" type="button" data-case-image-clear>
+                    Убрать фото
+                  </button>
+                </div>
               </div>
             </div>
 
-            <button
-              class="admin-button admin-button--danger"
-              type="button"
-              data-case-remove
-              ${draftCases.length === 1 ? "disabled" : ""}
-            >
-              Удалить
-            </button>
-          </div>
-
-          <label class="admin-field">
-            <span class="admin-field__label">Название</span>
-            <input
-              class="admin-input"
-              type="text"
-              data-field="title"
-              value="${escapeHtml(caseItem.title)}"
-              placeholder="Напиши название кейса"
-            />
-          </label>
-
-          <label class="admin-field">
-            <span class="admin-field__label">Тег справа сверху</span>
-            <input
-              class="admin-input"
-              type="text"
-              data-field="status"
-              value="${escapeHtml(caseItem.status)}"
-              placeholder="Например: в работе"
-            />
-          </label>
-
-          <label class="admin-field">
-            <span class="admin-field__label">Категория в портфолио</span>
-            <select class="admin-input" data-field="category">
-              ${renderCategoryOptions(caseItem.category)}
-            </select>
-          </label>
-
-          <label class="admin-field">
-            <span class="admin-field__label">Изображение</span>
-            <input
-              class="admin-input admin-input--file"
-              type="file"
-              accept="image/*"
-              data-field="image"
-            />
-          </label>
-
-          <div class="admin-case__previews">
-            <div class="admin-case__preview-panel">
-              <p class="admin-case__preview-label">Фон</p>
-              <div class="admin-case__preview ${caseItem.image ? "" : "is-empty"}">
-                ${createImagePreview(caseItem, index)}
-              </div>
-            </div>
-
-            <div class="admin-case__preview-panel">
-              <p class="admin-case__preview-label">Карточка с текстом</p>
+            <div class="admin-case__preview-column">
+              <p class="admin-case__preview-label">Превью карточки</p>
               <div class="admin-case__card-stage" data-card-preview></div>
             </div>
-          </div>
-
-          <div class="admin-case__toggles">
-            <label class="admin-check">
-              <input
-                type="checkbox"
-                data-field="showOnHome"
-                ${caseItem.showOnHome ? "checked" : ""}
-              />
-              <span>Показать на главной</span>
-            </label>
-
-            <label class="admin-check">
-              <input type="checkbox" data-field="lightUi" ${caseItem.lightUi ? "checked" : ""} />
-              <span>Светлый текст и стрелка</span>
-            </label>
-
-            <label class="admin-check">
-              <input type="checkbox" data-field="size" ${caseItem.size === "tall" ? "checked" : ""} />
-              <span>Высокая карточка</span>
-            </label>
-
-            <label class="admin-check">
-              <input type="checkbox" data-field="column" ${caseItem.column === "right" ? "checked" : ""} />
-              <span>Правая колонка</span>
-            </label>
-          </div>
-
-          <p
-            class="admin-case__save-state ${saveState.dirty ? "is-dirty" : ""}"
-            data-case-save-state
-          >
-            ${saveState.text}
-          </p>
-
-          <div class="admin-case__footer">
-            <button
-              class="admin-button"
-              type="button"
-              data-case-save
-              ${saveState.dirty ? "" : "disabled"}
-            >
-              Сохранить изменения
-            </button>
-
-            <button class="admin-button admin-button--ghost" type="button" data-case-image-clear>
-              Убрать фото
-            </button>
           </div>
         </section>
       `;
@@ -523,16 +527,26 @@ function saveCase(caseId) {
   }
 
   const previousCases = cloneCases(cases);
+  const previousDraftCases = cloneCases(draftCases);
   const savedIndex = getCaseIndex(caseId, cases);
+  const draftIndex = getCaseIndex(caseId, draftCases);
+  const normalizedDraftCase = store
+    ? store.normalizeCase(draftCase, savedIndex === -1 ? draftCase : cases[savedIndex])
+    : cloneCase(draftCase);
+
+  if (draftIndex !== -1) {
+    draftCases[draftIndex] = cloneCase(normalizedDraftCase);
+  }
 
   if (savedIndex === -1) {
-    cases = [...cases, cloneCase(draftCase)];
+    cases = [...cases, cloneCase(normalizedDraftCase)];
   } else {
-    cases[savedIndex] = cloneCase(draftCase);
+    cases[savedIndex] = cloneCase(normalizedDraftCase);
   }
 
   if (!persistCases()) {
     cases = previousCases;
+    draftCases = previousDraftCases;
     return;
   }
 
@@ -626,6 +640,18 @@ function handleEditorInput(event) {
 
   if (field === "status") {
     updateDraftCase(caseId, { status: event.target.value });
+  }
+
+  if (field === "year") {
+    const normalizedInput = String(event.target.value || "")
+      .replace(/[^\d]/g, "")
+      .slice(0, 4);
+
+    if (event.target.value !== normalizedInput) {
+      event.target.value = normalizedInput;
+    }
+
+    updateDraftCase(caseId, { year: normalizedInput });
   }
 }
 
