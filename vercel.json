@@ -6,6 +6,11 @@
       "permanent": true
     },
     {
+      "source": "/about.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
       "source": "/portfolio.html",
       "destination": "/portfolio",
       "permanent": true
@@ -27,6 +32,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
     {
       "source": "/portfolio",
       "destination": "/portfolio.html"

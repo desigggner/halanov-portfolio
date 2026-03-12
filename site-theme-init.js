@@ -9,6 +9,8 @@
 
   if (pathname === "/index.html") {
     cleanPath = "/";
+  } else if (pathname === "/about.html") {
+    cleanPath = "/about";
   } else if (pathname === "/portfolio.html") {
     cleanPath = "/portfolio";
   } else if (pathname === "/media.html") {

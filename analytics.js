@@ -49,6 +49,10 @@
   }
 
   function getPageName() {
+    if (window.location.pathname === "/about" || window.location.pathname === "/about.html") {
+      return "about";
+    }
+
     if (window.location.pathname === "/portfolio" || window.location.pathname === "/portfolio.html") {
       return "portfolio";
     }
