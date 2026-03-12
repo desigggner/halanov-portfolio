@@ -114,11 +114,6 @@ a {
   overflow: clip;
 }
 
-.contact-link--admin {
-  background: var(--surface-strong);
-  color: var(--text);
-}
-
 .admin-button {
   border: 0;
   border-radius: 999px;
