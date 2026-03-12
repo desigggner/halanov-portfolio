@@ -7,15 +7,7 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Админка кейсов</title>
     <base href="../" />
-    <script>
-      (function () {
-        var storedTheme = localStorage.getItem("portfolio-theme");
-        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var theme = storedTheme || (prefersDark ? "dark" : "light");
-        document.documentElement.dataset.theme = theme;
-        document.documentElement.style.colorScheme = theme;
-      })();
-    </script>
+    <script src="./site-theme-init.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -35,7 +27,8 @@
         <p class="admin-panel__eyebrow">Доступ</p>
         <h1 class="admin-page__title">Вход в админку кейсов</h1>
         <p class="admin-panel__note">
-          Войди по логину и паролю, чтобы добавлять, удалять и редактировать кейсы.
+          Войди по отдельному админскому логину и паролю. Сессия администратора хранится
+          только на сервере и автоматически истекает.
         </p>
 
         <form class="auth-form" data-login-form>
@@ -111,15 +104,120 @@
             </p>
           </div>
 
-          <div class="admin-dashboard__cases" data-admin-dashboard>
-            <div class="cases__column" data-admin-dashboard-column="left"></div>
-            <div class="cases__column cases__column--right" data-admin-dashboard-column="right"></div>
-          </div>
-        </section>
+            <div class="admin-dashboard__cases" data-admin-dashboard>
+              <div class="cases__column" data-admin-dashboard-column="left"></div>
+              <div class="cases__column cases__column--right" data-admin-dashboard-column="right"></div>
+            </div>
+          </section>
 
-        <section class="admin-editor-section" aria-labelledby="admin-editor-title">
-          <div class="admin-section__header">
-            <div>
+          <section class="admin-analytics" aria-labelledby="admin-analytics-title">
+            <div class="admin-section__header">
+              <div>
+                <p class="admin-panel__eyebrow">Аналитика</p>
+                <h2 class="admin-section__title" id="admin-analytics-title">
+                  Статистика посетителей сайта
+                </h2>
+              </div>
+
+              <div class="admin-analytics__toolbar">
+                <div class="admin-analytics__ranges" role="group" aria-label="Период аналитики">
+                  <button
+                    class="admin-analytics__range is-active"
+                    type="button"
+                    data-analytics-range="7d"
+                    aria-pressed="true"
+                  >
+                    7 дней
+                  </button>
+                  <button
+                    class="admin-analytics__range"
+                    type="button"
+                    data-analytics-range="30d"
+                    aria-pressed="false"
+                  >
+                    30 дней
+                  </button>
+                  <button
+                    class="admin-analytics__range"
+                    type="button"
+                    data-analytics-range="90d"
+                    aria-pressed="false"
+                  >
+                    90 дней
+                  </button>
+                  <button
+                    class="admin-analytics__range"
+                    type="button"
+                    data-analytics-range="all"
+                    aria-pressed="false"
+                  >
+                    Всё время
+                  </button>
+                </div>
+
+                <button class="admin-button admin-button--ghost" type="button" data-analytics-refresh>
+                  Обновить
+                </button>
+              </div>
+            </div>
+
+            <p class="admin-section__note">
+              Собираются просмотры страниц, визиты, возвраты, источники трафика, география,
+              устройства, браузеры, глубина скролла и клики по ключевым элементам сайта.
+            </p>
+
+            <p class="admin-panel__message" data-analytics-message aria-live="polite">
+              Подключаю аналитику...
+            </p>
+
+            <div class="admin-analytics__summary" data-analytics-summary></div>
+
+            <div class="admin-analytics__grid">
+              <section class="admin-analytics-card">
+                <h3 class="admin-analytics-card__title">Страницы</h3>
+                <div data-analytics-pages></div>
+              </section>
+
+              <section class="admin-analytics-card">
+                <h3 class="admin-analytics-card__title">Источники и кампании</h3>
+                <div data-analytics-sources></div>
+              </section>
+
+              <section class="admin-analytics-card">
+                <h3 class="admin-analytics-card__title">Устройства и окружение</h3>
+                <div data-analytics-devices></div>
+              </section>
+
+              <section class="admin-analytics-card">
+                <h3 class="admin-analytics-card__title">География</h3>
+                <div data-analytics-geo></div>
+              </section>
+
+              <section class="admin-analytics-card">
+                <h3 class="admin-analytics-card__title">Аудитория</h3>
+                <div data-analytics-audience></div>
+              </section>
+
+              <section class="admin-analytics-card">
+                <h3 class="admin-analytics-card__title">Интеракции</h3>
+                <div data-analytics-interactions></div>
+              </section>
+            </div>
+
+            <section class="admin-analytics-card admin-analytics-card--wide">
+              <h3 class="admin-analytics-card__title">Последние визиты</h3>
+              <div data-analytics-recent></div>
+            </section>
+
+            <section class="admin-analytics-card admin-analytics-card--wide">
+              <h3 class="admin-analytics-card__title">Последние клики</h3>
+              <div data-analytics-recent-clicks></div>
+            </section>
+          </section>
+
+          <section class="admin-editor-section" aria-labelledby="admin-editor-title">
+            <div class="admin-section__header">
+              <div>
               <p class="admin-panel__eyebrow">Редактор</p>
               <h2 class="admin-section__title" id="admin-editor-title">Настройки карточек</h2>
             </div>

@@ -77,6 +77,50 @@
     return `case-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
   }
 
+  function sanitizeCaseText(value, fallback = "", maxLength = 160) {
+    if (typeof value !== "string") {
+      return fallback;
+    }
+
+    const normalized = value.replace(/\s+/g, " ").trim().slice(0, maxLength);
+    return normalized || fallback;
+  }
+
+  function sanitizeCaseId(value) {
+    const normalized = sanitizeCaseText(value, "", 80).replace(/[^a-zA-Z0-9:_-]/g, "");
+    return normalized || createCaseId();
+  }
+
+  function normalizeCaseImage(image, fallback = "") {
+    if (typeof image !== "string") {
+      return fallback;
+    }
+
+    const normalized = image.trim();
+
+    if (!normalized) {
+      return "";
+    }
+
+    if (
+      normalized.startsWith("data:image/") ||
+      normalized.startsWith("./") ||
+      normalized.startsWith("../") ||
+      normalized.startsWith("/")
+    ) {
+      return normalized.slice(0, 2_000_000);
+    }
+
+    return fallback;
+  }
+
+  function normalizeCaseColor(color, fallback = "#d7dde7") {
+    const normalized = sanitizeCaseText(color, "", 12);
+    return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(normalized)
+      ? normalized
+      : fallback;
+  }
+
   function normalizeCategory(category, fallback = defaultPortfolioCategory) {
     const selectedCategory =
       typeof category === "string" && category.trim() ? category.trim() : fallback;
@@ -111,22 +155,19 @@
 
   function normalizeCase(item, fallback = {}) {
     return {
-      id: typeof item?.id === "string" && item.id.trim() ? item.id : createCaseId(),
-      title:
-        typeof item?.title === "string" && item.title.trim()
-          ? item.title.trim()
-          : fallback.title || "Новый кейс",
+      id: sanitizeCaseId(item?.id),
+      title: sanitizeCaseText(item?.title, fallback.title || "Новый кейс", 180),
       year: normalizeCaseYear(item?.year, fallback.year || ""),
-      image: typeof item?.image === "string" ? item.image : fallback.image || "",
+      image: normalizeCaseImage(item?.image, fallback.image || ""),
       column: item?.column === "right" ? "right" : "left",
       size: item?.size === "tall" ? "tall" : "medium",
       lightUi: Boolean(item?.lightUi),
-      status: typeof item?.status === "string" ? item.status.trim() : "",
+      status: sanitizeCaseText(item?.status, "", 64),
       featuredTitle: Boolean(item?.featuredTitle),
-      backgroundColor:
-        typeof item?.backgroundColor === "string" && item.backgroundColor.trim()
-          ? item.backgroundColor.trim()
-          : fallback.backgroundColor || "#d7dde7",
+      backgroundColor: normalizeCaseColor(
+        item?.backgroundColor,
+        fallback.backgroundColor || "#d7dde7",
+      ),
       category: normalizeCategory(item?.category, fallback.category || defaultPortfolioCategory),
       showOnHome:
         typeof item?.showOnHome === "boolean"

@@ -1,5 +1,17 @@
 const siteAccessCookieName = "portfolio_site_session";
-const publicPaths = new Set(["/auth.html", "/api/site-auth"]);
+const adminAccessCookieName = "portfolio_admin_session";
+const publicPaths = new Set([
+  "/auth.html",
+  "/api/site-auth",
+  "/site-theme-init.js",
+  "/site-auth.js",
+]);
+const adminPublicPaths = new Set([
+  "/admin",
+  "/admin/",
+  "/admin/index.html",
+  "/api/admin-auth",
+]);
 const hexAlphabet = /^[a-f0-9]{64}$/i;
 
 function parseCookies(cookieHeader = "") {
@@ -26,7 +38,11 @@ function getSiteAccessSecret() {
   return String(process.env.SITE_ACCESS_SECRET || "").trim();
 }
 
-async function createSessionSignature(expiresAt, secret) {
+function getAdminAccessSecret() {
+  return String(process.env.ADMIN_ACCESS_SECRET || "").trim();
+}
+
+async function createSessionSignature(cookieName, expiresAt, secret) {
   const key = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(secret),
@@ -40,7 +56,7 @@ async function createSessionSignature(expiresAt, secret) {
   const signatureBuffer = await crypto.subtle.sign(
     "HMAC",
     key,
-    new TextEncoder().encode(`${siteAccessCookieName}:${expiresAt}`),
+    new TextEncoder().encode(`${cookieName}:${expiresAt}`),
   );
 
   return Array.from(new Uint8Array(signatureBuffer), (byte) =>
@@ -48,12 +64,29 @@ async function createSessionSignature(expiresAt, secret) {
   ).join("");
 }
 
-async function hasValidSiteSession(cookieHeader = "", secret = "") {
+function timingSafeEqual(firstValue = "", secondValue = "") {
+  if (firstValue.length !== secondValue.length) {
+    return false;
+  }
+
+  let mismatch = 0;
+
+  for (let index = 0; index < firstValue.length; index += 1) {
+    mismatch |= firstValue.charCodeAt(index) ^ secondValue.charCodeAt(index);
+  }
+
+  return mismatch === 0;
+}
+
+async function hasValidSession(cookieHeader = "", options = {}) {
+  const secret = String(options.secret || "").trim();
+  const cookieName = String(options.cookieName || "").trim();
+
   if (!secret) {
     return false;
   }
 
-  const token = parseCookies(cookieHeader)[siteAccessCookieName];
+  const token = parseCookies(cookieHeader)[cookieName];
 
   if (typeof token !== "string" || !token) {
     return false;
@@ -69,8 +102,8 @@ async function hasValidSiteSession(cookieHeader = "", secret = "") {
     return false;
   }
 
-  const expectedSignature = await createSessionSignature(expiresAt, secret);
-  return signature === expectedSignature;
+  const expectedSignature = await createSessionSignature(cookieName, expiresAt, secret);
+  return timingSafeEqual(signature, expectedSignature);
 }
 
 function isAllowedStaticPath(pathname) {
@@ -105,17 +138,47 @@ function createUnauthorizedApiResponse() {
   );
 }
 
+function createForbiddenApiResponse() {
+  return Response.json(
+    {
+      ok: false,
+      error: "Требуется доступ администратора.",
+    },
+    {
+      status: 403,
+      headers: {
+        "Cache-Control": "no-store",
+      },
+    },
+  );
+}
+
+function isAdminProtectedPath(pathname) {
+  return pathname === "/api/analytics-report";
+}
+
 export default async function middleware(request) {
   const url = new URL(request.url);
   const pathname = url.pathname;
   const siteAccessSecret = getSiteAccessSecret();
-  const hasSession = await hasValidSiteSession(
+  const adminAccessSecret = getAdminAccessSecret();
+  const hasSiteSession = await hasValidSession(
     request.headers.get("cookie") || "",
-    siteAccessSecret,
+    {
+      cookieName: siteAccessCookieName,
+      secret: siteAccessSecret,
+    },
+  );
+  const hasAdminSession = await hasValidSession(
+    request.headers.get("cookie") || "",
+    {
+      cookieName: adminAccessCookieName,
+      secret: adminAccessSecret,
+    },
   );
 
   if (isAllowedStaticPath(pathname) || publicPaths.has(pathname)) {
-    if (pathname === "/auth.html" && hasSession) {
+    if (pathname === "/auth.html" && hasSiteSession) {
       const nextUrl = url.searchParams.get("next");
       const destination = new URL(
         isSafeNextPath(nextUrl) ? nextUrl : "/",
@@ -128,20 +191,30 @@ export default async function middleware(request) {
     return;
   }
 
-  if (hasSession) {
+  if (!hasSiteSession) {
+    if (pathname.startsWith("/api/")) {
+      return createUnauthorizedApiResponse();
+    }
+
+    const loginUrl = new URL("/auth.html", request.url);
+    const nextTarget = `${pathname}${url.search}`;
+
+    if (isSafeNextPath(nextTarget)) {
+      loginUrl.searchParams.set("next", nextTarget);
+    }
+
+    return Response.redirect(loginUrl, 307);
+  }
+
+  if (adminPublicPaths.has(pathname)) {
     return;
   }
 
-  if (pathname.startsWith("/api/")) {
-    return createUnauthorizedApiResponse();
+  if (isAdminProtectedPath(pathname) && !hasAdminSession) {
+    if (pathname.startsWith("/api/")) {
+      return createForbiddenApiResponse();
+    }
+
+    return Response.redirect(new URL("/admin/index.html", request.url), 307);
   }
-
-  const loginUrl = new URL("/auth.html", request.url);
-  const nextTarget = `${pathname}${url.search}`;
-
-  if (isSafeNextPath(nextTarget)) {
-    loginUrl.searchParams.set("next", nextTarget);
-  }
-
-  return Response.redirect(loginUrl, 307);
 }

@@ -8,18 +8,7 @@
       content="Все кейсы продуктового дизайнера Влада Галанова на отдельной странице портфолио."
     />
     <title>Портфолио | Halanov</title>
-    <script>
-      (function () {
-        var storedTheme = localStorage.getItem("portfolio-theme");
-        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        var theme = storedTheme || (prefersDark ? "dark" : "light");
-        if (!window.location.hash && "scrollRestoration" in window.history) {
-          window.history.scrollRestoration = "manual";
-        }
-        document.documentElement.dataset.theme = theme;
-        document.documentElement.style.colorScheme = theme;
-      })();
-    </script>
+    <script src="./site-theme-init.js" data-scroll-restoration="manual"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -275,6 +264,7 @@
 
     <script src="./cases-store.js"></script>
     <script src="./case-card.js"></script>
+    <script src="./analytics.js"></script>
     <script src="./portfolio.js"></script>
   </body>
 </html>

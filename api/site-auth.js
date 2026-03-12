@@ -5,58 +5,37 @@ const {
   createSiteSessionCookie,
   clearSiteSessionCookie,
 } = require("../lib/site-access");
-
-function isSecureRequest(req) {
-  return (
-    req.headers["x-forwarded-proto"] === "https" ||
-    req.headers["x-forwarded-ssl"] === "on" ||
-    process.env.NODE_ENV === "production" ||
-    Boolean(process.env.VERCEL)
-  );
-}
-
-function readRawBody(req) {
-  return new Promise((resolve, reject) => {
-    const chunks = [];
-
-    req.on("data", (chunk) => {
-      chunks.push(chunk);
-    });
-
-    req.on("end", () => {
-      resolve(Buffer.concat(chunks).toString("utf8"));
-    });
-
-    req.on("error", reject);
-  });
-}
-
-async function parseRequestBody(req) {
-  if (req.body && typeof req.body === "object") {
-    return req.body;
-  }
-
-  const rawBody =
-    typeof req.body === "string" && req.body
-      ? req.body
-      : await readRawBody(req);
-
-  if (!rawBody) {
-    return {};
-  }
-
-  try {
-    return JSON.parse(rawBody);
-  } catch (error) {
-    return {};
-  }
-}
+const { enforceRateLimit } = require("../lib/rate-limit");
+const {
+  isSecureRequest,
+  isCrossSiteRequest,
+  setCommonResponseHeaders,
+  rejectCrossSiteRequest,
+  ensureJsonRequest,
+  parseJsonBody,
+  PayloadTooLargeError,
+} = require("../lib/request-security");
 
 module.exports = async (req, res) => {
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  res.setHeader("Cache-Control", "no-store");
+  setCommonResponseHeaders(res);
 
   const secure = isSecureRequest(req);
+
+  if (
+    !(await enforceRateLimit(req, res, {
+      name: req.method === "DELETE" ? "site-auth-logout" : "site-auth-login",
+      limit: req.method === "DELETE" ? 30 : 8,
+      windowMs: 10 * 60 * 1000,
+    }))
+  ) {
+    return;
+  }
+
+  if (isCrossSiteRequest(req)) {
+    rejectCrossSiteRequest(res);
+    return;
+  }
 
   if (req.method === "DELETE") {
     res.setHeader("Set-Cookie", clearSiteSessionCookie({ secure }));
@@ -70,6 +49,10 @@ module.exports = async (req, res) => {
     return;
   }
 
+  if (!ensureJsonRequest(req, res)) {
+    return;
+  }
+
   if (!hasSiteAccessConfiguration()) {
     res.status(500).json({
       ok: false,
@@ -78,20 +61,29 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const body = await parseRequestBody(req);
-  const login = String(body.login || "").trim();
-  const password = String(body.password || "").trim();
-  const credentials = resolveSiteAccessCredentials();
-  const secret = resolveSiteAccessSecret();
+  try {
+    const body = await parseJsonBody(req, { maxBytes: 4096 });
+    const login = String(body.login || "").trim();
+    const password = String(body.password || "").trim();
+    const credentials = resolveSiteAccessCredentials();
+    const secret = resolveSiteAccessSecret();
 
-  if (
-    login !== credentials.login ||
-    password !== credentials.password
-  ) {
-    res.status(401).json({ ok: false, error: "Неверный логин или пароль." });
-    return;
+    if (login !== credentials.login || password !== credentials.password) {
+      res.status(401).json({ ok: false, error: "Неверный логин или пароль." });
+      return;
+    }
+
+    res.setHeader("Set-Cookie", createSiteSessionCookie({ secure, secret }));
+    res.status(200).json({ ok: true });
+  } catch (error) {
+    if (error instanceof PayloadTooLargeError) {
+      res.status(error.statusCode).json({ ok: false, error: error.message });
+      return;
+    }
+
+    res.status(500).json({
+      ok: false,
+      error: error?.message || "Не удалось выполнить вход.",
+    });
   }
-
-  res.setHeader("Set-Cookie", createSiteSessionCookie({ secure, secret }));
-  res.status(200).json({ ok: true });
 };
