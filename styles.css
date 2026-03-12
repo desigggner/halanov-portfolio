@@ -408,6 +408,17 @@ a {
   margin-top: 14px;
 }
 
+.admin-case__save-state {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.admin-case__save-state.is-dirty {
+  color: var(--text);
+}
+
 .admin-check {
   display: inline-flex;
   align-items: center;
@@ -930,6 +941,47 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   gap: 38px;
 }
 
+.cases-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.cases-footer__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 16px 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #333037;
+  color: #ffffff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease,
+    background-color 220ms ease;
+}
+
+.cases-footer__button:hover {
+  transform: translateY(-1px);
+}
+
+.cases-footer__button:active {
+  transform: translateY(0);
+}
+
+.cases-footer__button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
 .case-card {
   position: relative;
   display: flex;
@@ -1299,6 +1351,10 @@ html[data-theme="dark"] .case-card__corner {
     gap: 18px;
   }
 
+  .cases-footer {
+    margin-top: 24px;
+  }
+
   .cases__column {
     display: contents;
   }
@@ -1342,6 +1398,10 @@ html[data-theme="dark"] .case-card__corner {
   }
 
   .cases {
+    width: min(1064px, calc(100% - 32px));
+  }
+
+  .cases-footer {
     width: min(1064px, calc(100% - 32px));
   }
 
@@ -1433,6 +1493,10 @@ html[data-theme="dark"] .case-card__corner {
   .case-card--invert {
     min-height: 562px;
     padding: 37px 24px 20px;
+  }
+
+  .cases-footer__button {
+    width: 100%;
   }
 
   .case-card[data-has-status="true"] .case-card__title {

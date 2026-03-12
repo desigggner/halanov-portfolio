@@ -1,7 +1,18 @@
 const store = window.PortfolioStore;
 const caseCardRenderer = window.PortfolioCaseCard;
 const authStorageKey = "portfolio-admin-auth";
-const defaultAdminMessage = "Изменения сохраняются автоматически.";
+const defaultAdminMessage = "Изменения кейса сохраняются по кнопке в карточке.";
+const comparableCaseFields = [
+  "id",
+  "title",
+  "image",
+  "column",
+  "size",
+  "lightUi",
+  "status",
+  "featuredTitle",
+  "backgroundColor",
+];
 const adminCredentials = {
   login: "admin",
   password: "portfolio2026",
@@ -30,6 +41,15 @@ const supportsWebp = (() => {
 
 let adminMessageTimer = 0;
 let cases = store ? store.loadCases() : [];
+let draftCases = cloneCases(cases);
+
+function cloneCase(caseItem) {
+  return { ...caseItem };
+}
+
+function cloneCases(items) {
+  return items.map(cloneCase);
+}
 
 function isAuthenticated() {
   return sessionStorage.getItem(authStorageKey) === "true";
@@ -116,13 +136,61 @@ function persistCases() {
   return saved;
 }
 
-function getCaseIndex(caseId) {
-  return cases.findIndex((caseItem) => caseItem.id === caseId);
+function getCaseIndex(caseId, collection = draftCases) {
+  return collection.findIndex((caseItem) => caseItem.id === caseId);
+}
+
+function getCaseById(caseId, collection = draftCases) {
+  return collection.find((caseItem) => caseItem.id === caseId) || null;
+}
+
+function areCasesEqual(firstCase, secondCase) {
+  if (!firstCase || !secondCase) {
+    return false;
+  }
+
+  return comparableCaseFields.every((field) => firstCase[field] === secondCase[field]);
+}
+
+function isCaseDirty(caseId) {
+  const draftCase = getCaseById(caseId, draftCases);
+  const savedCase = getCaseById(caseId, cases);
+
+  if (!draftCase) {
+    return false;
+  }
+
+  if (!savedCase) {
+    return true;
+  }
+
+  return !areCasesEqual(draftCase, savedCase);
+}
+
+function getCaseSaveState(caseId) {
+  if (!getCaseById(caseId, cases)) {
+    return {
+      text: "Новый кейс ещё не сохранён.",
+      dirty: true,
+    };
+  }
+
+  if (isCaseDirty(caseId)) {
+    return {
+      text: "Есть несохранённые изменения.",
+      dirty: true,
+    };
+  }
+
+  return {
+    text: "Все изменения сохранены.",
+    dirty: false,
+  };
 }
 
 function getNextColumn() {
-  const leftCount = cases.filter((caseItem) => caseItem.column === "left").length;
-  const rightCount = cases.length - leftCount;
+  const leftCount = draftCases.filter((caseItem) => caseItem.column === "left").length;
+  const rightCount = draftCases.length - leftCount;
 
   return leftCount <= rightCount ? "left" : "right";
 }
@@ -178,12 +246,12 @@ function renderCasePreview(caseElement, caseItem) {
   );
 }
 
-function syncCasePreview(caseId) {
+function syncDraftCaseView(caseId) {
   if (!elements.editor) {
     return;
   }
 
-  const caseItem = cases.find((item) => item.id === caseId);
+  const caseItem = getCaseById(caseId, draftCases);
   const caseElement = elements.editor.querySelector(`[data-case-id="${caseId}"]`);
 
   if (!caseItem || !caseElement) {
@@ -191,9 +259,21 @@ function syncCasePreview(caseId) {
   }
 
   const placement = caseElement.querySelector("[data-case-placement]");
+  const saveButton = caseElement.querySelector("[data-case-save]");
+  const saveState = caseElement.querySelector("[data-case-save-state]");
+  const state = getCaseSaveState(caseId);
 
   if (placement) {
     placement.textContent = getCasePlacementLabel(caseItem);
+  }
+
+  if (saveButton) {
+    saveButton.disabled = !state.dirty;
+  }
+
+  if (saveState) {
+    saveState.textContent = state.text;
+    saveState.classList.toggle("is-dirty", state.dirty);
   }
 
   renderCasePreview(caseElement, caseItem);
@@ -227,8 +307,10 @@ function renderEditor() {
     return;
   }
 
-  elements.editor.innerHTML = cases
+  elements.editor.innerHTML = draftCases
     .map((caseItem, index) => {
+      const saveState = getCaseSaveState(caseItem.id);
+
       return `
         <section
           class="admin-case"
@@ -247,7 +329,7 @@ function renderEditor() {
               class="admin-button admin-button--danger"
               type="button"
               data-case-remove
-              ${cases.length === 1 ? "disabled" : ""}
+              ${draftCases.length === 1 ? "disabled" : ""}
             >
               Удалить
             </button>
@@ -316,7 +398,23 @@ function renderEditor() {
             </label>
           </div>
 
+          <p
+            class="admin-case__save-state ${saveState.dirty ? "is-dirty" : ""}"
+            data-case-save-state
+          >
+            ${saveState.text}
+          </p>
+
           <div class="admin-case__footer">
+            <button
+              class="admin-button"
+              type="button"
+              data-case-save
+              ${saveState.dirty ? "" : "disabled"}
+            >
+              Сохранить изменения
+            </button>
+
             <button class="admin-button admin-button--ghost" type="button" data-case-image-clear>
               Убрать фото
             </button>
@@ -327,7 +425,7 @@ function renderEditor() {
     .join("");
 
   elements.editor.querySelectorAll("[data-case-id]").forEach((caseElement) => {
-    const caseItem = cases.find((item) => item.id === caseElement.dataset.caseId);
+    const caseItem = getCaseById(caseElement.dataset.caseId, draftCases);
 
     if (caseItem) {
       renderCasePreview(caseElement, caseItem);
@@ -340,34 +438,50 @@ function renderWorkspace() {
   renderEditor();
 }
 
-function updateCase(caseId, patch, options = {}) {
-  const { rerender = true } = options;
-  const caseIndex = getCaseIndex(caseId);
+function updateDraftCase(caseId, patch, options = {}) {
+  const { rerender = false } = options;
+  const caseIndex = getCaseIndex(caseId, draftCases);
 
   if (caseIndex === -1) {
     return;
   }
 
-  const previousCase = cases[caseIndex];
-
-  cases[caseIndex] = {
-    ...previousCase,
+  draftCases[caseIndex] = {
+    ...draftCases[caseIndex],
     ...patch,
   };
 
-  if (!persistCases()) {
-    cases[caseIndex] = previousCase;
+  if (rerender) {
+    renderEditor();
     return;
   }
 
-  if (rerender) {
-    renderWorkspace();
-  } else {
-    renderDashboard();
-    syncCasePreview(caseId);
+  syncDraftCaseView(caseId);
+}
+
+function saveCase(caseId) {
+  const draftCase = getCaseById(caseId, draftCases);
+
+  if (!draftCase) {
+    return;
   }
 
-  setAdminMessage("Изменения сохранены.");
+  const previousCases = cloneCases(cases);
+  const savedIndex = getCaseIndex(caseId, cases);
+
+  if (savedIndex === -1) {
+    cases = [...cases, cloneCase(draftCase)];
+  } else {
+    cases[savedIndex] = cloneCase(draftCase);
+  }
+
+  if (!persistCases()) {
+    cases = previousCases;
+    return;
+  }
+
+  renderWorkspace();
+  setAdminMessage("Кейс сохранён.");
 }
 
 function readFileAsDataUrl(file) {
@@ -425,27 +539,17 @@ async function handleImageUpload(input) {
     return;
   }
 
-  const caseIndex = getCaseIndex(caseCard.dataset.caseId);
-
-  if (caseIndex === -1) {
-    return;
-  }
-
-  const previousImage = cases[caseIndex].image;
+  const caseId = caseCard.dataset.caseId;
+  const previousImage = getCaseById(caseId, draftCases)?.image || "";
 
   try {
     setAdminMessage("Подготавливаю изображение...");
-    cases[caseIndex].image = await optimizeImage(selectedFile);
+    const optimizedImage = await optimizeImage(selectedFile);
 
-    if (!persistCases()) {
-      cases[caseIndex].image = previousImage;
-      return;
-    }
-
-    renderWorkspace();
-    setAdminMessage("Изображение обновлено.");
+    updateDraftCase(caseId, { image: optimizedImage }, { rerender: true });
+    setAdminMessage("Изображение добавлено в черновик. Сохрани кейс.");
   } catch (error) {
-    cases[caseIndex].image = previousImage;
+    updateDraftCase(caseId, { image: previousImage }, { rerender: true });
     setAdminMessage(error.message || "Не удалось обновить изображение.", true);
   }
 }
@@ -461,11 +565,11 @@ function handleEditorInput(event) {
   const caseId = caseCard.dataset.caseId;
 
   if (field === "title") {
-    updateCase(caseId, { title: event.target.value || "Новый кейс" }, { rerender: false });
+    updateDraftCase(caseId, { title: event.target.value || "Новый кейс" });
   }
 
   if (field === "status") {
-    updateCase(caseId, { status: event.target.value }, { rerender: false });
+    updateDraftCase(caseId, { status: event.target.value });
   }
 }
 
@@ -485,33 +589,60 @@ function handleEditorChange(event) {
   }
 
   if (field === "lightUi") {
-    updateCase(caseId, { lightUi: event.target.checked });
+    updateDraftCase(caseId, { lightUi: event.target.checked });
   }
 
   if (field === "size") {
-    updateCase(caseId, { size: event.target.checked ? "tall" : "medium" });
+    updateDraftCase(caseId, { size: event.target.checked ? "tall" : "medium" });
   }
 
   if (field === "column") {
-    updateCase(caseId, { column: event.target.checked ? "right" : "left" });
+    updateDraftCase(caseId, { column: event.target.checked ? "right" : "left" });
   }
 }
 
 function handleEditorClick(event) {
+  const saveButton = event.target.closest("[data-case-save]");
   const removeButton = event.target.closest("[data-case-remove]");
   const clearImageButton = event.target.closest("[data-case-image-clear]");
+
+  if (saveButton) {
+    const caseCard = saveButton.closest("[data-case-id]");
+
+    if (!caseCard) {
+      return;
+    }
+
+    saveCase(caseCard.dataset.caseId);
+    return;
+  }
 
   if (removeButton) {
     const caseCard = removeButton.closest("[data-case-id]");
 
-    if (!caseCard || cases.length === 1) {
+    if (!caseCard || draftCases.length === 1) {
       return;
     }
 
-    cases = cases.filter((caseItem) => caseItem.id !== caseCard.dataset.caseId);
+    const caseId = caseCard.dataset.caseId;
+    const savedCase = getCaseById(caseId, cases);
+
+    if (!savedCase) {
+      draftCases = draftCases.filter((caseItem) => caseItem.id !== caseId);
+      renderEditor();
+      setAdminMessage("Черновик кейса удалён.");
+      return;
+    }
+
+    const previousCases = cloneCases(cases);
+    const previousDraftCases = cloneCases(draftCases);
+
+    cases = cases.filter((caseItem) => caseItem.id !== caseId);
+    draftCases = draftCases.filter((caseItem) => caseItem.id !== caseId);
 
     if (!persistCases()) {
-      cases = store ? store.loadCases() : cases;
+      cases = previousCases;
+      draftCases = previousDraftCases;
       return;
     }
 
@@ -527,22 +658,8 @@ function handleEditorClick(event) {
       return;
     }
 
-    const caseIndex = getCaseIndex(caseCard.dataset.caseId);
-
-    if (caseIndex === -1) {
-      return;
-    }
-
-    const previousImage = cases[caseIndex].image;
-    cases[caseIndex].image = "";
-
-    if (!persistCases()) {
-      cases[caseIndex].image = previousImage;
-      return;
-    }
-
-    renderWorkspace();
-    setAdminMessage("Изображение удалено.");
+    updateDraftCase(caseCard.dataset.caseId, { image: "" }, { rerender: true });
+    setAdminMessage("Изображение убрано из черновика. Сохрани кейс.");
   }
 }
 
@@ -560,6 +677,7 @@ function handleLogin(event) {
   if (login === adminCredentials.login && password === adminCredentials.password) {
     sessionStorage.setItem(authStorageKey, "true");
     cases = store ? store.loadCases() : [];
+    draftCases = cloneCases(cases);
     elements.loginForm.reset();
     setLoginMessage("");
     showAdminView();
@@ -583,15 +701,9 @@ function setupAdminPage() {
 
   if (elements.addButton) {
     elements.addButton.addEventListener("click", () => {
-      cases = [...cases, createEmptyCase()];
-
-      if (!persistCases()) {
-        cases = store.loadCases();
-        return;
-      }
-
-      renderWorkspace();
-      setAdminMessage("Новый кейс добавлен.");
+      draftCases = [...draftCases, createEmptyCase()];
+      renderEditor();
+      setAdminMessage("Новый кейс добавлен как черновик. Сохрани его в карточке.");
 
       const lastTitleInput = elements.editor.querySelector(
         '.admin-case:last-child [data-field="title"]',
@@ -612,10 +724,15 @@ function setupAdminPage() {
         return;
       }
 
+      const previousCases = cloneCases(cases);
+      const previousDraftCases = cloneCases(draftCases);
+
       cases = store.cloneDefaultCases();
+      draftCases = cloneCases(cases);
 
       if (!persistCases()) {
-        cases = store.loadCases();
+        cases = previousCases;
+        draftCases = previousDraftCases;
         return;
       }
 
