@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Все кейсы продуктового дизайнера Влада Галанова на отдельной странице портфолио."
+      content="Медиа-страница Влада Галанова с лентой постов из Telegram-канала @desiggggner."
     />
-    <title>Портфолио | Halanov</title>
+    <title>Медиа | Halanov</title>
     <script>
       (function () {
         var storedTheme = localStorage.getItem("portfolio-theme");
@@ -28,8 +28,8 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body class="portfolio-page">
-    <div class="page-shell page-shell--portfolio" id="top">
+  <body class="media-page">
+    <div class="page-shell" id="top">
       <header class="site-header">
         <div class="container site-header__inner">
           <a class="brand" href="./index.html" aria-label="На главную">halanov</a>
@@ -37,9 +37,9 @@
           <div class="header-overlay">
             <nav class="site-nav" aria-label="Основная навигация">
               <a class="nav-link" href="./index.html">Главная</a>
-              <a class="nav-link is-active" href="./portfolio.html">Портфолио</a>
+              <a class="nav-link" href="./portfolio.html">Портфолио</a>
               <a class="nav-link" href="./index.html#about">Обо мне</a>
-              <a class="nav-link" href="./media.html">Медиа</a>
+              <a class="nav-link is-active" href="./media.html">Медиа</a>
             </nav>
 
             <div class="header-actions">
@@ -194,61 +194,66 @@
         </div>
       </header>
 
-      <main class="main-content portfolio-main">
-        <section class="portfolio-hero container" aria-labelledby="portfolio-title">
-          <h1 class="portfolio-hero__title" id="portfolio-title">
-            <span class="portfolio-hero__row">
-              <span data-portfolio-total-text>0 проектов за</span>
-              <span class="portfolio-stat-pill" data-portfolio-years-text>12 лет,</span>
-            </span>
-            <span class="portfolio-hero__row">
-              <span class="portfolio-stat-pill" data-portfolio-active-text>0 — в работе</span>
-              <span class="portfolio-hero__tail">прямо сейчас</span>
-            </span>
-          </h1>
-        </section>
+      <main class="main-content media-main">
+        <section class="media-hero container" aria-labelledby="media-title">
+          <p class="media-hero__eyebrow">@desiggggner</p>
+          <h1 class="media-hero__title" id="media-title">Медиа</h1>
+          <p class="media-hero__note">
+            Последние посты из Telegram-канала. Если серверный feed временно недоступен,
+            здесь останется быстрый переход прямо в канал.
+          </p>
 
-        <section class="portfolio-toolbar container" aria-label="Фильтры портфолио">
-          <div class="portfolio-filters" data-portfolio-filters></div>
-
-          <div class="portfolio-layout" aria-hidden="true">
-            <span class="portfolio-layout__button is-active">
-              <svg viewBox="0 0 16 16" focusable="false" fill="none">
-                <rect x="1.5" y="1.5" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
-                <rect x="10" y="1.5" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
-                <rect x="1.5" y="10" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
-                <rect x="10" y="10" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
-              </svg>
-            </span>
-            <span class="portfolio-layout__button">
-              <svg viewBox="0 0 16 16" focusable="false" fill="none">
-                <path d="M3 4H13" stroke="currentColor" stroke-linecap="round" />
-                <path d="M3 8H13" stroke="currentColor" stroke-linecap="round" />
-                <path d="M3 12H13" stroke="currentColor" stroke-linecap="round" />
-              </svg>
-            </span>
+          <div class="media-hero__actions">
+            <a
+              class="media-link-button"
+              href="https://t.me/desiggggner"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Открыть канал
+            </a>
+            <p class="media-hero__status" data-media-status>Подключаю ленту Telegram...</p>
           </div>
         </section>
 
-        <section
-          class="cases container portfolio-gallery"
-          aria-labelledby="portfolio-gallery-title"
-          data-portfolio-grid
-        >
-          <h2 class="sr-only" id="portfolio-gallery-title">Все кейсы</h2>
+        <section class="media-feed-section container" aria-labelledby="media-feed-title">
+          <div class="media-feed-section__header">
+            <div>
+              <p class="media-feed-section__eyebrow">Лента</p>
+              <h2 class="media-feed-section__title" id="media-feed-title">Свежие публикации</h2>
+            </div>
 
-          <div class="cases__column" data-portfolio-column="left"></div>
-          <div class="cases__column cases__column--right" data-portfolio-column="right"></div>
+            <a
+              class="media-feed-section__link"
+              href="https://t.me/desiggggner"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Смотреть в Telegram
+            </a>
+          </div>
+
+          <div class="media-feed" data-media-feed></div>
+
+          <section class="media-fallback" data-media-fallback hidden>
+            <p class="media-fallback__title">Лента временно недоступна</p>
+            <p class="media-fallback__note">
+              Сервер не смог забрать посты автоматически. Канал остаётся доступен напрямую в
+              Telegram.
+            </p>
+            <a
+              class="media-link-button"
+              href="https://t.me/desiggggner"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View in Telegram
+            </a>
+          </section>
         </section>
-
-        <p class="portfolio-empty container" data-portfolio-empty hidden>
-          В этой категории пока нет кейсов.
-        </p>
       </main>
     </div>
 
-    <script src="./cases-store.js"></script>
-    <script src="./case-card.js"></script>
-    <script src="./portfolio.js"></script>
+    <script src="./media.js"></script>
   </body>
 </html>
