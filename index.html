@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Портфолио продуктового дизайнера Влада Галанова с избранными кейсами и переключением темы."
+    />
+    <title>Halanov Portfolio</title>
+    <script>
+      (function () {
+        var storedTheme = localStorage.getItem("portfolio-theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = storedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Borel&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell" id="top">
+      <header class="site-header">
+        <div class="container site-header__inner">
+          <a class="brand" href="#top" aria-label="На главную">halanov</a>
+
+          <div class="header-overlay">
+            <nav class="site-nav" aria-label="Основная навигация">
+              <a class="nav-link is-active" href="#top">Главная</a>
+              <a class="nav-link" href="#works">Портфолио</a>
+              <a class="nav-link" href="#experience">Исследования</a>
+              <a class="nav-link" href="#about">Обо мне</a>
+              <a class="nav-link" href="#media">Медиа</a>
+            </nav>
+
+            <div class="header-actions">
+              <button class="contact-link" type="button">
+                <span>Связаться</span>
+                <svg
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                >
+                  <path
+                    d="M6.25 10.5367L13.3016 16.7188C13.3828 16.7904 13.4812 16.8397 13.5873 16.8619C13.6933 16.884 13.8033 16.8782 13.9064 16.8451C14.0095 16.8119 14.1023 16.7525 14.1755 16.6727C14.2487 16.5929 14.3 16.4954 14.3242 16.3898L17.5 2.59532C17.5031 2.58148 17.5024 2.56707 17.4979 2.55362C17.4934 2.54016 17.4854 2.52818 17.4746 2.51895C17.4639 2.50971 17.4508 2.50358 17.4368 2.50121C17.4229 2.49884 17.4085 2.50031 17.3953 2.50547L1.5625 8.70157C1.46421 8.7394 1.38084 8.80809 1.32491 8.89733C1.26898 8.98657 1.24351 9.09154 1.25231 9.19649C1.26112 9.30144 1.30373 9.4007 1.37374 9.47938C1.44376 9.55805 1.53741 9.61189 1.64062 9.63282L6.25 10.5367Z"
+                    stroke="currentColor"
+                    stroke-width="0.9375"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M6.25 10.5367L17.4539 2.50703"
+                    stroke="currentColor"
+                    stroke-width="0.9375"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9.71641 13.5766L7.325 16.0578C7.23859 16.1475 7.12737 16.2093 7.00561 16.2353C6.88384 16.2613 6.75708 16.2504 6.64157 16.2039C6.52607 16.1574 6.42709 16.0774 6.35732 15.9743C6.28755 15.8711 6.25018 15.7495 6.25 15.625V10.5367"
+                    stroke="currentColor"
+                    stroke-width="0.9375"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <button
+                class="theme-toggle"
+                type="button"
+                aria-label="Переключить светлую и тёмную тему"
+                aria-pressed="false"
+              >
+                <span class="theme-toggle__thumb" aria-hidden="true"></span>
+                <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" focusable="false" fill="none">
+                    <path
+                      d="M10 3.125V1.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 14.375C12.4162 14.375 14.375 12.4162 14.375 10C14.375 7.58375 12.4162 5.625 10 5.625C7.58375 5.625 5.625 7.58375 5.625 10C5.625 12.4162 7.58375 14.375 10 14.375Z"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M5 5L3.75 3.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M5 15L3.75 16.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15 5L16.25 3.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15 15L16.25 16.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M3.125 10H1.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 16.875V18.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M16.875 10H18.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" focusable="false" fill="none">
+                    <path
+                      d="M16.25 9.375V5.625"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M18.125 7.5H14.375"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12.5 2.5V5"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M13.75 3.75H11.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M16.4601 12.3578C15.9792 12.4524 15.4901 12.5 15 12.5C13.8915 12.4991 12.797 12.2527 11.7951 11.7784C10.7932 11.3042 9.9087 10.614 9.20524 9.75737C8.50178 8.90071 7.99679 7.89889 7.72653 6.82387C7.45627 5.74885 7.42745 4.62732 7.64216 3.53984C6.55731 3.93655 5.5899 4.6002 4.82927 5.46952C4.06864 6.33884 3.5393 7.3858 3.29014 8.51372C3.04098 9.64163 3.08003 10.8141 3.40368 11.923C3.72733 13.0318 4.32515 14.0412 5.14194 14.858C5.95872 15.6748 6.96814 16.2726 8.07698 16.5963C9.18582 16.9199 10.3583 16.959 11.4863 16.7098C12.6142 16.4607 13.6611 15.9313 14.5304 15.1707C15.3998 14.4101 16.0634 13.4427 16.4601 12.3578Z"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="hero container" id="about" aria-labelledby="hero-title">
+          <h1 class="hero__title" id="hero-title">Сложное делаю понятным</h1>
+
+          <div class="hero__profile">
+            <img
+              class="hero__avatar"
+              src="./.figma-assets/ef0b65b68fe9d15a08f3b336bd82c6ebaf7c8287.png"
+              alt="Портрет Влада Галанова"
+              width="80"
+              height="80"
+            />
+
+            <div class="hero__meta">
+              <p class="hero__name">Влад Галанов</p>
+              <p class="hero__role">Продуктовый дизайнер / Design Lead</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="companies container" id="experience" aria-label="Опыт работы">
+          <ul class="companies__list">
+            <li class="company company--pik">ПИК</li>
+            <li class="company company--storeez">12 STOREEZ</li>
+            <li class="company company--yandex">Яндекс</li>
+            <li class="company company--mindbox">mindbox</li>
+            <li class="company company--vk">вконтакте</li>
+            <li class="company company--avito">Avito</li>
+          </ul>
+        </section>
+
+        <section class="cases container" id="works" aria-labelledby="works-title">
+          <h2 class="sr-only" id="works-title">Избранные кейсы</h2>
+
+          <div class="cases__column cases__column--left" data-cases-column="left">
+            <a class="case-card case-card--invert case-card--medium" href="#top">
+              <h3 class="case-card__title case-card__title--invert">
+                Увеличил CTR за счет редизайна в приложении Invert
+              </h3>
+
+              <span class="case-card__corner case-card__corner--light" aria-hidden="true">
+                <svg viewBox="0 0 46 46" focusable="false" fill="none">
+                  <path
+                    d="M14.8493 30.4056L30.4056 14.8492"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17.6777 14.8492H30.4056V27.5771"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+
+            <a class="case-card case-card--10q case-card--medium" href="#top">
+              <div class="case-card__top">
+                <h3 class="case-card__title">Интерфейсы для Яндекс Маркета</h3>
+              </div>
+
+              <span class="case-card__corner" aria-hidden="true">
+                <svg viewBox="0 0 46 46" focusable="false" fill="none">
+                  <path
+                    d="M14.8493 30.4056L30.4056 14.8492"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17.6777 14.8492H30.4056V27.5771"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="cases__column cases__column--right" data-cases-column="right">
+            <a class="case-card case-card--pulse case-card--tall" href="#top">
+              <span class="case-card__status">в работе</span>
+              <div class="case-card__top">
+                <h3 class="case-card__title">Дизайн iOS-приложения 12 Storeez</h3>
+              </div>
+
+              <span class="case-card__corner case-card__corner--light" aria-hidden="true">
+                <svg viewBox="0 0 46 46" focusable="false" fill="none">
+                  <path
+                    d="M14.8493 30.4056L30.4056 14.8492"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17.6777 14.8492H30.4056V27.5771"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+
+            <a class="case-card case-card--szu case-card--medium" href="#top">
+              <div class="case-card__top">
+                <h3 class="case-card__title">
+                  Авито Подработка. Дизайн поиска сменных подработок
+                </h3>
+              </div>
+
+              <span class="case-card__corner" aria-hidden="true">
+                <svg viewBox="0 0 46 46" focusable="false" fill="none">
+                  <path
+                    d="M14.8493 30.4056L30.4056 14.8492"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17.6777 14.8492H30.4056V27.5771"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+          </div>
+        </section>
+
+        <div class="anchor" id="media" aria-hidden="true"></div>
+      </main>
+    </div>
+
+    <button
+      class="admin-toggle"
+      type="button"
+      data-admin-toggle
+      aria-controls="case-admin"
+      aria-expanded="false"
+    >
+      Редактировать кейсы
+    </button>
+
+    <div class="admin-sheet" data-admin-sheet hidden>
+      <div class="admin-sheet__backdrop" data-admin-close></div>
+
+      <aside
+        class="admin-panel"
+        id="case-admin"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="case-admin-title"
+        tabindex="-1"
+      >
+        <div class="admin-panel__header">
+          <div>
+            <p class="admin-panel__eyebrow">Локальная админка</p>
+            <h2 class="admin-panel__title" id="case-admin-title">Кейсы</h2>
+          </div>
+
+          <button class="admin-button admin-button--ghost" type="button" data-admin-close>
+            Закрыть
+          </button>
+        </div>
+
+        <p class="admin-panel__note">
+          Меняй названия, статус и изображения кейсов прямо в браузере. Новые фото
+          автоматически сжимаются, а изменения сохраняются локально только на этом
+          устройстве.
+        </p>
+
+        <div class="admin-panel__actions">
+          <button class="admin-button" type="button" data-case-add>Добавить кейс</button>
+          <button class="admin-button admin-button--ghost" type="button" data-cases-reset>
+            Сбросить всё
+          </button>
+        </div>
+
+        <p class="admin-panel__message" data-admin-message aria-live="polite">
+          Изменения сохраняются автоматически.
+        </p>
+
+        <div class="admin-panel__list" data-case-editor></div>
+      </aside>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
