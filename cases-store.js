@@ -1,6 +1,14 @@
 (function attachPortfolioStore(global) {
   const casesStorageKey = "portfolio-cases";
   const themeStorageKey = "portfolio-theme";
+  const defaultPortfolioCategory = "product";
+  const portfolioCategories = [
+    { id: "product", label: "Продуктовый дизайн" },
+    { id: "sites", label: "Сайты" },
+    { id: "apps", label: "Приложения" },
+    { id: "branding", label: "Фирменный стиль" },
+    { id: "research", label: "Исследования" },
+  ];
 
   const defaultCases = [
     {
@@ -13,6 +21,8 @@
       status: "",
       featuredTitle: true,
       backgroundColor: "#16c46c",
+      category: "apps",
+      showOnHome: true,
     },
     {
       id: "market",
@@ -24,6 +34,8 @@
       status: "",
       featuredTitle: false,
       backgroundColor: "#e3e3e3",
+      category: "product",
+      showOnHome: true,
     },
     {
       id: "storeez",
@@ -35,6 +47,8 @@
       status: "в работе",
       featuredTitle: false,
       backgroundColor: "#1d4cff",
+      category: "apps",
+      showOnHome: true,
     },
     {
       id: "avito",
@@ -46,6 +60,8 @@
       status: "",
       featuredTitle: false,
       backgroundColor: "#4d92eb",
+      category: "product",
+      showOnHome: true,
     },
   ];
 
@@ -55,6 +71,15 @@
 
   function createCaseId() {
     return `case-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+  }
+
+  function normalizeCategory(category, fallback = defaultPortfolioCategory) {
+    const selectedCategory =
+      typeof category === "string" && category.trim() ? category.trim() : fallback;
+
+    return portfolioCategories.some((item) => item.id === selectedCategory)
+      ? selectedCategory
+      : fallback;
   }
 
   function normalizeCase(item, fallback = {}) {
@@ -74,6 +99,11 @@
         typeof item?.backgroundColor === "string" && item.backgroundColor.trim()
           ? item.backgroundColor.trim()
           : fallback.backgroundColor || "#d7dde7",
+      category: normalizeCategory(item?.category, fallback.category || defaultPortfolioCategory),
+      showOnHome:
+        typeof item?.showOnHome === "boolean"
+          ? item.showOnHome
+          : fallback.showOnHome ?? true,
     };
   }
 
@@ -109,9 +139,12 @@
   global.PortfolioStore = {
     casesStorageKey,
     themeStorageKey,
+    defaultPortfolioCategory,
+    portfolioCategories,
     defaultCases,
     cloneDefaultCases,
     createCaseId,
+    normalizeCategory,
     normalizeCase,
     loadCases,
     saveCases,

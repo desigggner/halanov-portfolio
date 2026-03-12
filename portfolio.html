@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Портфолио продуктового дизайнера Влада Галанова с избранными кейсами и переключением темы."
+      content="Все кейсы продуктового дизайнера Влада Галанова на отдельной странице портфолио."
     />
-    <title>Halanov Portfolio</title>
+    <title>Портфолио | Halanov</title>
     <script>
       (function () {
         var storedTheme = localStorage.getItem("portfolio-theme");
@@ -25,19 +25,19 @@
     />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
-    <div class="page-shell" id="top">
+  <body class="portfolio-page">
+    <div class="page-shell page-shell--portfolio" id="top">
       <header class="site-header">
         <div class="container site-header__inner">
-          <a class="brand" href="#top" aria-label="На главную">halanov</a>
+          <a class="brand" href="./index.html" aria-label="На главную">halanov</a>
 
           <div class="header-overlay">
             <nav class="site-nav" aria-label="Основная навигация">
-              <a class="nav-link is-active" href="#top">Главная</a>
-              <a class="nav-link" href="./portfolio.html">Портфолио</a>
-              <a class="nav-link" href="#experience">Исследования</a>
-              <a class="nav-link" href="#about">Обо мне</a>
-              <a class="nav-link" href="#media">Медиа</a>
+              <a class="nav-link" href="./index.html">Главная</a>
+              <a class="nav-link is-active" href="./portfolio.html">Портфолио</a>
+              <a class="nav-link" href="./index.html#experience">Исследования</a>
+              <a class="nav-link" href="./index.html#about">Обо мне</a>
+              <a class="nav-link" href="./index.html#media">Медиа</a>
             </nav>
 
             <div class="header-actions">
@@ -192,157 +192,59 @@
         </div>
       </header>
 
-      <main class="main-content">
-        <section class="hero container" id="about" aria-labelledby="hero-title">
-          <h1 class="hero__title" id="hero-title">Сложное делаю понятным</h1>
+      <main class="main-content portfolio-main">
+        <section class="portfolio-hero container" aria-labelledby="portfolio-title">
+          <h1 class="portfolio-hero__title" id="portfolio-title">
+            <span class="portfolio-hero__row">
+              <span data-portfolio-total-text>0 проектов за</span>
+              <span class="portfolio-stat-pill" data-portfolio-years-text>12 лет,</span>
+            </span>
+            <span class="portfolio-hero__row">
+              <span class="portfolio-stat-pill" data-portfolio-active-text>0 — в работе</span>
+              <span class="portfolio-hero__tail">прямо сейчас</span>
+            </span>
+          </h1>
+        </section>
 
-          <div class="hero__profile">
-            <img
-              class="hero__avatar"
-              src="./.figma-assets/ef0b65b68fe9d15a08f3b336bd82c6ebaf7c8287.png"
-              alt="Портрет Влада Галанова"
-              width="80"
-              height="80"
-            />
+        <section class="portfolio-toolbar container" aria-label="Фильтры портфолио">
+          <div class="portfolio-filters" data-portfolio-filters></div>
 
-            <div class="hero__meta">
-              <p class="hero__name">Влад Галанов</p>
-              <p class="hero__role">Продуктовый дизайнер / Design Lead</p>
-            </div>
+          <div class="portfolio-layout" aria-hidden="true">
+            <span class="portfolio-layout__button is-active">
+              <svg viewBox="0 0 16 16" focusable="false" fill="none">
+                <rect x="1.5" y="1.5" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
+                <rect x="10" y="1.5" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
+                <rect x="1.5" y="10" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
+                <rect x="10" y="10" width="4.5" height="4.5" rx="1.2" stroke="currentColor" />
+              </svg>
+            </span>
+            <span class="portfolio-layout__button">
+              <svg viewBox="0 0 16 16" focusable="false" fill="none">
+                <path d="M3 4H13" stroke="currentColor" stroke-linecap="round" />
+                <path d="M3 8H13" stroke="currentColor" stroke-linecap="round" />
+                <path d="M3 12H13" stroke="currentColor" stroke-linecap="round" />
+              </svg>
+            </span>
           </div>
         </section>
 
-        <section class="companies container" id="experience" aria-label="Опыт работы">
-          <ul class="companies__list">
-            <li class="company company--pik">ПИК</li>
-            <li class="company company--storeez">12 STOREEZ</li>
-            <li class="company company--yandex">Яндекс</li>
-            <li class="company company--mindbox">mindbox</li>
-            <li class="company company--vk">вконтакте</li>
-            <li class="company company--avito">Avito</li>
-          </ul>
-        </section>
+        <section class="portfolio-gallery" aria-labelledby="portfolio-gallery-title">
+          <h2 class="sr-only" id="portfolio-gallery-title">Все кейсы</h2>
 
-        <section class="cases container" id="works" aria-labelledby="works-title">
-          <h2 class="sr-only" id="works-title">Избранные кейсы</h2>
-
-          <div class="cases__column cases__column--left" data-cases-column="left">
-            <a class="case-card case-card--invert case-card--medium" href="#top">
-              <h3 class="case-card__title case-card__title--invert">
-                Увеличил CTR за счет редизайна в приложении Invert
-              </h3>
-
-              <span class="case-card__corner case-card__corner--light" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-
-            <a class="case-card case-card--10q case-card--medium" href="#top">
-              <div class="case-card__top">
-                <h3 class="case-card__title">Интерфейсы для Яндекс Маркета</h3>
-              </div>
-
-              <span class="case-card__corner" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
+          <div class="cases portfolio-cases" data-portfolio-grid>
+            <div class="cases__column" data-portfolio-column="left"></div>
+            <div class="cases__column cases__column--right" data-portfolio-column="right"></div>
           </div>
 
-          <div class="cases__column cases__column--right" data-cases-column="right">
-            <a class="case-card case-card--pulse case-card--tall" href="#top">
-              <span class="case-card__status">в работе</span>
-              <div class="case-card__top">
-                <h3 class="case-card__title">Дизайн iOS-приложения 12 Storeez</h3>
-              </div>
-
-              <span class="case-card__corner case-card__corner--light" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-
-            <a class="case-card case-card--szu case-card--medium" href="#top">
-              <div class="case-card__top">
-                <h3 class="case-card__title">
-                  Авито Подработка. Дизайн поиска сменных подработок
-                </h3>
-              </div>
-
-              <span class="case-card__corner" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-          </div>
+          <p class="portfolio-empty container" data-portfolio-empty hidden>
+            В этой категории пока нет кейсов.
+          </p>
         </section>
-
-        <div class="cases-footer container">
-          <a class="cases-footer__button" href="./portfolio.html">Смотреть портфолио</a>
-        </div>
-
-        <div class="anchor" id="media" aria-hidden="true"></div>
       </main>
     </div>
+
     <script src="./cases-store.js"></script>
     <script src="./case-card.js"></script>
-    <script src="./script.js"></script>
+    <script src="./portfolio.js"></script>
   </body>
 </html>

@@ -36,10 +36,21 @@ function renderCases() {
     return;
   }
 
-  const cases = store.loadCases();
+  const cases = store.loadCases().filter((caseItem) => caseItem.showOnHome);
 
   caseColumns.left.innerHTML = "";
   caseColumns.right.innerHTML = "";
+
+  if (!cases.length) {
+    if (caseRevealObserver) {
+      caseRevealObserver.disconnect();
+      caseRevealObserver = null;
+    }
+
+    caseColumns.left.innerHTML =
+      '<p class="cases-empty">На главной пока нет выбранных кейсов. Включи показ в админке.</p>';
+    return;
+  }
 
   for (const caseItem of cases) {
     const column = caseItem.column === "right" ? caseColumns.right : caseColumns.left;

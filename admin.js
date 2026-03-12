@@ -12,6 +12,8 @@ const comparableCaseFields = [
   "status",
   "featuredTitle",
   "backgroundColor",
+  "category",
+  "showOnHome",
 ];
 const adminCredentials = {
   login: "admin",
@@ -206,6 +208,8 @@ function createEmptyCase() {
     status: "",
     featuredTitle: false,
     backgroundColor: "#d7dde7",
+    category: store?.defaultPortfolioCategory || "product",
+    showOnHome: false,
   };
 }
 
@@ -215,6 +219,24 @@ function getCaseEditorId(caseId) {
 
 function getCasePlacementLabel(caseItem) {
   return caseItem.column === "right" ? "Правая колонка" : "Левая колонка";
+}
+
+function getCaseVisibilityLabel(caseItem) {
+  return caseItem.showOnHome ? "Показывается на главной" : "Только страница портфолио";
+}
+
+function renderCategoryOptions(selectedCategory) {
+  return (store?.portfolioCategories || [])
+    .map((category) => {
+      const selected = category.id === selectedCategory ? "selected" : "";
+
+      return `
+        <option value="${escapeHtml(category.id)}" ${selected}>
+          ${escapeHtml(category.label)}
+        </option>
+      `;
+    })
+    .join("");
 }
 
 function createImagePreview(caseItem, index) {
@@ -259,12 +281,17 @@ function syncDraftCaseView(caseId) {
   }
 
   const placement = caseElement.querySelector("[data-case-placement]");
+  const visibility = caseElement.querySelector("[data-case-visibility]");
   const saveButton = caseElement.querySelector("[data-case-save]");
   const saveState = caseElement.querySelector("[data-case-save-state]");
   const state = getCaseSaveState(caseId);
 
   if (placement) {
     placement.textContent = getCasePlacementLabel(caseItem);
+  }
+
+  if (visibility) {
+    visibility.textContent = getCaseVisibilityLabel(caseItem);
   }
 
   if (saveButton) {
@@ -286,10 +313,18 @@ function renderDashboard() {
     return;
   }
 
+  const homeCases = cases.filter((caseItem) => caseItem.showOnHome);
+
   left.innerHTML = "";
   right.innerHTML = "";
 
-  cases.forEach((caseItem, index) => {
+  if (!homeCases.length) {
+    left.innerHTML =
+      '<p class="admin-dashboard__empty">На главной пока нет кейсов. Включи тоггл "Показать на главной" в нужной карточке и сохрани её.</p>';
+    return;
+  }
+
+  homeCases.forEach((caseItem, index) => {
     const column = caseItem.column === "right" ? right : left;
 
     column.append(
@@ -320,9 +355,14 @@ function renderEditor() {
           <div class="admin-case__header">
             <div>
               <p class="admin-case__eyebrow">Кейс ${index + 1}</p>
-              <p class="admin-case__placement" data-case-placement>
-                ${getCasePlacementLabel(caseItem)}
-              </p>
+              <div class="admin-case__meta">
+                <p class="admin-case__placement" data-case-placement>
+                  ${getCasePlacementLabel(caseItem)}
+                </p>
+                <p class="admin-case__surface" data-case-visibility>
+                  ${getCaseVisibilityLabel(caseItem)}
+                </p>
+              </div>
             </div>
 
             <button
@@ -358,6 +398,13 @@ function renderEditor() {
           </label>
 
           <label class="admin-field">
+            <span class="admin-field__label">Категория в портфолио</span>
+            <select class="admin-input" data-field="category">
+              ${renderCategoryOptions(caseItem.category)}
+            </select>
+          </label>
+
+          <label class="admin-field">
             <span class="admin-field__label">Изображение</span>
             <input
               class="admin-input admin-input--file"
@@ -382,6 +429,15 @@ function renderEditor() {
           </div>
 
           <div class="admin-case__toggles">
+            <label class="admin-check">
+              <input
+                type="checkbox"
+                data-field="showOnHome"
+                ${caseItem.showOnHome ? "checked" : ""}
+              />
+              <span>Показать на главной</span>
+            </label>
+
             <label class="admin-check">
               <input type="checkbox" data-field="lightUi" ${caseItem.lightUi ? "checked" : ""} />
               <span>Светлый текст и стрелка</span>
@@ -592,12 +648,22 @@ function handleEditorChange(event) {
     updateDraftCase(caseId, { lightUi: event.target.checked });
   }
 
+  if (field === "showOnHome") {
+    updateDraftCase(caseId, { showOnHome: event.target.checked });
+  }
+
   if (field === "size") {
     updateDraftCase(caseId, { size: event.target.checked ? "tall" : "medium" });
   }
 
   if (field === "column") {
     updateDraftCase(caseId, { column: event.target.checked ? "right" : "left" });
+  }
+
+  if (field === "category") {
+    updateDraftCase(caseId, {
+      category: store?.normalizeCategory(event.target.value) || event.target.value,
+    });
   }
 }
 
