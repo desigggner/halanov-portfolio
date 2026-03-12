@@ -41,6 +41,10 @@
             </nav>
 
             <div class="header-actions">
+              <a class="contact-link contact-link--admin" href="./admin.html">
+                <span>Админка</span>
+              </a>
+
               <button class="contact-link" type="button">
                 <span>Связаться</span>
                 <svg
@@ -337,60 +341,7 @@
         <div class="anchor" id="media" aria-hidden="true"></div>
       </main>
     </div>
-
-    <button
-      class="admin-toggle"
-      type="button"
-      data-admin-toggle
-      aria-controls="case-admin"
-      aria-expanded="false"
-    >
-      Редактировать кейсы
-    </button>
-
-    <div class="admin-sheet" data-admin-sheet hidden>
-      <div class="admin-sheet__backdrop" data-admin-close></div>
-
-      <aside
-        class="admin-panel"
-        id="case-admin"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="case-admin-title"
-        tabindex="-1"
-      >
-        <div class="admin-panel__header">
-          <div>
-            <p class="admin-panel__eyebrow">Локальная админка</p>
-            <h2 class="admin-panel__title" id="case-admin-title">Кейсы</h2>
-          </div>
-
-          <button class="admin-button admin-button--ghost" type="button" data-admin-close>
-            Закрыть
-          </button>
-        </div>
-
-        <p class="admin-panel__note">
-          Меняй названия, статус и изображения кейсов прямо в браузере. Новые фото
-          автоматически сжимаются, а изменения сохраняются локально только на этом
-          устройстве.
-        </p>
-
-        <div class="admin-panel__actions">
-          <button class="admin-button" type="button" data-case-add>Добавить кейс</button>
-          <button class="admin-button admin-button--ghost" type="button" data-cases-reset>
-            Сбросить всё
-          </button>
-        </div>
-
-        <p class="admin-panel__message" data-admin-message aria-live="polite">
-          Изменения сохраняются автоматически.
-        </p>
-
-        <div class="admin-panel__list" data-case-editor></div>
-      </aside>
-    </div>
-
+    <script src="./cases-store.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>

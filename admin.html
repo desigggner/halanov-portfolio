@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Админка для управления кейсами в портфолио." />
+    <title>Админка кейсов</title>
+    <script>
+      (function () {
+        var storedTheme = localStorage.getItem("portfolio-theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = storedTheme || (prefersDark ? "dark" : "light");
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.style.colorScheme = theme;
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Borel&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body class="admin-page">
+    <header class="container admin-page__header">
+      <a class="brand" href="./index.html" aria-label="На главную">halanov</a>
+      <a class="admin-page__back" href="./index.html">Вернуться на сайт</a>
+    </header>
+
+    <main class="container admin-page__main">
+      <section class="auth-card" data-auth-view>
+        <p class="admin-panel__eyebrow">Доступ</p>
+        <h1 class="admin-page__title">Вход в админку кейсов</h1>
+        <p class="admin-panel__note">
+          Войди по логину и паролю, чтобы добавлять, удалять и редактировать кейсы.
+        </p>
+
+        <form class="auth-form" data-login-form>
+          <label class="admin-field">
+            <span class="admin-field__label">Логин</span>
+            <input
+              class="admin-input"
+              type="text"
+              name="login"
+              autocomplete="username"
+              placeholder="Введите логин"
+              required
+            />
+          </label>
+
+          <label class="admin-field">
+            <span class="admin-field__label">Пароль</span>
+            <input
+              class="admin-input"
+              type="password"
+              name="password"
+              autocomplete="current-password"
+              placeholder="Введите пароль"
+              required
+            />
+          </label>
+
+          <div class="auth-form__actions">
+            <button class="admin-button" type="submit">Войти</button>
+          </div>
+        </form>
+
+        <p class="auth-form__message" data-login-message aria-live="polite"></p>
+      </section>
+
+      <section class="admin-workspace" data-admin-view hidden>
+        <div class="admin-page__workspace-header">
+          <div>
+            <p class="admin-panel__eyebrow">Управление</p>
+            <h1 class="admin-page__title">Кейсы портфолио</h1>
+          </div>
+
+          <div class="admin-page__toolbar">
+            <button class="admin-button" type="button" data-case-add>Добавить кейс</button>
+            <button class="admin-button admin-button--ghost" type="button" data-cases-reset>
+              Сбросить всё
+            </button>
+            <button class="admin-button admin-button--ghost" type="button" data-admin-logout>
+              Выйти
+            </button>
+          </div>
+        </div>
+
+        <p class="admin-panel__note">
+          Изменения сразу сохраняются в браузере. Главная страница подхватит их после
+          обновления или автоматически, если открыта в соседней вкладке.
+        </p>
+
+        <p class="admin-panel__message" data-admin-message aria-live="polite">
+          Изменения сохраняются автоматически.
+        </p>
+
+        <div class="admin-panel__list" data-case-editor></div>
+      </section>
+    </main>
+
+    <script src="./cases-store.js"></script>
+    <script src="./admin.js"></script>
+  </body>
+</html>
