@@ -1,6 +1,7 @@
 const siteAccessCookieName = "portfolio_site_session";
 const adminAccessCookieName = "portfolio_admin_session";
 const publicPaths = new Set([
+  "/auth",
   "/auth.html",
   "/api/site-auth",
   "/site-theme-init.js",
@@ -188,6 +189,16 @@ export default async function middleware(request) {
       return Response.redirect(destination, 302);
     }
 
+    if (pathname === "/auth" && hasSiteSession) {
+      const nextUrl = url.searchParams.get("next");
+      const destination = new URL(
+        isSafeNextPath(nextUrl) ? nextUrl : "/",
+        request.url,
+      );
+
+      return Response.redirect(destination, 302);
+    }
+
     return;
   }
 
@@ -196,7 +207,7 @@ export default async function middleware(request) {
       return createUnauthorizedApiResponse();
     }
 
-    const loginUrl = new URL("/auth.html", request.url);
+    const loginUrl = new URL("/auth", request.url);
     const nextTarget = `${pathname}${url.search}`;
 
     if (isSafeNextPath(nextTarget)) {
@@ -215,6 +226,6 @@ export default async function middleware(request) {
       return createForbiddenApiResponse();
     }
 
-    return Response.redirect(new URL("/admin/index.html", request.url), 307);
+    return Response.redirect(new URL("/admin", request.url), 307);
   }
 }

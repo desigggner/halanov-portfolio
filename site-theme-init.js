@@ -4,6 +4,28 @@
   var storedTheme = null;
   var prefersDark = false;
   var theme = "light";
+  var pathname = window.location.pathname;
+  var cleanPath = pathname;
+
+  if (pathname === "/index.html") {
+    cleanPath = "/";
+  } else if (pathname === "/portfolio.html") {
+    cleanPath = "/portfolio";
+  } else if (pathname === "/media.html") {
+    cleanPath = "/media";
+  } else if (pathname === "/auth.html") {
+    cleanPath = "/auth";
+  } else if (pathname === "/admin/index.html") {
+    cleanPath = "/admin";
+  }
+
+  if (cleanPath !== pathname && window.history && typeof window.history.replaceState === "function") {
+    window.history.replaceState(
+      window.history.state,
+      "",
+      cleanPath + window.location.search + window.location.hash,
+    );
+  }
 
   try {
     storedTheme = window.localStorage.getItem("portfolio-theme");
