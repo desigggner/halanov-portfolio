@@ -98,11 +98,44 @@
           Изменения сохраняются автоматически.
         </p>
 
-        <div class="admin-panel__list" data-case-editor></div>
+        <section class="admin-dashboard" aria-labelledby="admin-dashboard-title">
+          <div class="admin-section__header">
+            <div>
+              <p class="admin-panel__eyebrow">Дашборд</p>
+              <h2 class="admin-section__title" id="admin-dashboard-title">Раскладка кейсов</h2>
+            </div>
+
+            <p class="admin-section__note">
+              Карточки используют тот же шаблон, что и на главной. Нажми на кейс, чтобы
+              перейти к его полям ниже.
+            </p>
+          </div>
+
+          <div class="admin-dashboard__cases" data-admin-dashboard>
+            <div class="cases__column" data-admin-dashboard-column="left"></div>
+            <div class="cases__column cases__column--right" data-admin-dashboard-column="right"></div>
+          </div>
+        </section>
+
+        <section class="admin-editor-section" aria-labelledby="admin-editor-title">
+          <div class="admin-section__header">
+            <div>
+              <p class="admin-panel__eyebrow">Редактор</p>
+              <h2 class="admin-section__title" id="admin-editor-title">Настройки карточек</h2>
+            </div>
+
+            <p class="admin-section__note">
+              Слева видно фон, справа итоговую карточку с текстом, статусом и размером.
+            </p>
+          </div>
+
+          <div class="admin-panel__list" data-case-editor></div>
+        </section>
       </section>
     </main>
 
     <script src="./cases-store.js"></script>
+    <script src="./case-card.js"></script>
     <script src="./admin.js"></script>
   </body>
 </html>

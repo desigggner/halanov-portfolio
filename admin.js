@@ -1,4 +1,5 @@
 const store = window.PortfolioStore;
+const caseCardRenderer = window.PortfolioCaseCard;
 const authStorageKey = "portfolio-admin-auth";
 const defaultAdminMessage = "Изменения сохраняются автоматически.";
 const adminCredentials = {
@@ -16,6 +17,10 @@ const elements = {
   logoutButton: document.querySelector("[data-admin-logout]"),
   editor: document.querySelector("[data-case-editor]"),
   adminMessage: document.querySelector("[data-admin-message]"),
+  dashboardColumns: {
+    left: document.querySelector('[data-admin-dashboard-column="left"]'),
+    right: document.querySelector('[data-admin-dashboard-column="right"]'),
+  },
 };
 
 const supportsWebp = (() => {
@@ -90,7 +95,7 @@ function showAdminView() {
     elements.adminView.hidden = false;
   }
 
-  renderEditor();
+  renderWorkspace();
   setAdminMessage(defaultAdminMessage);
 }
 
@@ -136,6 +141,87 @@ function createEmptyCase() {
   };
 }
 
+function getCaseEditorId(caseId) {
+  return `case-editor-${caseId}`;
+}
+
+function getCasePlacementLabel(caseItem) {
+  return caseItem.column === "right" ? "Правая колонка" : "Левая колонка";
+}
+
+function createImagePreview(caseItem, index) {
+  if (caseItem.image) {
+    return `<img src="${escapeHtml(caseItem.image)}" alt="Превью кейса ${index + 1}" />`;
+  }
+
+  return "<span>Изображение не выбрано</span>";
+}
+
+function renderCasePreview(caseElement, caseItem) {
+  if (!caseCardRenderer || !caseElement) {
+    return;
+  }
+
+  const previewStage = caseElement.querySelector("[data-card-preview]");
+
+  if (!previewStage) {
+    return;
+  }
+
+  previewStage.innerHTML = "";
+  previewStage.append(
+    caseCardRenderer.createCaseCard(caseItem, {
+      tagName: "div",
+      extraClasses: ["admin-case__preview-card"],
+      staticPreview: true,
+    }),
+  );
+}
+
+function syncCasePreview(caseId) {
+  if (!elements.editor) {
+    return;
+  }
+
+  const caseItem = cases.find((item) => item.id === caseId);
+  const caseElement = elements.editor.querySelector(`[data-case-id="${caseId}"]`);
+
+  if (!caseItem || !caseElement) {
+    return;
+  }
+
+  const placement = caseElement.querySelector("[data-case-placement]");
+
+  if (placement) {
+    placement.textContent = getCasePlacementLabel(caseItem);
+  }
+
+  renderCasePreview(caseElement, caseItem);
+}
+
+function renderDashboard() {
+  const { left, right } = elements.dashboardColumns;
+
+  if (!caseCardRenderer || !left || !right) {
+    return;
+  }
+
+  left.innerHTML = "";
+  right.innerHTML = "";
+
+  cases.forEach((caseItem, index) => {
+    const column = caseItem.column === "right" ? right : left;
+
+    column.append(
+      caseCardRenderer.createCaseCard(caseItem, {
+        href: `#${getCaseEditorId(caseItem.id)}`,
+        ariaLabel: `Перейти к настройкам кейса ${index + 1}`,
+        extraClasses: ["admin-dashboard__card"],
+      }),
+    );
+  });
+}
+
 function renderEditor() {
   if (!elements.editor) {
     return;
@@ -143,17 +229,17 @@ function renderEditor() {
 
   elements.editor.innerHTML = cases
     .map((caseItem, index) => {
-      const preview = caseItem.image
-        ? `<img src="${escapeHtml(caseItem.image)}" alt="Превью кейса ${index + 1}" />`
-        : "<span>Изображение не выбрано</span>";
-
       return `
-        <section class="admin-case" data-case-id="${escapeHtml(caseItem.id)}">
+        <section
+          class="admin-case"
+          id="${escapeHtml(getCaseEditorId(caseItem.id))}"
+          data-case-id="${escapeHtml(caseItem.id)}"
+        >
           <div class="admin-case__header">
             <div>
               <p class="admin-case__eyebrow">Кейс ${index + 1}</p>
-              <p class="admin-case__placement">
-                ${caseItem.column === "right" ? "Правая колонка" : "Левая колонка"}
+              <p class="admin-case__placement" data-case-placement>
+                ${getCasePlacementLabel(caseItem)}
               </p>
             </div>
 
@@ -199,8 +285,18 @@ function renderEditor() {
             />
           </label>
 
-          <div class="admin-case__preview ${caseItem.image ? "" : "is-empty"}">
-            ${preview}
+          <div class="admin-case__previews">
+            <div class="admin-case__preview-panel">
+              <p class="admin-case__preview-label">Фон</p>
+              <div class="admin-case__preview ${caseItem.image ? "" : "is-empty"}">
+                ${createImagePreview(caseItem, index)}
+              </div>
+            </div>
+
+            <div class="admin-case__preview-panel">
+              <p class="admin-case__preview-label">Карточка с текстом</p>
+              <div class="admin-case__card-stage" data-card-preview></div>
+            </div>
           </div>
 
           <div class="admin-case__toggles">
@@ -229,6 +325,19 @@ function renderEditor() {
       `;
     })
     .join("");
+
+  elements.editor.querySelectorAll("[data-case-id]").forEach((caseElement) => {
+    const caseItem = cases.find((item) => item.id === caseElement.dataset.caseId);
+
+    if (caseItem) {
+      renderCasePreview(caseElement, caseItem);
+    }
+  });
+}
+
+function renderWorkspace() {
+  renderDashboard();
+  renderEditor();
 }
 
 function updateCase(caseId, patch, options = {}) {
@@ -239,17 +348,23 @@ function updateCase(caseId, patch, options = {}) {
     return;
   }
 
+  const previousCase = cases[caseIndex];
+
   cases[caseIndex] = {
-    ...cases[caseIndex],
+    ...previousCase,
     ...patch,
   };
 
   if (!persistCases()) {
+    cases[caseIndex] = previousCase;
     return;
   }
 
   if (rerender) {
-    renderEditor();
+    renderWorkspace();
+  } else {
+    renderDashboard();
+    syncCasePreview(caseId);
   }
 
   setAdminMessage("Изменения сохранены.");
@@ -327,7 +442,7 @@ async function handleImageUpload(input) {
       return;
     }
 
-    renderEditor();
+    renderWorkspace();
     setAdminMessage("Изображение обновлено.");
   } catch (error) {
     cases[caseIndex].image = previousImage;
@@ -400,7 +515,7 @@ function handleEditorClick(event) {
       return;
     }
 
-    renderEditor();
+    renderWorkspace();
     setAdminMessage("Кейс удалён.");
     return;
   }
@@ -426,7 +541,7 @@ function handleEditorClick(event) {
       return;
     }
 
-    renderEditor();
+    renderWorkspace();
     setAdminMessage("Изображение удалено.");
   }
 }
@@ -475,7 +590,7 @@ function setupAdminPage() {
         return;
       }
 
-      renderEditor();
+      renderWorkspace();
       setAdminMessage("Новый кейс добавлен.");
 
       const lastTitleInput = elements.editor.querySelector(
@@ -504,7 +619,7 @@ function setupAdminPage() {
         return;
       }
 
-      renderEditor();
+      renderWorkspace();
       setAdminMessage("Кейсы сброшены к базовому набору.");
     });
   }
