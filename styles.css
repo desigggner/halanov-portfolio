@@ -679,7 +679,11 @@ html[data-theme="dark"] .admin-editor-section {
 
 .nav-link {
   position: relative;
-  padding: 6px 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
   font-size: 1rem;
   color: var(--text);
   transition:
@@ -694,8 +698,6 @@ html[data-theme="dark"] .admin-editor-section {
 }
 
 .nav-link.is-active {
-  padding: 6px 12px;
-  border-radius: 999px;
   background: var(--chip-active);
 }
 

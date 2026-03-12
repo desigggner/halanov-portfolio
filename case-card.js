@@ -42,7 +42,7 @@
     const hasLightUi = Boolean(caseItem.lightUi);
     const baseTextColor = hasLightUi ? "#ffffff" : "#333037";
     const baseCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.7)" : "rgba(51, 48, 55, 0.78)";
-    const activeCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.92)" : "#111111";
+    const activeCornerColor = "#111111";
 
     card.className = "case-card case-card--managed";
     card.style.setProperty("--case-card-base", caseItem.backgroundColor || "transparent");
