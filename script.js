@@ -3,7 +3,6 @@ const toggleButton = document.querySelector(".theme-toggle");
 const store = window.PortfolioStore;
 const caseCard = window.PortfolioCaseCard;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-const canHoverPrecisely = window.matchMedia("(hover: hover) and (pointer: fine)");
 
 const caseColumns = {
   left: document.querySelector('[data-cases-column="left"]'),
@@ -29,6 +28,44 @@ function applyTheme(theme) {
 
 function getNextTheme() {
   return root.dataset.theme === "dark" ? "light" : "dark";
+}
+
+function shouldResetScrollOnLoad() {
+  const navigationEntry =
+    typeof performance !== "undefined" && typeof performance.getEntriesByType === "function"
+      ? performance.getEntriesByType("navigation")[0]
+      : null;
+
+  return !window.location.hash && navigationEntry?.type !== "back_forward";
+}
+
+function ensureTopOnInitialLoad() {
+  if (!shouldResetScrollOnLoad()) {
+    return;
+  }
+
+  const resetScroll = () => {
+    window.scrollTo(0, 0);
+
+    window.requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    });
+  };
+
+  if ("scrollRestoration" in window.history) {
+    window.history.scrollRestoration = "manual";
+  }
+
+  if (document.readyState === "complete") {
+    resetScroll();
+    return;
+  }
+
+  window.addEventListener("load", resetScroll, { once: true });
 }
 
 function renderCases() {
@@ -58,42 +95,6 @@ function renderCases() {
   }
 
   setupCaseMotion();
-}
-
-function resetCaseBackgroundMotion(card) {
-  card.style.setProperty("--case-bg-shift-x", "0px");
-  card.style.setProperty("--case-bg-shift-y", "0px");
-}
-
-function setupCaseHoverMotion(cards) {
-  if (!canHoverPrecisely.matches || prefersReducedMotion.matches) {
-    for (const card of cards) {
-      resetCaseBackgroundMotion(card);
-    }
-
-    return;
-  }
-
-  for (const card of cards) {
-    card.addEventListener("pointermove", (event) => {
-      const bounds = card.getBoundingClientRect();
-      const relativeX = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const relativeY = (event.clientY - bounds.top) / bounds.height - 0.5;
-      const shiftX = relativeX * 12;
-      const shiftY = relativeY * 12;
-
-      card.style.setProperty("--case-bg-shift-x", `${shiftX.toFixed(2)}px`);
-      card.style.setProperty("--case-bg-shift-y", `${shiftY.toFixed(2)}px`);
-    });
-
-    card.addEventListener("pointerleave", () => {
-      resetCaseBackgroundMotion(card);
-    });
-
-    card.addEventListener("pointercancel", () => {
-      resetCaseBackgroundMotion(card);
-    });
-  }
 }
 
 function setupCaseReveal(cards) {
@@ -158,7 +159,6 @@ function setupCaseMotion() {
   }
 
   setupCaseReveal(cards);
-  setupCaseHoverMotion(cards);
 }
 
 if (toggleButton && store) {
@@ -186,4 +186,5 @@ window.addEventListener("storage", (event) => {
   }
 });
 
+ensureTopOnInitialLoad();
 renderCases();

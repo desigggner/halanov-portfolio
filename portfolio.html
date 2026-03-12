@@ -13,6 +13,9 @@
         var storedTheme = localStorage.getItem("portfolio-theme");
         var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         var theme = storedTheme || (prefersDark ? "dark" : "light");
+        if (!window.location.hash && "scrollRestoration" in window.history) {
+          window.history.scrollRestoration = "manual";
+        }
         document.documentElement.dataset.theme = theme;
         document.documentElement.style.colorScheme = theme;
       })();
@@ -35,7 +38,6 @@
             <nav class="site-nav" aria-label="Основная навигация">
               <a class="nav-link" href="./index.html">Главная</a>
               <a class="nav-link is-active" href="./portfolio.html">Портфолио</a>
-              <a class="nav-link" href="./index.html#experience">Исследования</a>
               <a class="nav-link" href="./index.html#about">Обо мне</a>
               <a class="nav-link" href="./index.html#media">Медиа</a>
             </nav>
@@ -228,18 +230,20 @@
           </div>
         </section>
 
-        <section class="portfolio-gallery" aria-labelledby="portfolio-gallery-title">
+        <section
+          class="cases container portfolio-gallery"
+          aria-labelledby="portfolio-gallery-title"
+          data-portfolio-grid
+        >
           <h2 class="sr-only" id="portfolio-gallery-title">Все кейсы</h2>
 
-          <div class="cases portfolio-cases" data-portfolio-grid>
-            <div class="cases__column" data-portfolio-column="left"></div>
-            <div class="cases__column cases__column--right" data-portfolio-column="right"></div>
-          </div>
-
-          <p class="portfolio-empty container" data-portfolio-empty hidden>
-            В этой категории пока нет кейсов.
-          </p>
+          <div class="cases__column" data-portfolio-column="left"></div>
+          <div class="cases__column cases__column--right" data-portfolio-column="right"></div>
         </section>
+
+        <p class="portfolio-empty container" data-portfolio-empty hidden>
+          В этой категории пока нет кейсов.
+        </p>
       </main>
     </div>
 

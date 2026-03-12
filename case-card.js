@@ -39,6 +39,10 @@
     const top = document.createElement("div");
     const title = document.createElement("h3");
     const corner = document.createElement("span");
+    const hasLightUi = Boolean(caseItem.lightUi);
+    const baseTextColor = hasLightUi ? "#ffffff" : "#333037";
+    const baseCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.7)" : "rgba(51, 48, 55, 0.78)";
+    const activeCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.92)" : "#111111";
 
     card.className = "case-card case-card--managed";
     card.style.setProperty("--case-card-base", caseItem.backgroundColor || "transparent");
@@ -46,6 +50,9 @@
     card.style.setProperty("--case-bg-scale", "1");
     card.style.setProperty("--case-bg-shift-x", "0px");
     card.style.setProperty("--case-bg-shift-y", "0px");
+    card.style.setProperty("--case-text-color", baseTextColor);
+    card.style.setProperty("--case-corner-color", baseCornerColor);
+    card.style.setProperty("--case-corner-active-color", activeCornerColor);
 
     if (tagName.toLowerCase() === "a") {
       card.href = href;
@@ -77,7 +84,7 @@
       card.classList.add("case-card--tall");
     }
 
-    if (caseItem.lightUi) {
+    if (hasLightUi) {
       card.classList.add("case-card--light-ui");
     }
 
@@ -104,7 +111,7 @@
     corner.setAttribute("aria-hidden", "true");
     corner.innerHTML = arrowIcon;
 
-    if (caseItem.lightUi) {
+    if (hasLightUi) {
       corner.classList.add("case-card__corner--light");
     }
 
