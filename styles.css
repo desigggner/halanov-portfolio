@@ -471,6 +471,10 @@ a {
   min-height: 100vh;
 }
 
+.admin-page .container {
+  width: min(1280px, calc(100% - 48px));
+}
+
 .admin-page__header {
   display: flex;
   align-items: center;
@@ -497,7 +501,7 @@ a {
 
 .auth-card,
 .admin-workspace {
-  width: min(980px, 100%);
+  width: 100%;
   margin: 0 auto;
   padding: 32px;
   border: 1px solid var(--surface-border);
