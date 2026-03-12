@@ -174,7 +174,7 @@ html[data-theme="dark"] .admin-toggle {
   width: min(480px, 100%);
   height: 100%;
   padding: 28px 24px 24px;
-  background: color-mix(in srgb, var(--bg) 88%, white 12%);
+  background: var(--bg);
   border-left: 1px solid var(--surface-border);
   overflow: auto;
 }

@@ -680,6 +680,10 @@ function setupAdmin() {
     setAdminMessage("Кейсы сброшены к базовому набору.");
   });
 
+  admin.closeButtons.forEach((button) => {
+    button.addEventListener("click", closeAdmin);
+  });
+
   admin.editor.addEventListener("input", handleAdminInput);
   admin.editor.addEventListener("change", handleAdminChange);
   admin.editor.addEventListener("click", handleAdminClick);
