@@ -1354,13 +1354,10 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 
 .home-about__surface {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 517px);
-  align-items: center;
-  align-content: center;
-  gap: clamp(40px, 7vw, 104px);
+  place-items: center;
   min-height: 100svh;
   padding-block: clamp(40px, 8vw, 120px);
-  padding-inline: max(24px, calc((100% - 1260px) / 2));
+  padding-inline: 24px;
   border-radius: 0;
   background: #323232;
   color: #f5efe8;
@@ -1375,32 +1372,76 @@ html[data-theme="dark"] .home-about__surface {
   color: #1f1a21;
 }
 
+.home-about__frame {
+  display: grid;
+  gap: clamp(72px, 9vw, 120px);
+  width: min(984px, 100%);
+}
+
+.home-about__header {
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
 .home-about__title {
   margin: 0;
-  font-size: clamp(4.2rem, 8vw, 6.25rem);
+  font-size: clamp(3.75rem, 7vw, 5rem);
   font-weight: 400;
-  line-height: 0.95;
-  letter-spacing: -0.06em;
-  text-wrap: balance;
+  line-height: 1.01;
+  letter-spacing: -0.04em;
 }
 
-.home-about__content {
-  display: grid;
-  align-content: start;
-  gap: 24px;
-  max-width: 517px;
-  margin-left: auto;
-}
-
-.home-about__content p {
+.home-about__lead {
   margin: 0;
-  color: rgba(245, 239, 232, 0.96);
-  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  max-width: 540px;
+  color: rgba(245, 239, 232, 0.94);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
   line-height: 1.45;
+  letter-spacing: -0.02em;
   transition: color 220ms ease;
 }
 
-html[data-theme="dark"] .home-about__content p {
+html[data-theme="dark"] .home-about__lead {
+  color: rgba(31, 26, 33, 0.92);
+}
+
+.home-about__grid {
+  display: grid;
+  gap: clamp(56px, 7vw, 124px);
+  margin: 0;
+  padding: 0;
+}
+
+.home-about__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 468px);
+  align-items: center;
+  gap: clamp(48px, 10vw, 162px);
+}
+
+.home-about__term,
+.home-about__description {
+  margin: 0;
+}
+
+.home-about__term {
+  font-size: clamp(2rem, 2.6vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.home-about__description {
+  margin: 0;
+  color: rgba(245, 239, 232, 0.96);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  transition: color 220ms ease;
+}
+
+html[data-theme="dark"] .home-about__description {
   color: rgba(31, 26, 33, 0.92);
 }
 
@@ -2948,11 +2989,26 @@ html[data-theme="dark"] .company__logo--dark {
   }
 
   .home-about__surface {
-    grid-template-columns: 1fr;
     min-height: 100svh;
-    gap: 32px;
     padding: 56px 48px;
     transform: translateY(-18px);
+  }
+
+  .home-about__frame {
+    gap: 80px;
+  }
+
+  .home-about__row {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+    gap: 40px 56px;
+  }
+
+  .home-about__term {
+    font-size: 1.9rem;
+  }
+
+  .home-about__description {
+    font-size: 1.35rem;
   }
 
   .portfolio-list__header {
@@ -3352,9 +3408,16 @@ html[data-theme="dark"] .company__logo--dark {
 
   .home-about__surface {
     min-height: 100svh;
-    gap: 24px;
     padding: 36px 22px 40px;
     transform: translateY(-12px);
+  }
+
+  .home-about__frame {
+    gap: 56px;
+  }
+
+  .home-about__header {
+    gap: 18px;
   }
 
   .home-about__title {
@@ -3362,13 +3425,29 @@ html[data-theme="dark"] .company__logo--dark {
     line-height: 0.98;
   }
 
-  .home-about__content {
-    gap: 18px;
+  .home-about__lead {
+    max-width: 300px;
+    font-size: 1.125rem;
+    line-height: 1.4;
   }
 
-  .home-about__content p {
-    font-size: 1rem;
-    line-height: 1.5;
+  .home-about__grid {
+    gap: 36px;
+  }
+
+  .home-about__row {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 12px;
+  }
+
+  .home-about__term {
+    font-size: 1.7rem;
+  }
+
+  .home-about__description {
+    font-size: 1.0625rem;
+    line-height: 1.28;
   }
 
   .cases-empty {
