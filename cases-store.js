@@ -201,7 +201,6 @@
     const normalizedVideo = normalizeCaseVideo(item?.video, "");
     const shouldUseFallbackVideo =
       !normalizedVideo &&
-      typeof item?.video !== "string" &&
       normalizedImage &&
       normalizedImage === (fallback.image || "") &&
       Boolean(fallback.video);

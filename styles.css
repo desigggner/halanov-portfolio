@@ -1042,10 +1042,10 @@ html[data-theme="dark"] .admin-analytics-card {
   transform: translateY(-1px);
 }
 
-.contact-link svg {
+.contact-link__icon {
   display: block;
   flex: none;
-  width: 20px;
+  width: 24px;
   height: 20px;
 }
 
@@ -2456,7 +2456,11 @@ html[data-theme="dark"] .about-cta__card {
   max-width: 100%;
   max-height: 44px;
   object-fit: contain;
-  transition: opacity 220ms ease;
+  opacity: 0.74;
+  filter: grayscale(1) saturate(0) brightness(0.72);
+  transition:
+    opacity 220ms ease,
+    filter 220ms ease;
 }
 
 .company__logo--dark {
@@ -2468,7 +2472,7 @@ html[data-theme="dark"] .about-cta__card {
 }
 
 html[data-theme="light"] .company__logo--light {
-  opacity: 1;
+  opacity: inherit;
 }
 
 html[data-theme="dark"] .company__logo--light {
@@ -2477,7 +2481,8 @@ html[data-theme="dark"] .company__logo--light {
 
 html[data-theme="dark"] .company__logo--dark {
   display: block;
-  opacity: 0.9;
+  opacity: 0.68;
+  filter: grayscale(1) saturate(0) brightness(1.48);
 }
 
 .cases {
@@ -3510,12 +3515,19 @@ html[data-theme="dark"] .company__logo--dark {
   }
 
   .case-card {
-    min-height: 380px;
+    min-height: 0;
+    aspect-ratio: 517 / 560;
     padding: 28px 24px 18px;
   }
 
+  .case-card--tall {
+    min-height: 0;
+    aspect-ratio: 517 / 711;
+  }
+
   .case-card--invert {
-    min-height: 562px;
+    min-height: 0;
+    aspect-ratio: 517 / 562;
     padding: 37px 24px 20px;
   }
 
