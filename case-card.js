@@ -92,6 +92,16 @@
     };
   }
 
+  function resolveCaseVideoAsset(video) {
+    if (typeof video !== "string" || !video.trim()) {
+      return null;
+    }
+
+    return {
+      src: video.trim(),
+    };
+  }
+
   function normalizeImageLoading(value, fallback) {
     return value === "eager" ? "eager" : fallback;
   }
@@ -125,6 +135,7 @@
     const title = document.createElement("h3");
     const corner = document.createElement("span");
     const imageAsset = resolveCaseImageAsset(caseItem.image);
+    const videoAsset = resolveCaseVideoAsset(caseItem.video);
     const hasLightUi = Boolean(caseItem.lightUi);
     const baseTextColor = hasLightUi ? "#ffffff" : "#333037";
     const baseCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.7)" : "rgba(51, 48, 55, 0.78)";
@@ -173,7 +184,40 @@
       card.classList.add("case-card--light-ui");
     }
 
-    if (imageAsset?.src) {
+    if (videoAsset?.src) {
+      const media = document.createElement("video");
+
+      media.className = "case-card__media";
+      media.src = videoAsset.src;
+      media.poster = imageAsset?.src || "";
+      media.autoplay = true;
+      media.loop = true;
+      media.muted = true;
+      media.defaultMuted = true;
+      media.controls = false;
+      media.playsInline = true;
+      media.preload = staticPreview ? "metadata" : "auto";
+      media.disablePictureInPicture = true;
+      media.disableRemotePlayback = true;
+      media.tabIndex = -1;
+      media.setAttribute("aria-hidden", "true");
+      media.setAttribute("autoplay", "");
+      media.setAttribute("loop", "");
+      media.setAttribute("playsinline", "");
+      media.setAttribute("webkit-playsinline", "");
+      media.setAttribute("muted", "");
+      media.setAttribute("controlslist", "nodownload nofullscreen noremoteplayback");
+      media.removeAttribute("controls");
+      media.addEventListener("loadedmetadata", () => {
+        const playPromise = media.play();
+
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {});
+        }
+      });
+
+      card.append(media);
+    } else if (imageAsset?.src) {
       const media = document.createElement("img");
       const fetchPriority = normalizeFetchPriority(imageFetchPriority);
 

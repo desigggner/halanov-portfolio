@@ -356,11 +356,27 @@ function setupVideoPreviews() {
     video.defaultMuted = true;
     video.playsInline = true;
     video.autoplay = true;
+    video.loop = true;
+    video.controls = false;
+    video.disablePictureInPicture = true;
+    video.disableRemotePlayback = true;
+    video.tabIndex = -1;
     video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
     video.setAttribute("muted", "");
     video.setAttribute("autoplay", "");
+    video.setAttribute("loop", "");
+    video.setAttribute("controlslist", "nodownload nofullscreen noremoteplayback");
+    video.removeAttribute("controls");
     video.addEventListener("loadeddata", markVideoReady, { once: true });
     video.addEventListener("loadedmetadata", markVideoReady, { once: true });
+    video.addEventListener("loadedmetadata", () => {
+      const playPromise = video.play();
+
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    });
     video.addEventListener("error", markVideoBroken, { once: true });
     video.load();
   }

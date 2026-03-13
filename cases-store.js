@@ -65,6 +65,7 @@
       title: "Авито Подработка. Дизайн поиска сменных подработок",
       year: "",
       image: "./assets/szu.jpg",
+      video: "./assets/szu.mov",
       column: "right",
       size: "medium",
       lightUi: false,
@@ -121,6 +122,29 @@
     return fallback;
   }
 
+  function normalizeCaseVideo(video, fallback = "") {
+    if (typeof video !== "string") {
+      return fallback;
+    }
+
+    const normalized = video.trim();
+
+    if (!normalized) {
+      return "";
+    }
+
+    if (
+      normalized.startsWith("data:video/") ||
+      normalized.startsWith("./") ||
+      normalized.startsWith("../") ||
+      normalized.startsWith("/")
+    ) {
+      return normalized.slice(0, 2_000_000);
+    }
+
+    return fallback;
+  }
+
   function normalizeCaseColor(color, fallback = "#d7dde7") {
     const normalized = sanitizeCaseText(color, "", 12);
     return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/.test(normalized)
@@ -160,12 +184,34 @@
     return /^\d{4}$/.test(fallbackYear) ? fallbackYear : "";
   }
 
+  function resolveDefaultCaseFallback(item, index) {
+    if (item?.id) {
+      const matchedCase = defaultCases.find((caseItem) => caseItem.id === item.id);
+
+      if (matchedCase) {
+        return matchedCase;
+      }
+    }
+
+    return defaultCases[index] || {};
+  }
+
   function normalizeCase(item, fallback = {}) {
+    const normalizedImage = normalizeCaseImage(item?.image, fallback.image || "");
+    const normalizedVideo = normalizeCaseVideo(item?.video, "");
+    const shouldUseFallbackVideo =
+      !normalizedVideo &&
+      typeof item?.video !== "string" &&
+      normalizedImage &&
+      normalizedImage === (fallback.image || "") &&
+      Boolean(fallback.video);
+
     return {
       id: sanitizeCaseId(item?.id),
       title: sanitizeCaseText(item?.title, fallback.title || "Новый кейс", 180),
       year: normalizeCaseYear(item?.year, fallback.year || ""),
-      image: normalizeCaseImage(item?.image, fallback.image || ""),
+      image: normalizedImage,
+      video: normalizedVideo || (shouldUseFallbackVideo ? normalizeCaseVideo(fallback.video, "") : ""),
       column: item?.column === "right" ? "right" : "left",
       size: item?.size === "tall" ? "tall" : "medium",
       lightUi: Boolean(item?.lightUi),
@@ -188,7 +234,9 @@
       return options.allowEmpty ? [] : cloneDefaultCases();
     }
 
-    const normalizedCases = items.map((item, index) => normalizeCase(item, defaultCases[index]));
+    const normalizedCases = items.map((item, index) =>
+      normalizeCase(item, resolveDefaultCaseFallback(item, index)),
+    );
 
     if (normalizedCases.length || options.allowEmpty) {
       return normalizedCases;
