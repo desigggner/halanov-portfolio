@@ -193,6 +193,7 @@ function createPostCoverMarkup(post, title) {
             src="${escapeHtml(post.image)}"
             alt="${escapeHtml(title)}"
             loading="lazy"
+            referrerpolicy="no-referrer"
           />
         `
       : "";
@@ -205,13 +206,51 @@ function createPostCoverMarkup(post, title) {
           class="media-post__preview"
           src="${escapeHtml(post.video)}"
           ${posterAttribute}
+          autoplay
           muted
           loop
           playsinline
           preload="metadata"
           data-media-video
+          referrerpolicy="no-referrer"
           aria-label="${escapeHtml(title)}"
         ></video>
+        <a
+          class="media-post__cover-action"
+          href="${escapeHtml(post.url)}"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Смотреть в Telegram
+        </a>
+      </div>
+    `;
+  }
+
+  if (post.hasUnsupportedMedia && post.image) {
+    return `
+      <div class="media-post__cover media-post__cover--video media-post__cover--unsupported">
+        <img
+          class="media-post__cover-fallback"
+          src="${escapeHtml(post.image)}"
+          alt="${escapeHtml(title)}"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
+        <div class="media-post__unsupported-copy">
+          <span class="media-post__unsupported-badge">Видео</span>
+          <p class="media-post__unsupported-note">
+            Telegram не отдал браузерный preview для этого поста.
+          </p>
+          <a
+            class="media-post__cover-action"
+            href="${escapeHtml(post.url)}"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Открыть видео в Telegram
+          </a>
+        </div>
       </div>
     `;
   }
@@ -219,7 +258,12 @@ function createPostCoverMarkup(post, title) {
   if (post.image) {
     return `
       <div class="media-post__cover">
-        <img src="${escapeHtml(post.image)}" alt="${escapeHtml(title)}" loading="lazy" />
+        <img
+          src="${escapeHtml(post.image)}"
+          alt="${escapeHtml(title)}"
+          loading="lazy"
+          referrerpolicy="no-referrer"
+        />
       </div>
     `;
   }
@@ -311,8 +355,14 @@ function setupVideoPreviews() {
     video.muted = true;
     video.defaultMuted = true;
     video.playsInline = true;
+    video.autoplay = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("muted", "");
+    video.setAttribute("autoplay", "");
     video.addEventListener("loadeddata", markVideoReady, { once: true });
+    video.addEventListener("loadedmetadata", markVideoReady, { once: true });
     video.addEventListener("error", markVideoBroken, { once: true });
+    video.load();
   }
 
   if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {

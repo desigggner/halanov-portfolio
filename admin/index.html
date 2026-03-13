@@ -82,27 +82,59 @@
           </div>
         </div>
 
-        <p class="admin-panel__note">
-          Изменения в полях остаются черновиком, пока ты не нажмёшь кнопку сохранения в
-          нужном кейсе. После этого главная и страница портфолио подхватят обновления.
-        </p>
+        <div class="admin-tabs" role="tablist" aria-label="Разделы админки">
+          <button
+            class="admin-tab is-active"
+            type="button"
+            role="tab"
+            id="admin-tab-cases"
+            aria-selected="true"
+            aria-controls="admin-panel-cases"
+            data-admin-tab-button="cases"
+          >
+            Кейсы
+          </button>
+          <button
+            class="admin-tab"
+            type="button"
+            role="tab"
+            id="admin-tab-analytics"
+            aria-selected="false"
+            aria-controls="admin-panel-analytics"
+            data-admin-tab-button="analytics"
+          >
+            Статистика
+          </button>
+        </div>
 
-        <p class="admin-panel__message" data-admin-message aria-live="polite">
-          Изменения кейса сохраняются по кнопке в карточке.
-        </p>
+        <section
+          class="admin-tab-panel"
+          id="admin-panel-cases"
+          role="tabpanel"
+          aria-labelledby="admin-tab-cases"
+          data-admin-tab-panel="cases"
+        >
+          <p class="admin-panel__note">
+            Изменения в полях остаются черновиком, пока ты не нажмёшь кнопку сохранения в
+            нужном кейсе. После этого главная и страница портфолио подхватят обновления.
+          </p>
 
-        <section class="admin-dashboard" aria-labelledby="admin-dashboard-title">
-          <div class="admin-section__header">
-            <div>
-              <p class="admin-panel__eyebrow">Дашборд</p>
-              <h2 class="admin-section__title" id="admin-dashboard-title">Раскладка кейсов</h2>
+          <p class="admin-panel__message" data-admin-message aria-live="polite">
+            Изменения кейса сохраняются по кнопке в карточке.
+          </p>
+
+          <section class="admin-dashboard" aria-labelledby="admin-dashboard-title">
+            <div class="admin-section__header">
+              <div>
+                <p class="admin-panel__eyebrow">Дашборд</p>
+                <h2 class="admin-section__title" id="admin-dashboard-title">Раскладка кейсов</h2>
+              </div>
+
+              <p class="admin-section__note">
+                Здесь показываются только кейсы, отмеченные для главной. Нажми на карточку,
+                чтобы перейти к её настройкам ниже.
+              </p>
             </div>
-
-            <p class="admin-section__note">
-              Здесь показываются только кейсы, отмеченные для главной. Нажми на карточку,
-              чтобы перейти к её настройкам ниже.
-            </p>
-          </div>
 
             <div class="admin-dashboard__cases" data-admin-dashboard>
               <div class="cases__column" data-admin-dashboard-column="left"></div>
@@ -110,6 +142,30 @@
             </div>
           </section>
 
+          <section class="admin-editor-section" aria-labelledby="admin-editor-title">
+            <div class="admin-section__header">
+              <div>
+                <p class="admin-panel__eyebrow">Редактор</p>
+                <h2 class="admin-section__title" id="admin-editor-title">Настройки карточек</h2>
+              </div>
+
+              <p class="admin-section__note">
+                Настрой показ на главной, категорию портфолио и внешний вид карточки.
+              </p>
+            </div>
+
+            <div class="admin-panel__list" data-case-editor></div>
+          </section>
+        </section>
+
+        <section
+          class="admin-tab-panel"
+          id="admin-panel-analytics"
+          role="tabpanel"
+          aria-labelledby="admin-tab-analytics"
+          data-admin-tab-panel="analytics"
+          hidden
+        >
           <section class="admin-analytics" aria-labelledby="admin-analytics-title">
             <div class="admin-section__header">
               <div>
@@ -214,20 +270,6 @@
               <div data-analytics-recent-clicks></div>
             </section>
           </section>
-
-          <section class="admin-editor-section" aria-labelledby="admin-editor-title">
-            <div class="admin-section__header">
-              <div>
-              <p class="admin-panel__eyebrow">Редактор</p>
-              <h2 class="admin-section__title" id="admin-editor-title">Настройки карточек</h2>
-            </div>
-
-            <p class="admin-section__note">
-              Настрой показ на главной, категорию портфолио и внешний вид карточки.
-            </p>
-          </div>
-
-          <div class="admin-panel__list" data-case-editor></div>
         </section>
       </section>
     </main>

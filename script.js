@@ -89,9 +89,14 @@ function renderCases() {
     return;
   }
 
-  for (const caseItem of cases) {
+  for (const [index, caseItem] of cases.entries()) {
     const column = caseItem.column === "right" ? caseColumns.right : caseColumns.left;
-    column.append(caseCard.createCaseCard(caseItem));
+    column.append(
+      caseCard.createCaseCard(caseItem, {
+        imageLoading: index < 2 ? "eager" : "lazy",
+        imageFetchPriority: index === 0 ? "high" : "auto",
+      }),
+    );
   }
 
   setupCaseMotion();

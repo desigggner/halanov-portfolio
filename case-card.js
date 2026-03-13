@@ -1,4 +1,64 @@
 (function attachPortfolioCaseCard(global) {
+  const defaultCaseImageSizes =
+    "(max-width: 767px) calc(100vw - 48px), (max-width: 1180px) calc(50vw - 42px), 520px";
+  const optimizedCaseImageMap = {
+    "./assets/invert-case-bg.png": {
+      src: "./assets/invert-case-bg.jpg",
+      srcSet: "./assets/invert-case-bg-700.jpg 700w, ./assets/invert-case-bg.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1124,
+    },
+    "./assets/invert-case-bg.jpg": {
+      src: "./assets/invert-case-bg.jpg",
+      srcSet: "./assets/invert-case-bg-700.jpg 700w, ./assets/invert-case-bg.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1124,
+    },
+    "./assets/10Q.png": {
+      src: "./assets/10Q.jpg",
+      srcSet: "./assets/10Q-700.jpg 700w, ./assets/10Q.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1124,
+    },
+    "./assets/10Q.jpg": {
+      src: "./assets/10Q.jpg",
+      srcSet: "./assets/10Q-700.jpg 700w, ./assets/10Q.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1124,
+    },
+    "./assets/pulse.png": {
+      src: "./assets/pulse.jpg",
+      srcSet: "./assets/pulse-700.jpg 700w, ./assets/pulse.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1470,
+    },
+    "./assets/pulse.jpg": {
+      src: "./assets/pulse.jpg",
+      srcSet: "./assets/pulse-700.jpg 700w, ./assets/pulse.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1470,
+    },
+    "./assets/szu.png": {
+      src: "./assets/szu.jpg",
+      srcSet: "./assets/szu-700.jpg 700w, ./assets/szu.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1124,
+    },
+    "./assets/szu.jpg": {
+      src: "./assets/szu.jpg",
+      srcSet: "./assets/szu-700.jpg 700w, ./assets/szu.jpg 1034w",
+      sizes: defaultCaseImageSizes,
+      width: 1034,
+      height: 1124,
+    },
+  };
   const arrowIcon = `
     <svg viewBox="0 0 46 46" focusable="false" fill="none">
       <path
@@ -18,12 +78,34 @@
     </svg>
   `;
 
-  function buildCaseBackground(caseItem) {
-    if (!caseItem.image) {
-      return caseItem.backgroundColor;
+  function resolveCaseImageAsset(image) {
+    if (typeof image !== "string" || !image.trim()) {
+      return null;
     }
 
-    return `${caseItem.backgroundColor} url("${caseItem.image}") center center / cover no-repeat`;
+    return optimizedCaseImageMap[image] || {
+      src: image,
+      srcSet: "",
+      sizes: defaultCaseImageSizes,
+      width: 0,
+      height: 0,
+    };
+  }
+
+  function normalizeImageLoading(value, fallback) {
+    return value === "eager" ? "eager" : fallback;
+  }
+
+  function normalizeFetchPriority(value) {
+    if (value === "high" || value === "low") {
+      return value;
+    }
+
+    return "auto";
+  }
+
+  function buildCaseBackground(caseItem) {
+    return caseItem.backgroundColor || "transparent";
   }
 
   function createCaseCard(caseItem, options = {}) {
@@ -34,11 +116,15 @@
       extraClasses = [],
       dataset = {},
       staticPreview = false,
+      imageLoading,
+      imageFetchPriority = "auto",
+      imageSizes = "",
     } = options;
     const card = document.createElement(tagName);
     const top = document.createElement("div");
     const title = document.createElement("h3");
     const corner = document.createElement("span");
+    const imageAsset = resolveCaseImageAsset(caseItem.image);
     const hasLightUi = Boolean(caseItem.lightUi);
     const baseTextColor = hasLightUi ? "#ffffff" : "#333037";
     const baseCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.7)" : "rgba(51, 48, 55, 0.78)";
@@ -85,6 +171,34 @@
 
     if (hasLightUi) {
       card.classList.add("case-card--light-ui");
+    }
+
+    if (imageAsset?.src) {
+      const media = document.createElement("img");
+      const fetchPriority = normalizeFetchPriority(imageFetchPriority);
+
+      media.className = "case-card__media";
+      media.src = imageAsset.src;
+      media.alt = "";
+      media.setAttribute("aria-hidden", "true");
+      media.loading = normalizeImageLoading(imageLoading, staticPreview ? "eager" : "lazy");
+      media.decoding = "async";
+
+      if (fetchPriority !== "auto") {
+        media.setAttribute("fetchpriority", fetchPriority);
+      }
+
+      if (imageAsset.srcSet) {
+        media.srcset = imageAsset.srcSet;
+        media.sizes = imageSizes || imageAsset.sizes || defaultCaseImageSizes;
+      }
+
+      if (imageAsset.width && imageAsset.height) {
+        media.width = imageAsset.width;
+        media.height = imageAsset.height;
+      }
+
+      card.append(media);
     }
 
     if (caseItem.status) {

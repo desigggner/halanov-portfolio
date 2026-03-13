@@ -392,9 +392,14 @@ function renderCases() {
     return;
   }
 
-  for (const caseItem of visibleCases) {
+  for (const [index, caseItem] of visibleCases.entries()) {
     const column = caseItem.column === "right" ? portfolioColumns.right : portfolioColumns.left;
-    column.append(caseCard.createCaseCard(caseItem));
+    column.append(
+      caseCard.createCaseCard(caseItem, {
+        imageLoading: index < 2 ? "eager" : "lazy",
+        imageFetchPriority: index === 0 ? "high" : "auto",
+      }),
+    );
   }
 
   setupCaseMotion();

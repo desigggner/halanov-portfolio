@@ -46,6 +46,8 @@ const elements = {
   analyticsRecentClicks: document.querySelector("[data-analytics-recent-clicks]"),
   analyticsRefresh: document.querySelector("[data-analytics-refresh]"),
   analyticsRangeButtons: Array.from(document.querySelectorAll("[data-analytics-range]")),
+  adminTabButtons: Array.from(document.querySelectorAll("[data-admin-tab-button]")),
+  adminTabPanels: Array.from(document.querySelectorAll("[data-admin-tab-panel]")),
   dashboardColumns: {
     left: document.querySelector('[data-admin-dashboard-column="left"]'),
     right: document.querySelector('[data-admin-dashboard-column="right"]'),
@@ -60,8 +62,10 @@ const supportsWebp = (() => {
 let adminMessageTimer = 0;
 let cases = store ? store.loadCases() : [];
 let draftCases = cloneCases(cases);
+let activeAdminTab = "cases";
 let activeAnalyticsRange = "7d";
 let analyticsRequestToken = 0;
+let analyticsLoaded = false;
 let authRequestInFlight = false;
 
 function cloneCase(caseItem) {
@@ -202,6 +206,26 @@ function syncAnalyticsRangeButtons() {
     const isActive = button.dataset.analyticsRange === activeAnalyticsRange;
     button.classList.toggle("is-active", isActive);
     button.setAttribute("aria-pressed", String(isActive));
+  }
+}
+
+function setActiveAdminTab(nextTab) {
+  const normalizedTab = nextTab === "analytics" ? "analytics" : "cases";
+  activeAdminTab = normalizedTab;
+
+  for (const button of elements.adminTabButtons) {
+    const isActive = button.dataset.adminTabButton === normalizedTab;
+    button.classList.toggle("is-active", isActive);
+    button.setAttribute("aria-selected", String(isActive));
+    button.tabIndex = isActive ? 0 : -1;
+  }
+
+  for (const panel of elements.adminTabPanels) {
+    panel.hidden = panel.dataset.adminTabPanel !== normalizedTab;
+  }
+
+  if (normalizedTab === "analytics" && !analyticsLoaded) {
+    loadAnalyticsReport({ silent: true });
   }
 }
 
@@ -385,6 +409,7 @@ function renderAnalyticsRecentClicks(items) {
 }
 
 function renderAnalyticsReport(report, rangeLabel) {
+  analyticsLoaded = true;
   renderAnalyticsSummary(report.summary, rangeLabel, report.storage);
 
   if (elements.analyticsPages) {
@@ -520,6 +545,7 @@ async function loadAnalyticsReport(options = {}) {
     }
 
     if (!payload.summary?.eventsInRange) {
+      analyticsLoaded = true;
       renderAnalyticsEmptyState("Пока нет посещений для выбранного периода.");
     } else {
       renderAnalyticsReport(payload, analyticsRanges[payload.range?.id] || analyticsRanges[activeAnalyticsRange]);
@@ -564,8 +590,8 @@ function showAdminView() {
   }
 
   renderWorkspace();
+  setActiveAdminTab(activeAdminTab);
   syncAnalyticsRangeButtons();
-  loadAnalyticsReport({ silent: true });
   setAdminMessage(defaultAdminMessage);
 }
 
@@ -1354,6 +1380,7 @@ function setupAdminPage() {
 
   if (elements.analyticsRefresh) {
     elements.analyticsRefresh.addEventListener("click", () => {
+      analyticsLoaded = false;
       loadAnalyticsReport();
     });
   }
@@ -1367,8 +1394,15 @@ function setupAdminPage() {
       }
 
       activeAnalyticsRange = analyticsRanges[nextRange] ? nextRange : "7d";
+      analyticsLoaded = false;
       syncAnalyticsRangeButtons();
       loadAnalyticsReport();
+    });
+  }
+
+  for (const button of elements.adminTabButtons) {
+    button.addEventListener("click", () => {
+      setActiveAdminTab(button.dataset.adminTabButton);
     });
   }
 
@@ -1376,6 +1410,7 @@ function setupAdminPage() {
   elements.editor.addEventListener("change", handleEditorChange);
   elements.editor.addEventListener("click", handleEditorClick);
 
+  setActiveAdminTab(activeAdminTab);
   showAuthView();
   bootstrapAdminSession();
 }

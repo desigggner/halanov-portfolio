@@ -194,6 +194,8 @@
               alt="Портрет Влада Галанова"
               width="80"
               height="80"
+              decoding="async"
+              fetchpriority="high"
             />
 
             <div class="hero__meta">
@@ -217,161 +219,41 @@
         <section class="cases container" id="works" aria-labelledby="works-title">
           <h2 class="sr-only" id="works-title">Избранные кейсы</h2>
 
-          <div class="cases__column cases__column--left" data-cases-column="left">
-            <a class="case-card case-card--invert case-card--medium" href="#top">
-              <h3 class="case-card__title case-card__title--invert">
-                Увеличил CTR за счет редизайна в приложении Invert
-              </h3>
+          <div class="cases__column cases__column--left" data-cases-column="left"></div>
 
-              <span class="case-card__corner case-card__corner--light" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-
-            <a class="case-card case-card--10q case-card--medium" href="#top">
-              <div class="case-card__top">
-                <h3 class="case-card__title">Интерфейсы для Яндекс Маркета</h3>
-              </div>
-
-              <span class="case-card__corner" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-          </div>
-
-          <div class="cases__column cases__column--right" data-cases-column="right">
-            <a class="case-card case-card--pulse case-card--tall" href="#top">
-              <span class="case-card__status">в работе</span>
-              <div class="case-card__top">
-                <h3 class="case-card__title">Дизайн iOS-приложения 12 Storeez</h3>
-              </div>
-
-              <span class="case-card__corner case-card__corner--light" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-
-            <a class="case-card case-card--szu case-card--medium" href="#top">
-              <div class="case-card__top">
-                <h3 class="case-card__title">
-                  Авито Подработка. Дизайн поиска сменных подработок
-                </h3>
-              </div>
-
-              <span class="case-card__corner" aria-hidden="true">
-                <svg viewBox="0 0 46 46" focusable="false" fill="none">
-                  <path
-                    d="M14.8493 30.4056L30.4056 14.8492"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M17.6777 14.8492H30.4056V27.5771"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </a>
-          </div>
+          <div class="cases__column cases__column--right" data-cases-column="right"></div>
         </section>
 
         <div class="cases-footer container">
           <a class="cases-footer__button" href="/portfolio">Смотреть портфолио</a>
         </div>
 
-        <section class="portfolio-approach container" aria-labelledby="portfolio-approach-title">
-          <div class="portfolio-approach__intro">
-            <p class="portfolio-approach__eyebrow">4. Подход к продуктовому дизайну</p>
-            <h2 class="portfolio-approach__title" id="portfolio-approach-title">
-              Как я работаю с продуктом
-            </h2>
-          </div>
+        <section class="home-about" aria-labelledby="home-about-title">
+          <div class="home-about__surface">
+            <h2 class="home-about__title" id="home-about-title">Обо мне</h2>
 
-          <div class="portfolio-approach__grid">
-            <article class="portfolio-approach__card portfolio-approach__card--product">
-              <h3 class="portfolio-approach__card-title">Продуктовое мышление</h3>
-              <ul class="portfolio-approach__list">
-                <li>формулировка проблемы</li>
-                <li>метрики</li>
-                <li>продуктовая логика</li>
-              </ul>
-            </article>
+            <div class="home-about__content">
+              <p>
+                Я продуктовый дизайнер с системным мышлением и вниманием к деталям.
+                Мне интересно превращать сложные цифровые продукты и перегруженные
+                интерфейсы в понятный и логичный пользовательский опыт.
+              </p>
 
-            <article class="portfolio-approach__card portfolio-approach__card--research">
-              <h3 class="portfolio-approach__card-title">UX-исследования</h3>
-              <ul class="portfolio-approach__list">
-                <li>интервью</li>
-                <li>тестирование</li>
-                <li>анализ поведения пользователей</li>
-              </ul>
-            </article>
+              <p>
+                В своей работе я нахожусь на стыке дизайна, продукта и технологий:
+                проектирую UX-архитектуру сервисов, развиваю дизайн-системы и помогаю
+                командам выстраивать ясную структуру интерфейсов. Больше всего меня
+                привлекают сложные системы, корпоративные продукты, внутренние сервисы
+                и платформы с большим количеством сценариев.
+              </p>
 
-            <article class="portfolio-approach__card portfolio-approach__card--systems">
-              <h3 class="portfolio-approach__card-title">Системный дизайн</h3>
-              <ul class="portfolio-approach__list">
-                <li>дизайн-системы</li>
-                <li>масштабируемые интерфейсы</li>
-              </ul>
-            </article>
-
-            <article class="portfolio-approach__card portfolio-approach__card--ai">
-              <h3 class="portfolio-approach__card-title">Использование AI</h3>
-              <ul class="portfolio-approach__list">
-                <li>ускорение процессов дизайна</li>
-                <li>генерация прототипов</li>
-                <li>автоматизация задач</li>
-              </ul>
-            </article>
+              <p>
+                Сейчас я работаю тимлидом продуктового дизайна, где вместе с командой
+                развиваю крупные цифровые сервисы, упрощаю пользовательские сценарии
+                и помогаю продуктам становиться понятнее, быстрее и удобнее для людей,
+                которые ими пользуются.
+              </p>
+            </div>
           </div>
         </section>
       </main>

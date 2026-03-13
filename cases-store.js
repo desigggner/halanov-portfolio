@@ -2,6 +2,12 @@
   const casesStorageKey = "portfolio-cases";
   const themeStorageKey = "portfolio-theme";
   const defaultPortfolioCategory = "product";
+  const builtInCaseImageAliases = {
+    "./assets/invert-case-bg.png": "./assets/invert-case-bg.jpg",
+    "./assets/10Q.png": "./assets/10Q.jpg",
+    "./assets/pulse.png": "./assets/pulse.jpg",
+    "./assets/szu.png": "./assets/szu.jpg",
+  };
   const portfolioCategories = [
     { id: "product", label: "Продуктовый дизайн" },
     { id: "sites", label: "Сайты" },
@@ -15,7 +21,7 @@
       id: "invert",
       title: "Увеличил CTR за счет редизайна в приложении Invert",
       year: "",
-      image: "./assets/invert-case-bg.png",
+      image: "./assets/invert-case-bg.jpg",
       column: "left",
       size: "medium",
       lightUi: true,
@@ -29,7 +35,7 @@
       id: "market",
       title: "Интерфейсы для Яндекс Маркета",
       year: "",
-      image: "./assets/10Q.png",
+      image: "./assets/10Q.jpg",
       column: "left",
       size: "medium",
       lightUi: false,
@@ -43,7 +49,7 @@
       id: "storeez",
       title: "Дизайн iOS-приложения 12 Storeez",
       year: "",
-      image: "./assets/pulse.png",
+      image: "./assets/pulse.jpg",
       column: "right",
       size: "tall",
       lightUi: true,
@@ -57,7 +63,7 @@
       id: "avito",
       title: "Авито Подработка. Дизайн поиска сменных подработок",
       year: "",
-      image: "./assets/szu.png",
+      image: "./assets/szu.jpg",
       column: "right",
       size: "medium",
       lightUi: false,
@@ -96,7 +102,7 @@
       return fallback;
     }
 
-    const normalized = image.trim();
+    const normalized = builtInCaseImageAliases[image.trim()] || image.trim();
 
     if (!normalized) {
       return "";
