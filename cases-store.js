@@ -1,5 +1,6 @@
 (function attachPortfolioStore(global) {
   const casesStorageKey = "portfolio-cases";
+  const casesApiEndpoint = "/api/cases";
   const themeStorageKey = "portfolio-theme";
   const defaultPortfolioCategory = "product";
   const builtInCaseImageAliases = {
@@ -182,6 +183,20 @@
     };
   }
 
+  function normalizeCases(items, options = {}) {
+    if (!Array.isArray(items)) {
+      return options.allowEmpty ? [] : cloneDefaultCases();
+    }
+
+    const normalizedCases = items.map((item, index) => normalizeCase(item, defaultCases[index]));
+
+    if (normalizedCases.length || options.allowEmpty) {
+      return normalizedCases;
+    }
+
+    return cloneDefaultCases();
+  }
+
   function loadCases() {
     try {
       const storedCases = global.localStorage.getItem(casesStorageKey);
@@ -192,27 +207,103 @@
 
       const parsedCases = JSON.parse(storedCases);
 
-      if (!Array.isArray(parsedCases) || parsedCases.length === 0) {
+      if (!Array.isArray(parsedCases)) {
         return cloneDefaultCases();
       }
 
-      return parsedCases.map((item, index) => normalizeCase(item, defaultCases[index]));
+      return normalizeCases(parsedCases, { allowEmpty: true });
     } catch (error) {
       return cloneDefaultCases();
     }
   }
 
+  function hasCasesCache() {
+    try {
+      return global.localStorage.getItem(casesStorageKey) !== null;
+    } catch (error) {
+      return false;
+    }
+  }
+
   function saveCases(cases) {
     try {
-      global.localStorage.setItem(casesStorageKey, JSON.stringify(cases));
+      global.localStorage.setItem(
+        casesStorageKey,
+        JSON.stringify(normalizeCases(cases, { allowEmpty: true })),
+      );
       return true;
     } catch (error) {
       return false;
     }
   }
 
+  function syncCasesCache(cases) {
+    const normalizedCases = normalizeCases(cases, { allowEmpty: true });
+    saveCases(normalizedCases);
+    return normalizedCases;
+  }
+
+  async function requestCases(method, body) {
+    const options = {
+      method,
+      cache: "no-store",
+      credentials: "same-origin",
+      headers: {
+        accept: "application/json",
+      },
+    };
+
+    if (body) {
+      options.headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify(body);
+    }
+
+    const response = await global.fetch(casesApiEndpoint, options);
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok || !payload?.ok) {
+      const error = new Error(payload?.error || `HTTP ${response.status}`);
+
+      error.statusCode = response.status;
+      error.payload = payload;
+      throw error;
+    }
+
+    return payload;
+  }
+
+  async function loadCasesFromServer() {
+    const payload = await requestCases("GET");
+
+    return {
+      cases: syncCasesCache(payload.cases),
+      storage: payload.storage || null,
+    };
+  }
+
+  async function persistCasesToServer(cases) {
+    const payload = await requestCases("POST", {
+      cases: normalizeCases(cases, { allowEmpty: true }),
+    });
+
+    return {
+      cases: syncCasesCache(payload.cases),
+      storage: payload.storage || null,
+    };
+  }
+
+  async function resetCasesOnServer() {
+    const payload = await requestCases("DELETE");
+
+    return {
+      cases: syncCasesCache(payload.cases),
+      storage: payload.storage || null,
+    };
+  }
+
   global.PortfolioStore = {
     casesStorageKey,
+    casesApiEndpoint,
     themeStorageKey,
     defaultPortfolioCategory,
     portfolioCategories,
@@ -222,7 +313,12 @@
     normalizeCategory,
     normalizeCaseYear,
     normalizeCase,
+    normalizeCases,
+    hasCasesCache,
     loadCases,
     saveCases,
+    loadCasesFromServer,
+    persistCasesToServer,
+    resetCasesOnServer,
   };
 })(window);

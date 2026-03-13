@@ -1346,8 +1346,8 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 }
 
 .home-about {
-  width: min(1260px, calc(100% - 48px));
-  margin: 64px auto 0;
+  width: 100%;
+  margin: 64px 0 0;
   position: relative;
   z-index: 2;
 }
@@ -1355,14 +1355,24 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
 .home-about__surface {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 517px);
-  align-items: start;
+  align-items: center;
+  align-content: center;
   gap: clamp(40px, 7vw, 104px);
   min-height: 100svh;
-  padding: clamp(40px, 8vw, 120px);
-  border-radius: 60px;
+  padding-block: clamp(40px, 8vw, 120px);
+  padding-inline: max(24px, calc((100% - 1260px) / 2));
+  border-radius: 0;
   background: #323232;
   color: #f5efe8;
   transform: translateY(-28px);
+  transition:
+    background-color 220ms ease,
+    color 220ms ease;
+}
+
+html[data-theme="dark"] .home-about__surface {
+  background: #f4efe8;
+  color: #1f1a21;
 }
 
 .home-about__title {
@@ -1387,6 +1397,11 @@ html[data-theme="dark"] .theme-toggle__icon--moon {
   color: rgba(245, 239, 232, 0.96);
   font-size: clamp(1rem, 1.5vw, 1.125rem);
   line-height: 1.45;
+  transition: color 220ms ease;
+}
+
+html[data-theme="dark"] .home-about__content p {
+  color: rgba(31, 26, 33, 0.92);
 }
 
 .about-page {
@@ -2385,8 +2400,28 @@ html[data-theme="dark"] .about-cta__card {
   max-width: 100%;
   max-height: 44px;
   object-fit: contain;
-  filter: brightness(0) saturate(100%);
-  opacity: 0.44;
+  transition: opacity 220ms ease;
+}
+
+.company__logo--dark {
+  display: none;
+}
+
+.company__logo--hh {
+  max-height: 52px;
+}
+
+html[data-theme="light"] .company__logo--light {
+  opacity: 1;
+}
+
+html[data-theme="dark"] .company__logo--light {
+  display: none;
+}
+
+html[data-theme="dark"] .company__logo--dark {
+  display: block;
+  opacity: 0.9;
 }
 
 .cases {
@@ -2774,6 +2809,10 @@ html[data-theme="dark"] .about-cta__card {
   .company__logo {
     max-height: 38px;
   }
+
+  .company__logo--hh {
+    max-height: 44px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -2905,7 +2944,6 @@ html[data-theme="dark"] .about-cta__card {
   }
 
   .home-about {
-    width: min(1260px, calc(100% - 32px));
     margin-top: 56px;
   }
 
@@ -3309,7 +3347,6 @@ html[data-theme="dark"] .about-cta__card {
   }
 
   .home-about {
-    width: min(1260px, calc(100% - 32px));
     margin-top: 40px;
   }
 
@@ -3317,7 +3354,6 @@ html[data-theme="dark"] .about-cta__card {
     min-height: 100svh;
     gap: 24px;
     padding: 36px 22px 40px;
-    border-radius: 32px;
     transform: translateY(-12px);
   }
 
@@ -3369,6 +3405,10 @@ html[data-theme="dark"] .about-cta__card {
 
   .company__logo {
     max-height: 32px;
+  }
+
+  .company__logo--hh {
+    max-height: 38px;
   }
 
   .case-card {

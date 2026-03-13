@@ -10,6 +10,7 @@ const caseColumns = {
 };
 
 let caseRevealObserver = null;
+let casesSyncInFlight = false;
 
 function applyTheme(theme) {
   root.dataset.theme = theme;
@@ -68,12 +69,12 @@ function ensureTopOnInitialLoad() {
   window.addEventListener("load", resetScroll, { once: true });
 }
 
-function renderCases() {
+function renderCases(nextCases = store?.loadCases() || []) {
   if (!store || !caseCard || !caseColumns.left || !caseColumns.right) {
     return;
   }
 
-  const cases = store.loadCases().filter((caseItem) => caseItem.showOnHome);
+  const cases = nextCases.filter((caseItem) => caseItem.showOnHome);
 
   caseColumns.left.innerHTML = "";
   caseColumns.right.innerHTML = "";
@@ -100,6 +101,39 @@ function renderCases() {
   }
 
   setupCaseMotion();
+}
+
+async function syncCasesFromServer() {
+  if (!store?.loadCasesFromServer || casesSyncInFlight) {
+    return false;
+  }
+
+  casesSyncInFlight = true;
+
+  try {
+    const result = await store.loadCasesFromServer();
+    renderCases(result.cases || []);
+    return true;
+  } catch (error) {
+    return false;
+  } finally {
+    casesSyncInFlight = false;
+  }
+}
+
+async function bootstrapCases() {
+  const hasCasesCache = typeof store?.hasCasesCache === "function" && store.hasCasesCache();
+
+  if (!hasCasesCache) {
+    const synced = await syncCasesFromServer();
+
+    if (synced) {
+      return;
+    }
+  }
+
+  renderCases();
+  syncCasesFromServer();
 }
 
 function setupCaseReveal(cards) {
@@ -192,4 +226,4 @@ window.addEventListener("storage", (event) => {
 });
 
 ensureTopOnInitialLoad();
-renderCases();
+bootstrapCases();

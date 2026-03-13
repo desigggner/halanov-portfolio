@@ -595,21 +595,65 @@ function showAdminView() {
   setAdminMessage(defaultAdminMessage);
 }
 
-function persistCases() {
-  if (!store) {
-    return false;
+function applyLoadedCases(nextCases) {
+  cases = cloneCases(nextCases);
+  draftCases = cloneCases(nextCases);
+}
+
+function getCasesStorageWarning(storage) {
+  return storage?.warning ? String(storage.warning).trim() : "";
+}
+
+async function loadCasesFromServer() {
+  if (!store?.loadCasesFromServer) {
+    applyLoadedCases(store ? store.loadCases() : []);
+    return { cases: cloneCases(cases), storage: null };
   }
 
-  const saved = store.saveCases(cases);
+  const result = await store.loadCasesFromServer();
+  applyLoadedCases(result.cases || []);
+  return result;
+}
 
-  if (!saved) {
+async function persistCases() {
+  if (!store) {
+    return { ok: false, warning: "" };
+  }
+
+  try {
+    if (typeof store.persistCasesToServer === "function") {
+      const result = await store.persistCasesToServer(cases);
+
+      applyLoadedCases(result.cases || []);
+      return {
+        ok: true,
+        warning: getCasesStorageWarning(result.storage),
+      };
+    }
+
+    const saved = store.saveCases(cases);
+
+    if (!saved) {
+      setAdminMessage(
+        "Не удалось сохранить изменения. Попробуй изображение меньшего размера.",
+        true,
+      );
+    }
+
+    return { ok: saved, warning: "" };
+  } catch (error) {
+    if (error?.statusCode === 401 || error?.statusCode === 403) {
+      showAuthView();
+      setLoginMessage("Сессия администратора истекла. Войди снова.", true);
+      return { ok: false, warning: "" };
+    }
+
     setAdminMessage(
-      "Не удалось сохранить изменения. Попробуй изображение меньшего размера.",
+      error?.message || "Не удалось сохранить изменения. Попробуй ещё раз.",
       true,
     );
+    return { ok: false, warning: "" };
   }
-
-  return saved;
 }
 
 function getCaseIndex(caseId, collection = draftCases) {
@@ -992,7 +1036,7 @@ function updateDraftCase(caseId, patch, options = {}) {
   syncDraftCaseView(caseId);
 }
 
-function saveCase(caseId) {
+async function saveCase(caseId) {
   const draftCase = getCaseById(caseId, draftCases);
 
   if (!draftCase) {
@@ -1017,14 +1061,16 @@ function saveCase(caseId) {
     cases[savedIndex] = cloneCase(normalizedDraftCase);
   }
 
-  if (!persistCases()) {
+  const { ok, warning } = await persistCases();
+
+  if (!ok) {
     cases = previousCases;
     draftCases = previousDraftCases;
     return;
   }
 
   renderWorkspace();
-  setAdminMessage("Кейс сохранён.");
+  setAdminMessage(warning || "Кейс сохранён.", Boolean(warning));
 }
 
 function readFileAsDataUrl(file) {
@@ -1166,7 +1212,7 @@ function handleEditorChange(event) {
   }
 }
 
-function handleEditorClick(event) {
+async function handleEditorClick(event) {
   const saveButton = event.target.closest("[data-case-save]");
   const removeButton = event.target.closest("[data-case-remove]");
   const clearImageButton = event.target.closest("[data-case-image-clear]");
@@ -1178,7 +1224,7 @@ function handleEditorClick(event) {
       return;
     }
 
-    saveCase(caseCard.dataset.caseId);
+    await saveCase(caseCard.dataset.caseId);
     return;
   }
 
@@ -1205,14 +1251,16 @@ function handleEditorClick(event) {
     cases = cases.filter((caseItem) => caseItem.id !== caseId);
     draftCases = draftCases.filter((caseItem) => caseItem.id !== caseId);
 
-    if (!persistCases()) {
+    const { ok, warning } = await persistCases();
+
+    if (!ok) {
       cases = previousCases;
       draftCases = previousDraftCases;
       return;
     }
 
     renderWorkspace();
-    setAdminMessage("Кейс удалён.");
+    setAdminMessage(warning || "Кейс удалён.", Boolean(warning));
     return;
   }
 
@@ -1254,10 +1302,13 @@ async function handleLogin(event) {
       return;
     }
 
-    cases = store ? store.loadCases() : [];
-    draftCases = cloneCases(cases);
+    const result = await loadCasesFromServer();
     elements.loginForm.reset();
     showAdminView();
+
+    if (result.storage?.warning) {
+      setAdminMessage(result.storage.warning, true);
+    }
   } catch (error) {
     setLoginMessage("Не удалось выполнить вход администратора.", true);
   } finally {
@@ -1313,9 +1364,12 @@ async function bootstrapAdminSession() {
       return;
     }
 
-    cases = store ? store.loadCases() : [];
-    draftCases = cloneCases(cases);
+    const result = await loadCasesFromServer();
     showAdminView();
+
+    if (result.storage?.warning) {
+      setAdminMessage(result.storage.warning, true);
+    }
   } catch (error) {
     showAuthView();
     setLoginMessage("Не удалось проверить доступ администратора.", true);
@@ -1350,7 +1404,7 @@ function setupAdminPage() {
   }
 
   if (elements.resetButton) {
-    elements.resetButton.addEventListener("click", () => {
+    elements.resetButton.addEventListener("click", async () => {
       const confirmed = window.confirm("Сбросить все кейсы к текущему стартовому набору?");
 
       if (!confirmed) {
@@ -1363,14 +1417,16 @@ function setupAdminPage() {
       cases = store.cloneDefaultCases();
       draftCases = cloneCases(cases);
 
-      if (!persistCases()) {
+      const { ok, warning } = await persistCases();
+
+      if (!ok) {
         cases = previousCases;
         draftCases = previousDraftCases;
         return;
       }
 
       renderWorkspace();
-      setAdminMessage("Кейсы сброшены к базовому набору.");
+      setAdminMessage(warning || "Кейсы сброшены к базовому набору.", Boolean(warning));
     });
   }
 
