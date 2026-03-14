@@ -26,6 +26,7 @@
       title: "Увеличил CTR за счет редизайна в приложении Invert",
       year: "",
       image: "./assets/invert-case-bg.jpg",
+      video: "./assets/invert-case-bg.mp4",
       column: "left",
       size: "medium",
       lightUi: true,
