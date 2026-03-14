@@ -9,6 +9,9 @@
     "./assets/pulse.png": "./assets/pulse.jpg",
     "./assets/szu.png": "./assets/szu.jpg",
   };
+  const builtInCaseVideoAliases = {
+    "./assets/szu.mov": "./assets/szu.mp4",
+  };
   const portfolioCategories = [
     { id: "product", label: "Продуктовый дизайн" },
     { id: "sites", label: "Сайты" },
@@ -65,7 +68,7 @@
       title: "Авито Подработка. Дизайн поиска сменных подработок",
       year: "",
       image: "./assets/szu.jpg",
-      video: "./assets/szu.mov",
+      video: "./assets/szu.mp4",
       column: "right",
       size: "medium",
       lightUi: false,
@@ -127,7 +130,7 @@
       return fallback;
     }
 
-    const normalized = video.trim();
+    const normalized = builtInCaseVideoAliases[video.trim()] || video.trim();
 
     if (!normalized) {
       return "";
@@ -199,11 +202,7 @@
   function normalizeCase(item, fallback = {}) {
     const normalizedImage = normalizeCaseImage(item?.image, fallback.image || "");
     const normalizedVideo = normalizeCaseVideo(item?.video, "");
-    const shouldUseFallbackVideo =
-      !normalizedVideo &&
-      normalizedImage &&
-      normalizedImage === (fallback.image || "") &&
-      Boolean(fallback.video);
+    const shouldUseFallbackVideo = !normalizedVideo && Boolean(fallback.video);
 
     return {
       id: sanitizeCaseId(item?.id),

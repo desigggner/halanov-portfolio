@@ -186,6 +186,13 @@
 
     if (videoAsset?.src) {
       const media = document.createElement("video");
+      const attemptPlay = () => {
+        const playPromise = media.play();
+
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {});
+        }
+      };
 
       media.className = "case-card__media";
       media.src = videoAsset.src;
@@ -196,7 +203,7 @@
       media.defaultMuted = true;
       media.controls = false;
       media.playsInline = true;
-      media.preload = staticPreview ? "metadata" : "auto";
+      media.preload = "auto";
       media.disablePictureInPicture = true;
       media.disableRemotePlayback = true;
       media.tabIndex = -1;
@@ -208,13 +215,9 @@
       media.setAttribute("muted", "");
       media.setAttribute("controlslist", "nodownload nofullscreen noremoteplayback");
       media.removeAttribute("controls");
-      media.addEventListener("loadedmetadata", () => {
-        const playPromise = media.play();
-
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.catch(() => {});
-        }
-      });
+      media.addEventListener("loadedmetadata", attemptPlay);
+      media.addEventListener("loadeddata", attemptPlay);
+      media.addEventListener("canplay", attemptPlay);
 
       card.append(media);
     } else if (imageAsset?.src) {
