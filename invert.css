@@ -435,24 +435,18 @@ body.is-mobile-nav-open .invert-mobile-nav__sheet {
 
 .invert-metrics__inner {
   display: grid;
-  justify-items: center;
-  gap: 120px;
-  width: min(1064px, calc(100% - 48px));
+  align-content: center;
+  gap: 56px;
+  width: min(1260px, calc(100% - 48px));
+  min-height: 400px;
   margin: 0 auto;
-  padding: 33px 0 35px;
-}
-
-.invert-metrics__mark {
-  width: 61.785px;
-  height: 64px;
-  object-fit: contain;
+  padding: 40px 0;
 }
 
 .invert-metrics__grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 240px));
-  justify-content: space-between;
-  gap: 28px 20px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 28px 24px;
   width: 100%;
 }
 
@@ -514,6 +508,7 @@ body.is-mobile-nav-open .invert-mobile-nav__sheet {
   letter-spacing: -0.02em;
   text-align: center;
   text-wrap: balance;
+  justify-self: center;
 }
 
 .invert-flow {
@@ -771,10 +766,6 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     animation: invert-confetti 2.8s ease-in-out 1.15s infinite alternate;
   }
 
-  .invert-metrics__mark {
-    animation: invert-logo-float 7s ease-in-out infinite 0.6s;
-  }
-
   .invert-metrics__spark {
     animation: invert-spark-pulse 1.8s ease-in-out infinite alternate;
   }
@@ -827,13 +818,12 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-metrics__inner {
-    gap: 92px;
+    gap: 72px;
   }
 
   .invert-metrics__grid {
-    grid-template-columns: repeat(2, minmax(0, 240px));
-    justify-content: center;
-    gap: 52px 44px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 44px 40px;
   }
 
   .invert-logic__inner {
@@ -903,7 +893,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-metrics__inner {
-    gap: 72px;
+    gap: 64px;
   }
 
   .invert-metrics__value {
@@ -1042,15 +1032,10 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-metrics__inner {
-    gap: 56px;
+    gap: 48px;
     width: min(1064px, calc(100% - 32px));
-    padding-top: 28px;
-    padding-bottom: 30px;
-  }
-
-  .invert-metrics__mark {
-    width: 54px;
-    height: 56px;
+    min-height: auto;
+    padding: 32px 0;
   }
 
   .invert-metrics__grid {
@@ -1162,11 +1147,8 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     height: 60px;
   }
 
-  .invert-metrics__inner {
-    gap: 44px;
-  }
-
   .invert-metrics__grid {
+    grid-template-columns: minmax(0, 1fr);
     gap: 28px 18px;
   }
 
