@@ -24,6 +24,7 @@
     {
       id: "invert",
       title: "Увеличил CTR за счет редизайна в приложении Invert",
+      path: "/invert",
       year: "",
       image: "./assets/invert-case-bg.jpg",
       video: "./assets/invert-case-bg.mp4",
@@ -156,6 +157,25 @@
       : fallback;
   }
 
+  function normalizeCasePath(path, fallback = "") {
+    const candidate =
+      typeof path === "string" && path.trim()
+        ? path.trim()
+        : typeof fallback === "string"
+          ? fallback.trim()
+          : "";
+
+    if (!candidate || !candidate.startsWith("/")) {
+      return "";
+    }
+
+    if (candidate.startsWith("//") || /\s/.test(candidate)) {
+      return "";
+    }
+
+    return /^[a-zA-Z0-9/_-]+$/.test(candidate.slice(1)) ? candidate.slice(0, 256) : "";
+  }
+
   function normalizeCategory(category, fallback = defaultPortfolioCategory) {
     const selectedCategory =
       typeof category === "string" && category.trim() ? category.trim() : fallback;
@@ -208,6 +228,7 @@
     return {
       id: sanitizeCaseId(item?.id),
       title: sanitizeCaseText(item?.title, fallback.title || "Новый кейс", 180),
+      path: normalizeCasePath(item?.path, fallback.path || ""),
       year: normalizeCaseYear(item?.year, fallback.year || ""),
       image: normalizedImage,
       video: normalizedVideo || (shouldUseFallbackVideo ? normalizeCaseVideo(fallback.video, "") : ""),

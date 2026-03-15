@@ -21,6 +21,11 @@
       "permanent": true
     },
     {
+      "source": "/invert.html",
+      "destination": "/invert",
+      "permanent": true
+    },
+    {
       "source": "/auth.html",
       "destination": "/auth",
       "permanent": true
@@ -43,6 +48,10 @@
     {
       "source": "/media",
       "destination": "/media.html"
+    },
+    {
+      "source": "/invert",
+      "destination": "/invert.html"
     },
     {
       "source": "/auth",

@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Кейс Invert: редизайн торговой платформы, UX-архитектура и интерфейсы для iOS и Android."
+    />
+    <title>Invert | Halanov</title>
+    <script src="./site-theme-init.js" data-scroll-restoration="manual"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Borel&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href="./.figma-assets/feef607de3097e153b1cb1e5ed7b64afa9ca5b8d.png" />
+    <link rel="preload" as="image" href="./.figma-assets/1f5622c1915656c927bb3476d5407b293619d783.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./invert.css" />
+  </head>
+  <body class="invert-page">
+    <div class="page-shell invert-page-shell" id="top">
+      <header class="site-header">
+        <div class="container site-header__inner">
+          <a class="brand" href="/" aria-label="На главную">halanov</a>
+
+          <div class="header-overlay">
+            <nav class="site-nav" aria-label="Основная навигация">
+              <a class="nav-link" href="/">Главная</a>
+              <a class="nav-link is-active" href="/portfolio">Портфолио</a>
+              <a class="nav-link" href="/about">Обо мне</a>
+              <a class="nav-link" href="/media">Медиа</a>
+            </nav>
+
+            <div class="header-actions">
+              <button class="contact-link" type="button">
+                <span>Связаться</span>
+                <svg
+                  class="contact-link__icon"
+                  viewBox="0 0 49 40"
+                  aria-hidden="true"
+                  focusable="false"
+                  fill="none"
+                >
+                  <path
+                    d="M4.2036 17.2565C16.9189 11.6859 25.3978 8.01341 29.6402 6.23905C41.7532 1.17288 44.2702 0.292835 45.9108 0.263465C46.2716 0.257384 47.0783 0.347301 47.6009 0.773698C48.0422 1.13374 48.1636 1.62011 48.2217 1.96146C48.2798 2.30282 48.3521 3.08045 48.2946 3.68806C47.6382 10.6233 44.798 27.4532 43.353 35.2207C42.7416 38.5074 41.5377 39.6095 40.3722 39.7173C37.8392 39.9517 35.9158 38.0341 33.4625 36.417C29.6236 33.8866 27.4549 32.3114 23.7286 29.8422C19.4222 26.9886 22.2139 25.4202 24.6681 22.857C25.3103 22.1862 36.4705 11.9789 36.6865 11.0529C36.7136 10.9371 36.7386 10.5054 36.4836 10.2775C36.2286 10.0495 35.8521 10.1275 35.5805 10.1895C35.1955 10.2773 29.0628 14.3533 17.1825 22.4174C15.4417 23.6193 13.865 24.205 12.4523 24.1743C10.895 24.1404 7.89924 23.2888 5.67221 22.5609C2.94067 21.668 0.769698 21.196 0.958741 19.6797C1.05721 18.8899 2.13883 18.0822 4.2036 17.2565Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+
+              <button
+                class="theme-toggle"
+                type="button"
+                aria-label="Переключить светлую и тёмную тему"
+                aria-pressed="false"
+              >
+                <span class="theme-toggle__thumb" aria-hidden="true"></span>
+                <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" focusable="false" fill="none">
+                    <path
+                      d="M10 3.125V1.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 14.375C12.4162 14.375 14.375 12.4162 14.375 10C14.375 7.58375 12.4162 5.625 10 5.625C7.58375 5.625 5.625 7.58375 5.625 10C5.625 12.4162 7.58375 14.375 10 14.375Z"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M5 5L3.75 3.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M5 15L3.75 16.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15 5L16.25 3.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15 15L16.25 16.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M3.125 10H1.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M10 16.875V18.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M16.875 10H18.75"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">
+                  <svg viewBox="0 0 20 20" focusable="false" fill="none">
+                    <path
+                      d="M16.25 9.375V5.625"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M18.125 7.5H14.375"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12.5 2.5V5"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M13.75 3.75H11.25"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M16.4601 12.3578C15.9792 12.4524 15.4901 12.5 15 12.5C13.8915 12.4991 12.797 12.2527 11.7951 11.7784C10.7932 11.3042 9.9087 10.614 9.20524 9.75737C8.50178 8.90071 7.99679 7.89889 7.72653 6.82387C7.45627 5.74885 7.42745 4.62732 7.64216 3.53984C6.55731 3.93655 5.5899 4.6002 4.82927 5.46952C4.06864 6.33884 3.5393 7.3858 3.29014 8.51372C3.04098 9.64163 3.08003 10.8141 3.40368 11.923C3.72733 13.0318 4.32515 14.0412 5.14194 14.858C5.95872 15.6748 6.96814 16.2726 8.07698 16.5963C9.18582 16.9199 10.3583 16.959 11.4863 16.7098C12.6142 16.4607 13.6611 15.9313 14.5304 15.1707C15.3998 14.4101 16.0634 13.4427 16.4601 12.3578Z"
+                      stroke="currentColor"
+                      stroke-width="1.25"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main-content invert-main">
+        <section class="invert-hero" aria-labelledby="invert-hero-title">
+          <div class="invert-hero__content container">
+            <div class="invert-hero__copy">
+              <h1 class="invert-hero__title" id="invert-hero-title">
+                Как я упростил сложную торговую платформу Invert
+              </h1>
+              <p class="invert-hero__text">
+                Спроектировал пользовательские сценарии, структуру интерфейсов и систему
+                взаимодействия внутри платформы.
+              </p>
+            </div>
+
+            <div class="invert-hero__scene" aria-hidden="true">
+              <img
+                class="invert-hero__logo invert-hero__logo--top-right"
+                src="./.figma-assets/4eb0af69b4471d19caeace989601e6c936591fe9.png"
+                alt=""
+                width="174"
+                height="180"
+                decoding="async"
+              />
+              <img
+                class="invert-hero__logo invert-hero__logo--left-top"
+                src="./.figma-assets/4eb0af69b4471d19caeace989601e6c936591fe9.png"
+                alt=""
+                width="84"
+                height="88"
+                decoding="async"
+              />
+              <img
+                class="invert-hero__logo invert-hero__logo--left-bottom"
+                src="./.figma-assets/4eb0af69b4471d19caeace989601e6c936591fe9.png"
+                alt=""
+                width="94"
+                height="97"
+                decoding="async"
+              />
+              <img
+                class="invert-hero__logo invert-hero__logo--center-right"
+                src="./.figma-assets/4eb0af69b4471d19caeace989601e6c936591fe9.png"
+                alt=""
+                width="62"
+                height="64"
+                decoding="async"
+              />
+              <img
+                class="invert-hero__logo invert-hero__logo--right-bottom"
+                src="./.figma-assets/4eb0af69b4471d19caeace989601e6c936591fe9.png"
+                alt=""
+                width="90"
+                height="93"
+                decoding="async"
+              />
+
+              <figure class="invert-hero__device invert-hero__device--left">
+                <img
+                  src="./.figma-assets/feef607de3097e153b1cb1e5ed7b64afa9ca5b8d.png"
+                  alt="Экран приложения Invert с заявками и откликами"
+                  width="258"
+                  height="559"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </figure>
+
+              <figure class="invert-hero__device invert-hero__device--right">
+                <img
+                  src="./.figma-assets/1f5622c1915656c927bb3476d5407b293619d783.png"
+                  alt="Экран приложения Invert с потоком запросов"
+                  width="238"
+                  height="516"
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-marquee-section" aria-labelledby="invert-meta-title">
+          <div class="invert-marquee invert-marquee--forward" aria-hidden="true">
+            <div class="invert-marquee__track">
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+            </div>
+            <div class="invert-marquee__track">
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+            </div>
+          </div>
+
+          <div class="invert-meta container" id="invert-meta-title">
+            <article class="invert-meta__column" data-reveal style="--reveal-delay: 0s">
+              <p class="invert-meta__label">Клиент</p>
+              <p class="invert-meta__value">Invert</p>
+            </article>
+
+            <article class="invert-meta__column" data-reveal style="--reveal-delay: 0.05s">
+              <p class="invert-meta__label">Платформы</p>
+              <p class="invert-meta__value">IOS, Android</p>
+            </article>
+
+            <article class="invert-meta__column" data-reveal style="--reveal-delay: 0.1s">
+              <p class="invert-meta__label">Моя роль</p>
+              <p class="invert-meta__value invert-meta__value--stacked">
+                <span>Продуктовый</span>
+                <span>дизайнер</span>
+              </p>
+            </article>
+
+            <article class="invert-meta__column" data-reveal style="--reveal-delay: 0.15s">
+              <p class="invert-meta__label">Зона ответственности:</p>
+              <div class="invert-meta__chips" aria-label="Зона ответственности">
+                <span class="invert-meta__chip">UX-архитектура</span>
+                <span class="invert-meta__chip">Структура продукта</span>
+                <span class="invert-meta__chip">Интерфейсы</span>
+              </div>
+            </article>
+          </div>
+
+          <div class="invert-marquee invert-marquee--reverse" aria-hidden="true">
+            <div class="invert-marquee__track">
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+            </div>
+            <div class="invert-marquee__track">
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+              <span>invert</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-logic" aria-labelledby="invert-logic-title">
+          <div class="invert-logic__inner container">
+            <h2
+              class="invert-logic__title"
+              id="invert-logic-title"
+              data-reveal
+              style="--reveal-delay: 0s"
+            >
+              Как сделать «маркетплейс наоборот» понятным?
+            </h2>
+
+            <div class="invert-flow" data-flow data-reveal style="--reveal-delay: 0.06s">
+              <div class="invert-flow__item invert-flow__item--light" data-flow-step>
+                <span>покупатель</span>
+              </div>
+              <div class="invert-flow__connector" data-flow-step aria-hidden="true"></div>
+
+              <div class="invert-flow__item invert-flow__item--light" data-flow-step>
+                <span>формирует запрос</span>
+              </div>
+              <div class="invert-flow__connector" data-flow-step aria-hidden="true"></div>
+
+              <div class="invert-flow__item invert-flow__item--accent" data-flow-step>
+                <span>запрос в системе</span>
+                <img
+                  src="./.figma-assets/4eb0af69b4471d19caeace989601e6c936591fe9.png"
+                  alt=""
+                  width="26"
+                  height="27"
+                  decoding="async"
+                />
+              </div>
+              <div class="invert-flow__connector invert-flow__connector--last" data-flow-step aria-hidden="true"></div>
+
+              <div class="invert-flow__item invert-flow__item--dark invert-flow__item--response" data-flow-step>
+                <span>продавцы откликаются</span>
+                <span class="invert-flow__avatars" aria-hidden="true">
+                  <img
+                    src="./.figma-assets/2a5d8cda67f311adb3d48721b5c19a39ab4730c2.png"
+                    alt=""
+                    width="27"
+                    height="27"
+                    decoding="async"
+                  />
+                  <img
+                    src="./.figma-assets/46454dac8562d5801f9ea4a7805d52a7695fef8a.png"
+                    alt=""
+                    width="27"
+                    height="27"
+                    decoding="async"
+                  />
+                  <img
+                    src="./.figma-assets/a153fe0c5924433e5d20a7c386a4869d7aabf498.png"
+                    alt=""
+                    width="27"
+                    height="27"
+                    decoding="async"
+                  />
+                </span>
+              </div>
+            </div>
+
+            <div class="invert-logic__copy" data-reveal style="--reveal-delay: 0.12s">
+              <p>
+                Работа над Invert началась с задачи упростить структуру маркетплейса и
+                ключевые пользовательские сценарии.
+              </p>
+              <p>
+                Я спроектировал UX-архитектуру сервиса и интерфейсы для ключевых функций
+                платформы.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./analytics.js"></script>
+    <script src="./invert.js"></script>
+  </body>
+</html>

@@ -121,7 +121,7 @@
   function createCaseCard(caseItem, options = {}) {
     const {
       tagName = "a",
-      href = "#top",
+      href,
       ariaLabel = "",
       extraClasses = [],
       dataset = {},
@@ -136,6 +136,7 @@
     const corner = document.createElement("span");
     const imageAsset = resolveCaseImageAsset(caseItem.image);
     const videoAsset = resolveCaseVideoAsset(caseItem.video);
+    const cardHref = typeof href === "string" && href.trim() ? href.trim() : caseItem.path || "#top";
     const hasLightUi = Boolean(caseItem.lightUi);
     const baseTextColor = hasLightUi ? "#ffffff" : "#333037";
     const baseCornerColor = hasLightUi ? "rgba(255, 255, 255, 0.7)" : "rgba(51, 48, 55, 0.78)";
@@ -151,7 +152,7 @@
     card.style.setProperty("--case-corner-active-color", activeCornerColor);
 
     if (tagName.toLowerCase() === "a") {
-      card.href = href;
+      card.href = cardHref;
     }
 
     if (ariaLabel) {

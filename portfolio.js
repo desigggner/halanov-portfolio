@@ -322,11 +322,18 @@ function createListCell(label, value, className = "", isMuted = false) {
 }
 
 function createCaseListRow(caseItem) {
-  const row = document.createElement("article");
+  const tagName = caseItem.path ? "a" : "article";
+  const row = document.createElement(tagName);
   const year = caseItem.year || "—";
   const status = caseItem.status || "—";
 
   row.className = "portfolio-list__row";
+
+  if (tagName === "a") {
+    row.href = caseItem.path;
+    row.setAttribute("aria-label", `Открыть кейс ${caseItem.title}`);
+  }
+
   row.append(
     createListCell("Год", year, "portfolio-list__cell--year", year === "—"),
     createListCell(
