@@ -3,8 +3,18 @@
 }
 
 .invert-page-shell {
+  position: relative;
   overflow-x: clip;
   background: #ffffff;
+}
+
+.invert-page .site-header {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding-top: 0;
 }
 
 .invert-main {
@@ -31,7 +41,7 @@
 .invert-hero__content {
   position: relative;
   min-height: 820px;
-  padding-top: 44px;
+  padding-top: 124px;
 }
 
 .invert-hero__copy {
@@ -517,7 +527,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 @media (max-width: 1180px) {
   .invert-hero__content {
     min-height: 760px;
-    padding-top: 52px;
+    padding-top: 132px;
   }
 
   .invert-hero__scene {
@@ -568,7 +578,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 @media (max-width: 960px) {
   .invert-hero__content {
     min-height: 700px;
-    padding-top: 44px;
+    padding-top: 138px;
   }
 
   .invert-hero__scene {
@@ -633,9 +643,13 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 }
 
 @media (max-width: 720px) {
+  .invert-page .site-header {
+    top: 8px;
+  }
+
   .invert-hero__content {
     min-height: auto;
-    padding-top: 36px;
+    padding-top: 126px;
     padding-bottom: 328px;
   }
 
@@ -748,6 +762,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 
 @media (max-width: 560px) {
   .invert-hero__content {
+    padding-top: 118px;
     padding-bottom: 294px;
   }
 
