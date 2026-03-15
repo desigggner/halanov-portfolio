@@ -195,32 +195,61 @@
         </section>
 
         <section class="companies container" id="experience" aria-label="Опыт работы">
-          <ul class="companies__list">
-            <li class="company">
-              <img class="company__logo company__logo--light company__logo--hh" src="./assets/logo/light/Frame 2147225156.svg" alt="" />
-              <img class="company__logo company__logo--dark company__logo--hh" src="./assets/logo/Frame 2147225156.svg" alt="" />
-            </li>
-            <li class="company">
-              <img class="company__logo company__logo--light" src="./assets/logo/light/Frame 2147225157.svg" alt="" />
-              <img class="company__logo company__logo--dark" src="./assets/logo/Frame 2147225157.svg" alt="" />
-            </li>
-            <li class="company">
-              <img class="company__logo company__logo--light" src="./assets/logo/light/Group 2087326919.svg" alt="" />
-              <img class="company__logo company__logo--dark" src="./assets/logo/Group 2087326919.svg" alt="" />
-            </li>
-            <li class="company">
-              <img class="company__logo company__logo--light" src="./assets/logo/light/SPBRSI_logo 1.svg" alt="" />
-              <img class="company__logo company__logo--dark" src="./assets/logo/SPBRSI_logo 1.svg" alt="" />
-            </li>
-            <li class="company">
-              <img class="company__logo company__logo--light" src="./assets/logo/Sberbank_Logo_2020 1.svg" alt="" />
-              <img class="company__logo company__logo--dark" src="./assets/logo/Sberbank_Logo_2020 1.svg" alt="" />
-            </li>
-            <li class="company">
-              <img class="company__logo company__logo--light" src="./assets/logo/light/Vector.svg" alt="" />
-              <img class="company__logo company__logo--dark" src="./assets/logo/Vector.svg" alt="" />
-            </li>
-          </ul>
+          <div class="companies__marquee">
+            <ul class="companies__list">
+              <li class="company">
+                <img class="company__logo company__logo--light company__logo--hh" src="./assets/logo/light/Frame 2147225156.svg" alt="" />
+                <img class="company__logo company__logo--dark company__logo--hh" src="./assets/logo/Frame 2147225156.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/Frame 2147225157.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Frame 2147225157.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/Group 2087326919.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Group 2087326919.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/SPBRSI_logo 1.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/SPBRSI_logo 1.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/Sberbank_Logo_2020 1.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Sberbank_Logo_2020 1.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/Vector.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Vector.svg" alt="" />
+              </li>
+            </ul>
+
+            <ul class="companies__list companies__list--duplicate" aria-hidden="true">
+              <li class="company">
+                <img class="company__logo company__logo--light company__logo--hh" src="./assets/logo/light/Frame 2147225156.svg" alt="" />
+                <img class="company__logo company__logo--dark company__logo--hh" src="./assets/logo/Frame 2147225156.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/Frame 2147225157.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Frame 2147225157.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/Group 2087326919.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Group 2087326919.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/SPBRSI_logo 1.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/SPBRSI_logo 1.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/Sberbank_Logo_2020 1.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Sberbank_Logo_2020 1.svg" alt="" />
+              </li>
+              <li class="company">
+                <img class="company__logo company__logo--light" src="./assets/logo/light/Vector.svg" alt="" />
+                <img class="company__logo company__logo--dark" src="./assets/logo/Vector.svg" alt="" />
+              </li>
+            </ul>
+          </div>
         </section>
 
         <section class="cases container" id="works" aria-labelledby="works-title">
@@ -466,12 +495,11 @@
             </a>
 
             <button
-              class="site-mobile-nav__theme theme-toggle"
+              class="site-mobile-nav__theme-button theme-toggle theme-toggle--icon"
               type="button"
               aria-label="Переключить светлую и тёмную тему"
               aria-pressed="false"
             >
-              <span class="theme-toggle__thumb" aria-hidden="true"></span>
               <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">
                 <svg viewBox="0 0 20 20" focusable="false" fill="none">
                   <path
