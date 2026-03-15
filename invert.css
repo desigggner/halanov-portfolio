@@ -1,15 +1,17 @@
 .invert-page {
-  background: #ffffff;
+  background: #0dc267;
 }
 
 .invert-page-shell {
   position: relative;
-  background: #ffffff;
+  background: #0dc267;
 }
 
 .invert-page .site-header {
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 30;
   padding-top: 0;
   height: 0;
@@ -22,6 +24,7 @@
 
 .invert-main {
   padding-bottom: 0;
+  background: #ffffff;
 }
 
 body.is-mobile-nav-open {
@@ -916,7 +919,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-page .site-header {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
