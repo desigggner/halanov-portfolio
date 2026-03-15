@@ -1,9 +1,18 @@
 const root = document.documentElement;
-const toggleButton = document.querySelector(".theme-toggle");
 const store = window.PortfolioStore;
 const caseCard = window.PortfolioCaseCard;
+const themeStorageKey = store?.themeStorageKey || "portfolio-theme";
+const casesStorageKey = store?.casesStorageKey;
+const toggleButtons = Array.from(document.querySelectorAll(".theme-toggle"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const layoutStorageKey = "portfolio-layout";
+const mobileNavMedia = window.matchMedia("(max-width: 720px)");
+const mobileNav = document.querySelector("[data-mobile-nav]");
+const mobileNavSheet = document.getElementById("mobile-sections-sheet");
+const mobileNavToggleButtons = Array.from(document.querySelectorAll("[data-mobile-nav-toggle]"));
+const mobileNavCloseButtons = Array.from(document.querySelectorAll("[data-mobile-nav-close]"));
+const mobileNavToggleLabels = Array.from(document.querySelectorAll("[data-mobile-nav-toggle-label]"));
+const mobileNavLinks = Array.from(document.querySelectorAll(".site-mobile-nav__sheet-link"));
 
 const portfolioColumns = {
   left: document.querySelector('[data-portfolio-column="left"]'),
@@ -26,20 +35,21 @@ let activeCategory = "all";
 let activeLayout = loadLayoutPreference();
 let caseRevealObserver = null;
 let casesSyncInFlight = false;
+let isMobileNavOpen = false;
 
 function applyTheme(theme) {
   root.dataset.theme = theme;
   root.style.colorScheme = theme;
 
-  if (toggleButton) {
-    toggleButton.setAttribute("aria-pressed", String(theme === "dark"));
-    toggleButton.setAttribute(
+  toggleButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", String(theme === "dark"));
+    button.setAttribute(
       "aria-label",
       theme === "dark"
         ? "Переключить на светлую тему"
         : "Переключить на тёмную тему",
     );
-  }
+  });
 }
 
 function getNextTheme() {
@@ -446,14 +456,89 @@ async function bootstrapCases() {
   syncCasesFromServer();
 }
 
-if (toggleButton && store) {
+function syncMobileNavState() {
+  document.body.classList.toggle("is-mobile-nav-open", isMobileNavOpen);
+
+  mobileNavToggleButtons.forEach((button) => {
+    button.classList.toggle("is-open", isMobileNavOpen);
+    button.setAttribute("aria-expanded", String(isMobileNavOpen));
+  });
+
+  mobileNavToggleLabels.forEach((label) => {
+    label.textContent = isMobileNavOpen ? "Закрыть" : "Разделы";
+  });
+
+  if (mobileNavSheet) {
+    mobileNavSheet.setAttribute("aria-hidden", String(!isMobileNavOpen));
+  }
+}
+
+function closeMobileNav() {
+  if (!isMobileNavOpen) {
+    return;
+  }
+
+  isMobileNavOpen = false;
+  syncMobileNavState();
+}
+
+function toggleMobileNav() {
+  if (!mobileNav || !mobileNavMedia.matches) {
+    return;
+  }
+
+  isMobileNavOpen = !isMobileNavOpen;
+  syncMobileNavState();
+}
+
+function setupMobileNav() {
+  if (!mobileNav) {
+    return;
+  }
+
+  syncMobileNavState();
+
+  mobileNavToggleButtons.forEach((button) => {
+    button.addEventListener("click", toggleMobileNav);
+  });
+
+  mobileNavCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeMobileNav);
+  });
+
+  mobileNavLinks.forEach((link) => {
+    link.addEventListener("click", closeMobileNav);
+  });
+
+  const handleViewportChange = (event) => {
+    if (!event.matches) {
+      closeMobileNav();
+    }
+  };
+
+  if (typeof mobileNavMedia.addEventListener === "function") {
+    mobileNavMedia.addEventListener("change", handleViewportChange);
+  } else if (typeof mobileNavMedia.addListener === "function") {
+    mobileNavMedia.addListener(handleViewportChange);
+  }
+
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMobileNav();
+    }
+  });
+}
+
+if (toggleButtons.length) {
   applyTheme(root.dataset.theme || "light");
 
-  toggleButton.addEventListener("click", () => {
-    const nextTheme = getNextTheme();
+  toggleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextTheme = getNextTheme();
 
-    localStorage.setItem(store.themeStorageKey, nextTheme);
-    applyTheme(nextTheme);
+      localStorage.setItem(themeStorageKey, nextTheme);
+      applyTheme(nextTheme);
+    });
   });
 }
 
@@ -484,15 +569,11 @@ for (const button of portfolioElements.layoutButtons) {
 }
 
 window.addEventListener("storage", (event) => {
-  if (!store) {
-    return;
-  }
-
-  if (event.key === store.casesStorageKey) {
+  if (event.key === casesStorageKey) {
     renderCases();
   }
 
-  if (event.key === store.themeStorageKey && event.newValue) {
+  if (event.key === themeStorageKey && event.newValue) {
     applyTheme(event.newValue);
   }
 
@@ -505,3 +586,4 @@ window.addEventListener("storage", (event) => {
 ensureTopOnInitialLoad();
 syncLayoutState();
 bootstrapCases();
+setupMobileNav();
