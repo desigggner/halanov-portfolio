@@ -429,6 +429,93 @@ body.is-mobile-nav-open .invert-mobile-nav__sheet {
   text-wrap: balance;
 }
 
+.invert-metrics {
+  background: #0dc267;
+}
+
+.invert-metrics__inner {
+  display: grid;
+  justify-items: center;
+  gap: 120px;
+  width: min(1064px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 33px 0 35px;
+}
+
+.invert-metrics__mark {
+  width: 61.785px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.invert-metrics__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 240px));
+  justify-content: space-between;
+  gap: 28px 20px;
+  width: 100%;
+}
+
+.invert-metrics__item {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  min-width: 0;
+  color: #ffffff;
+}
+
+.invert-metrics__value {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(3.9rem, 4.95vw, 4.5rem);
+  font-weight: 500;
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.invert-metrics__value--with-icon {
+  gap: 14px;
+}
+
+.invert-metrics__spark {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 26px;
+  color: #ffffff;
+}
+
+.invert-metrics__spark svg {
+  display: block;
+  width: 44px;
+  height: 26px;
+}
+
+.invert-metrics__label {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(1.15rem, 1.72vw, 1.5rem);
+  line-height: 1.32;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+
+.invert-metrics__note {
+  margin: 0;
+  max-width: 640px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1rem;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-wrap: balance;
+}
+
 .invert-flow {
   display: grid;
   justify-items: center;
@@ -683,6 +770,14 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   .invert-flow.is-visible .invert-flow__item--response::before {
     animation: invert-confetti 2.8s ease-in-out 1.15s infinite alternate;
   }
+
+  .invert-metrics__mark {
+    animation: invert-logo-float 7s ease-in-out infinite 0.6s;
+  }
+
+  .invert-metrics__spark {
+    animation: invert-spark-pulse 1.8s ease-in-out infinite alternate;
+  }
 }
 
 @media (max-width: 1180px) {
@@ -729,6 +824,16 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   .invert-meta {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px 20px;
+  }
+
+  .invert-metrics__inner {
+    gap: 92px;
+  }
+
+  .invert-metrics__grid {
+    grid-template-columns: repeat(2, minmax(0, 240px));
+    justify-content: center;
+    gap: 52px 44px;
   }
 
   .invert-logic__inner {
@@ -797,6 +902,18 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     font-size: clamp(3rem, 7vw, 4.35rem);
   }
 
+  .invert-metrics__inner {
+    gap: 72px;
+  }
+
+  .invert-metrics__value {
+    font-size: clamp(3.2rem, 8vw, 4rem);
+  }
+
+  .invert-metrics__label {
+    font-size: 1.18rem;
+  }
+
   .invert-flow {
     width: min(423px, calc(100% - 32px));
     padding: 20px 0;
@@ -814,14 +931,14 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     left: 0;
     right: 0;
     height: auto;
-    padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+    padding-top: calc(env(safe-area-inset-top, 0px) + 14px);
   }
 
   .invert-page .site-header__inner {
     justify-content: center;
     align-items: center;
     gap: 0;
-    min-height: 0;
+    min-height: 42px;
     padding-top: 0;
     transform: none;
   }
@@ -924,6 +1041,54 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     line-height: 1.45;
   }
 
+  .invert-metrics__inner {
+    gap: 56px;
+    width: min(1064px, calc(100% - 32px));
+    padding-top: 28px;
+    padding-bottom: 30px;
+  }
+
+  .invert-metrics__mark {
+    width: 54px;
+    height: 56px;
+  }
+
+  .invert-metrics__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 34px 20px;
+  }
+
+  .invert-metrics__item {
+    gap: 12px;
+  }
+
+  .invert-metrics__value {
+    gap: 10px;
+    font-size: clamp(2.8rem, 10vw, 3.45rem);
+    line-height: 0.96;
+  }
+
+  .invert-metrics__spark {
+    width: 30px;
+    height: 18px;
+  }
+
+  .invert-metrics__spark svg {
+    width: 30px;
+    height: 18px;
+  }
+
+  .invert-metrics__label {
+    font-size: 1rem;
+    line-height: 1.34;
+  }
+
+  .invert-metrics__note {
+    max-width: 360px;
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
   .invert-logic__inner {
     gap: 44px;
     padding-top: 68px;
@@ -954,10 +1119,11 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 @media (max-width: 560px) {
   .invert-page .site-header__inner {
     padding-top: 0;
+    min-height: 40px;
   }
 
   .invert-page .site-header {
-    padding-top: calc(env(safe-area-inset-top, 0px) + 6px);
+    padding-top: calc(env(safe-area-inset-top, 0px) + 12px);
   }
 
   .invert-mobile-nav__dock {
@@ -994,6 +1160,27 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   .invert-mobile-nav__theme-button.theme-toggle {
     width: 60px;
     height: 60px;
+  }
+
+  .invert-metrics__inner {
+    gap: 44px;
+  }
+
+  .invert-metrics__grid {
+    gap: 28px 18px;
+  }
+
+  .invert-metrics__value {
+    font-size: clamp(2.35rem, 13vw, 2.9rem);
+  }
+
+  .invert-metrics__label {
+    font-size: 0.92rem;
+  }
+
+  .invert-metrics__note {
+    max-width: 300px;
+    font-size: 0.8rem;
   }
 
   .invert-hero__content {

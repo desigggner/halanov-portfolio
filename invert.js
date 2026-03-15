@@ -4,6 +4,7 @@ root.classList.add("js-ready");
 const themeStorageKey = "portfolio-theme";
 const toggleButtons = Array.from(document.querySelectorAll(".theme-toggle"));
 const revealElements = Array.from(document.querySelectorAll("[data-reveal]"));
+const countGroups = Array.from(document.querySelectorAll("[data-count-group]"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const mobileNavMedia = window.matchMedia("(max-width: 720px)");
 const mobileNav = document.querySelector("[data-mobile-nav]");
@@ -108,6 +109,115 @@ function setupRevealObserver() {
   });
 }
 
+function formatCounterValue(counter, numericValue) {
+  const prefix = counter.dataset.counterPrefix || "";
+  const suffix = counter.dataset.counterSuffix || "";
+  const absoluteValue = Math.round(Math.abs(numericValue));
+  const sign = numericValue < 0 ? "−" : prefix;
+
+  return `${sign}${absoluteValue}${suffix}`;
+}
+
+function setCounterValue(counter, numericValue) {
+  counter.textContent = formatCounterValue(counter, numericValue);
+}
+
+function animateCounter(counter) {
+  const startValue = Number(counter.dataset.counterStart || 0);
+  const targetValue = Number(counter.dataset.counterValue || 0);
+  const duration = Math.max(Number(counter.dataset.counterDuration || 1200), 0);
+
+  if (!Number.isFinite(startValue) || !Number.isFinite(targetValue)) {
+    return;
+  }
+
+  if (duration === 0) {
+    setCounterValue(counter, targetValue);
+    return;
+  }
+
+  const startedAt = performance.now();
+
+  const step = (timestamp) => {
+    const elapsed = timestamp - startedAt;
+    const progress = Math.min(elapsed / duration, 1);
+    const easedProgress = 1 - (1 - progress) ** 3;
+    const nextValue = startValue + (targetValue - startValue) * easedProgress;
+
+    setCounterValue(counter, progress >= 1 ? targetValue : nextValue);
+
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  };
+
+  window.requestAnimationFrame(step);
+}
+
+function setupCountGroups() {
+  if (!countGroups.length) {
+    return;
+  }
+
+  const updateGroupCounters = (group, mode) => {
+    const counters = Array.from(group.querySelectorAll("[data-counter-value]"));
+
+    counters.forEach((counter) => {
+      const targetValue = Number(counter.dataset.counterValue || 0);
+      const startValue = Number(counter.dataset.counterStart || 0);
+
+      if (!Number.isFinite(targetValue) || !Number.isFinite(startValue)) {
+        return;
+      }
+
+      if (mode === "target") {
+        setCounterValue(counter, targetValue);
+        return;
+      }
+
+      if (mode === "start") {
+        setCounterValue(counter, startValue);
+        return;
+      }
+
+      animateCounter(counter);
+    });
+  };
+
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    countGroups.forEach((group) => {
+      updateGroupCounters(group, "target");
+    });
+    return;
+  }
+
+  countGroups.forEach((group) => {
+    updateGroupCounters(group, "start");
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || entry.target.dataset.countersAnimated === "true") {
+          return;
+        }
+
+        entry.target.dataset.countersAnimated = "true";
+        updateGroupCounters(entry.target, "animate");
+        observer.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.32,
+      rootMargin: "0px 0px -10% 0px",
+    },
+  );
+
+  countGroups.forEach((group) => {
+    observer.observe(group);
+  });
+}
+
 function syncMobileNavState() {
   document.body.classList.toggle("is-mobile-nav-open", isMobileNavOpen);
 
@@ -202,4 +312,5 @@ window.addEventListener("storage", (event) => {
 
 ensureTopOnInitialLoad();
 setupRevealObserver();
+setupCountGroups();
 setupMobileNav();
