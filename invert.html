@@ -15,8 +15,6 @@
       href="https://fonts.googleapis.com/css2?family=Borel&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" as="image" href="./.figma-assets/feef607de3097e153b1cb1e5ed7b64afa9ca5b8d.png" />
-    <link rel="preload" as="image" href="./.figma-assets/1f5622c1915656c927bb3476d5407b293619d783.png" />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="./invert.css" />
   </head>
@@ -227,10 +225,15 @@
 
               <figure class="invert-hero__device invert-hero__device--left">
                 <img
-                  src="./.figma-assets/feef607de3097e153b1cb1e5ed7b64afa9ca5b8d.png"
+                  src="./assets/invert-case/phone-left.jpg"
+                  srcset="
+                    ./assets/invert-case/phone-left.jpg 240w,
+                    ./assets/invert-case/phone-left@2x.jpg 517w
+                  "
+                  sizes="(max-width: 560px) 154px, (max-width: 720px) 180px, (max-width: 960px) 206px, (max-width: 1180px) 230px, 258px"
                   alt="Экран приложения Invert с заявками и откликами"
-                  width="258"
-                  height="559"
+                  width="517"
+                  height="1120"
                   fetchpriority="high"
                   decoding="async"
                 />
@@ -238,11 +241,15 @@
 
               <figure class="invert-hero__device invert-hero__device--right">
                 <img
-                  src="./.figma-assets/1f5622c1915656c927bb3476d5407b293619d783.png"
+                  src="./assets/invert-case/phone-right.jpg"
+                  srcset="
+                    ./assets/invert-case/phone-right.jpg 240w,
+                    ./assets/invert-case/phone-right@2x.jpg 517w
+                  "
+                  sizes="(max-width: 560px) 140px, (max-width: 720px) 165px, (max-width: 960px) 190px, (max-width: 1180px) 212px, 238px"
                   alt="Экран приложения Invert с потоком запросов"
-                  width="238"
-                  height="516"
-                  fetchpriority="high"
+                  width="517"
+                  height="1120"
                   decoding="async"
                 />
               </figure>
