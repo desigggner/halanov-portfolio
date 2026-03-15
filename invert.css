@@ -187,9 +187,7 @@ body.is-mobile-nav-open .invert-mobile-nav__sheet {
 .invert-hero {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 33.4% 37.6%, #0dc267 0%, #1cd176 48%, #2be085 100%),
-    linear-gradient(135deg, #16c46c, #25d87e);
+  background: #0dc267;
 }
 
 .invert-hero::after {
