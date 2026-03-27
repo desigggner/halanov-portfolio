@@ -91,6 +91,13 @@ body {
     color 220ms ease;
 }
 
+body.home-page,
+body.about-page,
+body.portfolio-page,
+body.media-page {
+  background: var(--bg);
+}
+
 body.is-admin-open {
   overflow: hidden;
 }
