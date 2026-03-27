@@ -376,8 +376,8 @@
                   </p>
                 </div>
                 <div class="figma-timeline__date figma-timeline__date--active">
-                  <p>Февраль 2025</p>
-                  <p><span class="figma-timeline__dot"></span>по настоящее время</p>
+                  <p class="figma-timeline__date-primary">Февраль 2025</p>
+                  <p class="figma-timeline__date-current"><span class="figma-timeline__dot"></span>по настоящее время</p>
                 </div>
               </article>
 
@@ -398,8 +398,8 @@
                   </p>
                 </div>
                 <div class="figma-timeline__date">
-                  <p>Январь</p>
-                  <p>2024 → 2025</p>
+                  <p class="figma-timeline__date-primary">Январь</p>
+                  <p class="figma-timeline__date-range">2024 → 2025</p>
                 </div>
               </article>
 
@@ -420,8 +420,8 @@
                   </p>
                 </div>
                 <div class="figma-timeline__date">
-                  <p>Январь</p>
-                  <p>2024 → 2025</p>
+                  <p class="figma-timeline__date-primary">Январь</p>
+                  <p class="figma-timeline__date-range">2024 → 2025</p>
                 </div>
               </article>
 
@@ -442,8 +442,8 @@
                   </p>
                 </div>
                 <div class="figma-timeline__date">
-                  <p>Январь</p>
-                  <p>2021 → 2024</p>
+                  <p class="figma-timeline__date-primary">Январь</p>
+                  <p class="figma-timeline__date-range">2021 → 2024</p>
                 </div>
               </article>
             </div>
@@ -465,61 +465,93 @@
         </section>
 
         <section class="figma-about" id="about-me" aria-labelledby="figma-about-title">
-          <div class="figma-about__surface">
+          <div class="figma-about__inner">
             <h2 class="figma-about__title" id="figma-about-title">И немного обо мне</h2>
 
             <div class="figma-about__stage">
+              <img
+                class="figma-about__decor figma-about__decor--top-right"
+                src="https://www.figma.com/api/mcp/asset/75fc5928-8a67-4209-8259-0aa27b130cfd"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
+              <img
+                class="figma-about__decor figma-about__decor--bottom-left"
+                src="https://www.figma.com/api/mcp/asset/17b3452d-f449-438f-9067-575c556eeb45"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
+              <img
+                class="figma-about__decor figma-about__decor--bottom-right"
+                src="https://www.figma.com/api/mcp/asset/28772957-86bf-4117-aca7-9e858a2f8a42"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
+
               <div class="figma-about__entry">
                 <figure class="figma-about__card figma-about__card--one">
-                  <img
-                    src="https://www.figma.com/api/mcp/asset/ca840078-baad-42bd-96b5-73817cbb6ad6"
-                    alt="Фотография с кошками"
-                    loading="lazy"
-                  />
+                  <span class="figma-about__frame">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/0a77b9f1-0090-4e2a-a8d7-594679495249"
+                      alt="Фотография с кошками"
+                      loading="lazy"
+                    />
+                  </span>
                 </figure>
                 <p class="figma-about__label figma-about__label--one">есть две кошки</p>
               </div>
 
               <div class="figma-about__entry">
                 <figure class="figma-about__card figma-about__card--two">
-                  <img
-                    src="https://www.figma.com/api/mcp/asset/4faead3f-1374-4985-a1e4-6f4eaddf1cba"
-                    alt="Фото на болтоходе"
-                    loading="lazy"
-                  />
+                  <span class="figma-about__frame">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/68a094f2-078a-4a3a-bebc-6d714f936e37"
+                      alt="Фото на болтоходе"
+                      loading="lazy"
+                    />
+                  </span>
                 </figure>
                 <p class="figma-about__label figma-about__label--two">тут на болтоходе катался</p>
               </div>
 
               <div class="figma-about__entry">
                 <figure class="figma-about__card figma-about__card--three">
-                  <img
-                    src="https://www.figma.com/api/mcp/asset/e0f2ee6f-71e3-48bd-b936-88264e6ff505"
-                    alt="Фотография о спорте"
-                    loading="lazy"
-                  />
+                  <span class="figma-about__frame">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/8ac1d9bb-8b39-4d4c-9adc-33407ccb5dcc"
+                      alt="Фотография о спорте"
+                      loading="lazy"
+                    />
+                  </span>
                 </figure>
                 <p class="figma-about__label figma-about__label--three">спорт - стабильно в моей жизни</p>
               </div>
 
               <div class="figma-about__entry">
                 <figure class="figma-about__card figma-about__card--four">
-                  <img
-                    src="https://www.figma.com/api/mcp/asset/cef19e35-399e-444b-8ed9-171cf92f4985"
-                    alt="Фото из путешествия"
-                    loading="lazy"
-                  />
+                  <span class="figma-about__frame">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/101f0fd5-8755-41e7-974a-a9daf69f038a"
+                      alt="Фото из путешествия"
+                      loading="lazy"
+                    />
+                  </span>
                 </figure>
                 <p class="figma-about__label figma-about__label--four">люблю путешествовать</p>
               </div>
 
               <div class="figma-about__entry">
                 <figure class="figma-about__card figma-about__card--five">
-                  <img
-                    src="https://www.figma.com/api/mcp/asset/aafa0ea2-db28-4a88-a7b8-110150285482"
-                    alt="Фотография с автомобилем"
-                    loading="lazy"
-                  />
+                  <span class="figma-about__frame">
+                    <img
+                      src="https://www.figma.com/api/mcp/asset/52df028b-bdf0-4ee9-b398-e9ba3a6241e8"
+                      alt="Фотография с автомобилем"
+                      loading="lazy"
+                    />
+                  </span>
                 </figure>
                 <p class="figma-about__label figma-about__label--five">обожаю все, что связано с машинами</p>
               </div>

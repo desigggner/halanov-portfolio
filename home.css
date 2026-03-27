@@ -108,8 +108,14 @@ html[data-theme="dark"] .figma-case__tag {
 }
 
 .figma-about {
+  position: relative;
   margin-top: 108px;
-  padding-bottom: 0;
+  width: 100vw;
+  margin-right: calc(50% - 50vw);
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  background: #282828;
+  color: #ffffff;
 }
 
 .figma-timeline {
@@ -124,6 +130,8 @@ html[data-theme="dark"] .figma-case__tag {
 .figma-timeline__intro {
   display: grid;
   gap: 29px;
+  justify-items: center;
+  text-align: center;
 }
 
 .figma-timeline__title {
@@ -139,7 +147,9 @@ html[data-theme="dark"] .figma-case__tag {
   margin: 0;
   color: rgba(51, 48, 55, 0.5);
   font-size: 28px;
+  font-weight: 400;
   line-height: 40.6px;
+  max-width: 100%;
 }
 
 html[data-theme="dark"] .figma-timeline__lead {
@@ -252,7 +262,8 @@ html[data-theme="dark"] .figma-timeline__logo {
 
 .figma-timeline__company-name,
 .figma-timeline__role-name,
-.figma-timeline__date p:first-child {
+.figma-timeline__date-primary,
+.figma-timeline__date-range {
   color: var(--text);
   font-size: 32px;
   line-height: 41px;
@@ -264,7 +275,7 @@ html[data-theme="dark"] .figma-timeline__logo {
 }
 
 .figma-timeline__location,
-.figma-timeline__date p:last-child {
+.figma-timeline__date-current {
   color: var(--muted);
   font-size: 20px;
   line-height: 25px;
@@ -285,9 +296,10 @@ html[data-theme="dark"] .figma-timeline__logo {
   display: grid;
   gap: 12px;
   justify-items: start;
+  align-content: start;
 }
 
-.figma-timeline__date--active p:last-child {
+.figma-timeline__date-current {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -321,19 +333,20 @@ html[data-theme="dark"] .figma-timeline__logo {
   height: 24px;
 }
 
-.figma-about__surface {
+.figma-about__inner {
   position: relative;
   width: min(1440px, 100%);
   min-height: 1892px;
   margin: 0 auto;
-  overflow: hidden;
-  border-radius: 60px;
-  background: #282828;
-  color: #ffffff;
 }
 
 .figma-about__title {
-  margin: 209px 0 0;
+  position: absolute;
+  top: 209px;
+  left: 50%;
+  width: min(983.81px, calc(100% - 64px));
+  margin: 0;
+  transform: translateX(-50%);
   font-size: 79.2px;
   font-weight: 400;
   line-height: 80px;
@@ -343,106 +356,198 @@ html[data-theme="dark"] .figma-timeline__logo {
 
 .figma-about__stage {
   position: relative;
-  height: 1603px;
-  margin-top: 137px;
+  min-height: 1892px;
 }
 
 .figma-about__entry {
   display: contents;
 }
 
+.figma-about__decor {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+.figma-about__decor--top-right {
+  top: 377px;
+  left: 1151px;
+  width: 284.81px;
+  height: 273.56px;
+  transform: rotate(-30deg);
+}
+
+.figma-about__decor--bottom-left {
+  top: 1542px;
+  left: 264px;
+  width: 44.15px;
+  height: 88.3px;
+  transform: rotate(15deg);
+}
+
+.figma-about__decor--bottom-right {
+  top: 1485px;
+  left: 1002px;
+  width: 230.81px;
+  height: 195.16px;
+  transform: rotate(180deg);
+}
+
 .figma-about__card {
   position: absolute;
   margin: 0;
+  display: grid;
+  place-items: center;
+}
+
+.figma-about__frame {
+  display: block;
   overflow: hidden;
   border: 2px solid #ffffff;
   border-radius: 24px;
   box-shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+  transform: rotate(var(--about-rotation, 0deg));
+  transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease;
+  will-change: transform;
 }
 
 .figma-about__card img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
 .figma-about__card--one {
-  top: 81px;
-  right: 40px;
-  width: 560px;
+  top: 427px;
+  left: 732px;
+  width: 561px;
   height: 518px;
-  transform: rotate(-7.5deg);
+}
+
+.figma-about__card--one .figma-about__frame {
+  width: 471px;
+  height: 410px;
+  --about-rotation: 15deg;
 }
 
 .figma-about__card--two {
-  top: 363px;
+  top: 527px;
   left: 130px;
   width: 557px;
   height: 601px;
-  transform: rotate(-6.6deg);
+}
+
+.figma-about__card--two .figma-about__frame {
+  width: 363px;
+  height: 484px;
+  --about-rotation: -30deg;
 }
 
 .figma-about__card--three {
-  top: 498px;
+  top: 810px;
   left: 561px;
   width: 406px;
   height: 516px;
-  transform: rotate(-7.5deg);
+}
+
+.figma-about__card--three .figma-about__frame {
+  width: 363px;
+  height: 484px;
+  --about-rotation: -5.28deg;
 }
 
 .figma-about__card--four {
-  top: 877px;
-  left: 403px;
+  top: 1221px;
+  left: 314px;
   width: 342px;
   height: 403px;
-  transform: rotate(7deg);
+}
+
+.figma-about__card--four .figma-about__frame {
+  width: 261px;
+  height: 348px;
+  --about-rotation: 15deg;
 }
 
 .figma-about__card--five {
-  top: 920px;
-  right: 272px;
+  top: 1185px;
+  left: 764px;
   width: 404px;
   height: 476px;
-  transform: rotate(-6.8deg);
+}
+
+.figma-about__card--five .figma-about__frame {
+  width: 308px;
+  height: 410px;
+  --about-rotation: -15deg;
 }
 
 .figma-about__label {
   position: absolute;
   margin: 0;
   color: #ffffff;
-  font-size: 40px;
-  line-height: 40px;
+  font-size: 32px;
+  line-height: 1.15;
   letter-spacing: -0.04em;
+  transform: translate3d(var(--about-label-shift-x, 0), var(--about-label-shift-y, 0), 0);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  will-change: transform;
 }
 
 .figma-about__label--one {
-  top: -20px;
-  right: 54px;
+  top: 345px;
+  left: 1151px;
   width: 399px;
+  --about-label-shift-y: -50%;
 }
 
 .figma-about__label--two {
-  top: 156px;
+  top: 541px;
   left: 114px;
   width: 261px;
+  --about-label-shift-y: -50%;
 }
 
 .figma-about__label--three {
-  top: 685px;
-  right: 72px;
+  top: 1068px;
+  left: 969px;
   width: 399px;
+  --about-label-shift-y: -50%;
 }
 
 .figma-about__label--four {
-  top: 1217px;
-  left: 88px;
+  top: 1670px;
+  left: 401px;
   width: 313px;
+  text-align: right;
+  --about-label-shift-x: -100%;
+  --about-label-shift-y: -50%;
 }
 
 .figma-about__label--five {
-  top: 1288px;
-  right: 53px;
+  top: 1741px;
+  left: 988px;
   width: 399px;
+  --about-label-shift-y: -50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .figma-about__entry:hover .figma-about__frame {
+    transform: rotate(var(--about-rotation, 0deg)) translateY(-10px) scale(1.025);
+    box-shadow: 0 28px 88px rgba(0, 0, 0, 0.28);
+    filter: saturate(1.05);
+  }
+
+  .figma-about__entry:hover .figma-about__label {
+    transform: translate3d(
+      var(--about-label-shift-x, 0),
+      calc(var(--about-label-shift-y, 0) - 6px),
+      0
+    );
+    opacity: 0.9;
+  }
 }
 
 @media (max-width: 1365px) {
@@ -450,8 +555,8 @@ html[data-theme="dark"] .figma-timeline__logo {
     width: calc(100vw - 64px);
   }
 
-  .figma-about__surface {
-    border-radius: 48px;
+  .figma-about__inner {
+    width: 100%;
   }
 }
 
@@ -519,20 +624,23 @@ html[data-theme="dark"] .figma-timeline__logo {
     margin-top: 88px;
   }
 
-  .figma-about__surface {
+  .figma-about__inner {
     min-height: auto;
     padding: 112px 24px 64px;
   }
 
   .figma-about__title {
-    margin-top: 0;
+    position: static;
+    width: 100%;
+    max-width: none;
+    transform: none;
   }
 
   .figma-about__stage {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px 20px;
-    height: auto;
+    min-height: auto;
     margin-top: 72px;
   }
 
@@ -542,20 +650,37 @@ html[data-theme="dark"] .figma-timeline__logo {
     align-content: start;
   }
 
+  .figma-about__decor {
+    display: none;
+  }
+
   .figma-about__card,
   .figma-about__label {
     position: static;
     width: 100%;
-    transform: none;
+    height: auto;
   }
 
   .figma-about__card {
+    display: block;
+  }
+
+  .figma-about__frame {
+    width: 100%;
     height: 420px;
+    transform: none;
   }
 
   .figma-about__label {
     font-size: 28px;
     line-height: 1.1;
+    text-align: left;
+    transform: none;
+  }
+
+  .figma-about__entry:hover .figma-about__frame,
+  .figma-about__entry:hover .figma-about__label {
+    transform: none;
   }
 }
 
@@ -585,13 +710,14 @@ html[data-theme="dark"] .figma-timeline__logo {
 
   .figma-timeline__company-name,
   .figma-timeline__role-name,
-  .figma-timeline__date p:first-child {
+  .figma-timeline__date-primary,
+  .figma-timeline__date-range {
     font-size: 32px;
     line-height: 40px;
   }
 
   .figma-timeline__location,
-  .figma-timeline__date p:last-child {
+  .figma-timeline__date-current {
     font-size: 18px;
     line-height: 24px;
   }
@@ -605,9 +731,8 @@ html[data-theme="dark"] .figma-timeline__logo {
     height: 240px;
   }
 
-  .figma-about__surface {
+  .figma-about__inner {
     padding: 88px 16px 48px;
-    border-radius: 32px;
   }
 
   .figma-about__stage {
@@ -615,7 +740,7 @@ html[data-theme="dark"] .figma-timeline__logo {
     gap: 24px;
   }
 
-  .figma-about__card {
+  .figma-about__frame {
     height: 320px;
   }
 }
