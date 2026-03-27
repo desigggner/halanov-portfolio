@@ -17,6 +17,26 @@
     />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="./invert.css" />
+    <link
+      rel="preload"
+      as="image"
+      href="./assets/invert-case/phone-left.jpg"
+      imagesrcset="
+        ./assets/invert-case/phone-left.jpg 240w,
+        ./assets/invert-case/phone-left@2x.jpg 517w
+      "
+      imagesizes="(max-width: 560px) 154px, (max-width: 720px) 180px, (max-width: 960px) 206px, (max-width: 1180px) 230px, 258px"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="./assets/invert-case/phone-right.jpg"
+      imagesrcset="
+        ./assets/invert-case/phone-right.jpg 240w,
+        ./assets/invert-case/phone-right@2x.jpg 517w
+      "
+      imagesizes="(max-width: 560px) 140px, (max-width: 720px) 165px, (max-width: 960px) 190px, (max-width: 1180px) 212px, 238px"
+    />
   </head>
   <body class="invert-page">
     <div class="page-shell invert-page-shell" id="top">
@@ -193,6 +213,8 @@
                 alt=""
                 width="174"
                 height="180"
+                loading="eager"
+                fetchpriority="low"
                 decoding="async"
               />
               <img
@@ -201,6 +223,8 @@
                 alt=""
                 width="84"
                 height="88"
+                loading="eager"
+                fetchpriority="low"
                 decoding="async"
               />
               <img
@@ -209,6 +233,8 @@
                 alt=""
                 width="94"
                 height="97"
+                loading="eager"
+                fetchpriority="low"
                 decoding="async"
               />
               <img
@@ -217,6 +243,8 @@
                 alt=""
                 width="62"
                 height="64"
+                loading="eager"
+                fetchpriority="low"
                 decoding="async"
               />
               <img
@@ -225,6 +253,8 @@
                 alt=""
                 width="90"
                 height="93"
+                loading="eager"
+                fetchpriority="low"
                 decoding="async"
               />
 
@@ -239,6 +269,7 @@
                   alt="Экран приложения Invert с заявками и откликами"
                   width="517"
                   height="1120"
+                  loading="eager"
                   fetchpriority="high"
                   decoding="async"
                 />
@@ -255,6 +286,8 @@
                   alt="Экран приложения Invert с потоком запросов"
                   width="517"
                   height="1120"
+                  loading="eager"
+                  fetchpriority="high"
                   decoding="async"
                 />
               </figure>
@@ -441,6 +474,8 @@
                   alt=""
                   width="26"
                   height="27"
+                  loading="lazy"
+                  fetchpriority="low"
                   decoding="async"
                 />
               </div>
@@ -454,6 +489,8 @@
                     alt=""
                     width="27"
                     height="27"
+                    loading="lazy"
+                    fetchpriority="low"
                     decoding="async"
                   />
                   <img
@@ -461,6 +498,8 @@
                     alt=""
                     width="27"
                     height="27"
+                    loading="lazy"
+                    fetchpriority="low"
                     decoding="async"
                   />
                   <img
@@ -468,6 +507,8 @@
                     alt=""
                     width="27"
                     height="27"
+                    loading="lazy"
+                    fetchpriority="low"
                     decoding="async"
                   />
                 </span>
@@ -483,6 +524,518 @@
                 Я спроектировал UX-архитектуру сервиса и интерфейсы для ключевых функций
                 платформы.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-problem invert-section invert-section--dark" aria-labelledby="invert-problem-title">
+          <div class="invert-section__inner container">
+            <div class="invert-problem__visual" aria-hidden="true">
+              <figure class="invert-problem__shot invert-problem__shot--left" data-reveal style="--reveal-delay: 0s">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/07fe09c3-766c-4fcc-b881-2d8c03ad2be8"
+                  alt=""
+                  width="227"
+                  height="227"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <figure class="invert-problem__shot invert-problem__shot--center" data-reveal style="--reveal-delay: 0.06s">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/813ac486-980d-4a9f-86db-df0912cc95bb"
+                  alt=""
+                  width="227"
+                  height="227"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <figure class="invert-problem__shot invert-problem__shot--right" data-reveal style="--reveal-delay: 0.12s">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/14ba2fc7-e7ac-4744-95bc-e62ee087195c"
+                  alt=""
+                  width="227"
+                  height="227"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            </div>
+
+            <h2
+              class="invert-section__title invert-section__title--light"
+              id="invert-problem-title"
+              data-reveal
+              style="--reveal-delay: 0.08s"
+            >
+              Покупка сложных товаров редко начинается с поиска
+            </h2>
+
+            <div
+              class="invert-section__lead invert-section__lead--light invert-problem__lead"
+              data-reveal
+              style="--reveal-delay: 0.14s"
+            >
+              <p>
+                Когда пользователю нужно купить стройматериалы, оборудование или
+                автозапчасти, он редко знает точный товар заранее.
+              </p>
+              <p>Цена зависит от условий, поставщиков и объёма.</p>
+              <p>Поэтому классические каталоги плохо работают для таких сценариев.</p>
+            </div>
+
+            <div class="invert-problem__workflow" data-reveal style="--reveal-delay: 0.2s">
+              <h3 class="invert-problem__workflow-title">
+                В реальности покупка
+                <br />
+                выглядит иначе
+              </h3>
+              <p class="invert-problem__workflow-label">Пользователь:</p>
+
+              <div class="invert-problem__workflow-steps" aria-label="Реальный сценарий покупки">
+                <span class="invert-pill invert-pill--light">описывает потребность</span>
+                <span class="invert-pill invert-pill--light"
+                  >связывается с несколькими поставщиками</span
+                >
+                <span class="invert-pill invert-pill--light">собирает предложения</span>
+                <span class="invert-pill invert-pill--light">сравнивает условия</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-scale invert-section invert-section--green" aria-labelledby="invert-scale-title">
+          <div class="invert-section__inner container">
+            <h2
+              class="invert-section__title invert-section__title--light"
+              id="invert-scale-title"
+              data-reveal
+              style="--reveal-delay: 0s"
+            >
+              Масштаб продукта
+            </h2>
+
+            <div class="invert-section__lead invert-section__lead--light" data-reveal style="--reveal-delay: 0.06s">
+              <p>Сложность была не только в каталоге, а в количестве поставщиков,</p>
+              <p>условий и сценариев вокруг сделки.</p>
+            </div>
+
+            <div class="invert-scale__grid" data-reveal style="--reveal-delay: 0.12s">
+              <article class="invert-scale__item">
+                <p class="invert-scale__value">10k+</p>
+                <p class="invert-scale__label">товаров<br />в каталоге</p>
+              </article>
+              <article class="invert-scale__item">
+                <p class="invert-scale__value">100+</p>
+                <p class="invert-scale__label">поставщиков<br />в системе</p>
+              </article>
+              <article class="invert-scale__item">
+                <p class="invert-scale__value">5</p>
+                <p class="invert-scale__label">типов<br />сделок</p>
+              </article>
+              <article class="invert-scale__item">
+                <p class="invert-scale__value">3</p>
+                <p class="invert-scale__label">ролей<br />пользователя</p>
+              </article>
+              <article class="invert-scale__item">
+                <p class="invert-scale__value">5</p>
+                <p class="invert-scale__label">ключевых<br />сценариев</p>
+              </article>
+            </div>
+
+            <div class="invert-scale__note" data-reveal style="--reveal-delay: 0.18s">
+              <p>Ограничения проекта</p>
+              <p>Продукт уже работал. Нельзя было ломать бизнес-логику. Релиз без остановки системы.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-entities invert-section" aria-labelledby="invert-entities-title">
+          <div class="invert-section__inner container">
+            <h2 class="invert-section__title" id="invert-entities-title" data-reveal style="--reveal-delay: 0s">
+              Я пересобрал UX
+              <br />
+              вокруг трёх сущностей
+            </h2>
+
+            <div class="invert-entities__grid" data-reveal style="--reveal-delay: 0.08s">
+              <figure class="invert-entities__card">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/9501614a-6c64-4a95-a895-b9ef5d9d2557"
+                  alt="Интерфейс запроса"
+                  width="336"
+                  height="727"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <figure class="invert-entities__card">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/02058464-14c6-4d56-bd31-bb7038b74012"
+                  alt="Интерфейс откликов"
+                  width="334"
+                  height="724"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+              <figure class="invert-entities__card">
+                <img
+                  src="https://www.figma.com/api/mcp/asset/9ddd7492-95ad-4d23-ab78-033cd1ee6a26"
+                  alt="Интерфейс выбора"
+                  width="336"
+                  height="727"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-rethink invert-section" aria-labelledby="invert-rethink-title">
+          <div class="invert-section__inner container">
+            <h2 class="invert-section__title" id="invert-rethink-title" data-reveal style="--reveal-delay: 0s">
+              Что было переосмыслено
+            </h2>
+
+            <div class="invert-section__lead" data-reveal style="--reveal-delay: 0.06s">
+              <p>Я сместил центр сценария с каталога на задачу, условия и выбор предложения.</p>
+            </div>
+
+            <div class="invert-rethink__grid">
+              <article class="invert-rethink__card" data-reveal style="--reveal-delay: 0.1s">
+                <p class="invert-chip-label">Сценарий пользователя</p>
+                <h3 class="invert-card-title">От поиска товара к описанию задачи</h3>
+                <p class="invert-card-text">Пользователь начинает с задачи, а не с каталога.</p>
+                <div class="invert-stack-steps" aria-label="Сценарий пользователя">
+                  <span class="invert-stack-steps__pill">запрос</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">условия</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">предложения</span>
+                </div>
+              </article>
+
+              <article class="invert-rethink__card" data-reveal style="--reveal-delay: 0.16s">
+                <p class="invert-chip-label">Структура интерфейсов</p>
+                <h3 class="invert-card-title">От витрины к этапам сделки</h3>
+                <p class="invert-card-text">
+                  Интерфейсы идут по этапам сделки: запрос, отклики, сравнение, выбор.
+                </p>
+                <div class="invert-stack-steps" aria-label="Структура интерфейсов">
+                  <span class="invert-stack-steps__pill">запрос</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">отклики</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">сравнение</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">выбор</span>
+                </div>
+              </article>
+
+              <article class="invert-rethink__card" data-reveal style="--reveal-delay: 0.22s">
+                <p class="invert-chip-label">Система взаимодействия</p>
+                <h3 class="invert-card-title">От хаотичных действий к понятному следующему шагу</h3>
+                <p class="invert-card-text">Статус и CTA сразу показывают следующий шаг.</p>
+                <div class="invert-stack-steps" aria-label="Система взаимодействия">
+                  <span class="invert-stack-steps__pill">статус</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">действие</span>
+                  <span class="invert-stack-steps__arrow" aria-hidden="true">↓</span>
+                  <span class="invert-stack-steps__pill">следующий шаг</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-system invert-section" aria-labelledby="invert-system-title">
+          <div class="invert-section__inner container">
+            <h2 class="invert-section__title" id="invert-system-title" data-reveal style="--reveal-delay: 0s">
+              Интерфейс стал системой
+            </h2>
+
+            <div class="invert-section__lead" data-reveal style="--reveal-delay: 0.06s">
+              <p>Система собрана из повторяемых паттернов и компонентов.</p>
+              <p>Она опирается на дизайн-токены: цвета, отступы, типографику, радиусы и тени.</p>
+              <p>Светлая и тёмная тема работают через ту же основу.</p>
+            </div>
+
+            <div class="invert-system__layout">
+              <div class="invert-system-board" data-reveal style="--reveal-delay: 0.1s">
+                <div class="invert-system-board__row">
+                  <article class="invert-system-board__card invert-system-board__card--small">
+                    <p class="invert-system-board__eyebrow">Button</p>
+                    <div class="invert-system-board__button"></div>
+                  </article>
+                  <article class="invert-system-board__card invert-system-board__card--small">
+                    <p class="invert-system-board__eyebrow">Input</p>
+                    <div class="invert-system-board__input"></div>
+                  </article>
+                </div>
+
+                <div class="invert-system-board__row">
+                  <article class="invert-system-board__card invert-system-board__card--small">
+                    <p class="invert-system-board__eyebrow">Card</p>
+                    <div class="invert-system-board__line invert-system-board__line--strong"></div>
+                    <div class="invert-system-board__line"></div>
+                    <div class="invert-system-board__line"></div>
+                  </article>
+                  <article class="invert-system-board__card invert-system-board__card--small">
+                    <p class="invert-system-board__eyebrow">Navigation</p>
+                    <div class="invert-system-board__nav">
+                      <span class="invert-system-board__nav-pill invert-system-board__nav-pill--active"></span>
+                      <span class="invert-system-board__nav-pill"></span>
+                      <span class="invert-system-board__nav-pill"></span>
+                    </div>
+                  </article>
+                </div>
+
+                <article class="invert-system-board__card invert-system-board__card--wide">
+                  <p class="invert-system-board__eyebrow">Modal / Form</p>
+                  <div class="invert-system-board__line invert-system-board__line--strong invert-system-board__line--wide"></div>
+                  <div class="invert-system-board__input invert-system-board__input--wide"></div>
+                  <div class="invert-system-board__textarea"></div>
+                  <div class="invert-system-board__button invert-system-board__button--compact"></div>
+                </article>
+              </div>
+
+              <div class="invert-system__notes">
+                <article class="invert-system__note" data-reveal style="--reveal-delay: 0.14s">
+                  <h3>Единые компоненты</h3>
+                  <p>Один набор компонентов работает во всех сценариях.</p>
+                </article>
+                <article class="invert-system__note" data-reveal style="--reveal-delay: 0.18s">
+                  <h3>Единые статусы</h3>
+                  <p>Статусы читаются одинаково на всех этапах сделки.</p>
+                </article>
+                <article class="invert-system__note" data-reveal style="--reveal-delay: 0.22s">
+                  <h3>Единые действия</h3>
+                  <p>CTA ведут себя одинаково и не ломают сценарий.</p>
+                </article>
+                <article class="invert-system__note" data-reveal style="--reveal-delay: 0.26s">
+                  <h3>Единые переходы</h3>
+                  <p>Переход между этапами остаётся предсказуемым.</p>
+                </article>
+                <article class="invert-system__note" data-reveal style="--reveal-delay: 0.3s">
+                  <h3>Светлая и тёмная тема</h3>
+                  <p>Компоненты автоматически адаптируются через дизайн-токены.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-storybook invert-section invert-section--dark" aria-labelledby="invert-storybook-title">
+          <div class="invert-section__inner container">
+            <h2
+              class="invert-section__title invert-section__title--light"
+              id="invert-storybook-title"
+              data-reveal
+              style="--reveal-delay: 0s"
+            >
+              Storybook
+            </h2>
+
+            <div class="invert-section__lead invert-section__lead--muted" data-reveal style="--reveal-delay: 0.06s">
+              <p>Паттерны переводились в библиотеку без потери логики.</p>
+              <p>Компоненты используются в разработке без дополнительной адаптации.</p>
+            </div>
+
+            <div class="invert-storybook__grid">
+              <article class="invert-storybook-card" data-reveal style="--reveal-delay: 0.1s">
+                <div class="invert-storybook-card__browser">
+                  <span></span><span></span><span></span><i></i>
+                </div>
+                <div class="invert-storybook-card__canvas">
+                  <div class="invert-storybook-card__button"></div>
+                  <div class="invert-storybook-card__line invert-storybook-card__line--short"></div>
+                </div>
+                <p>Button</p>
+              </article>
+              <article class="invert-storybook-card" data-reveal style="--reveal-delay: 0.14s">
+                <div class="invert-storybook-card__browser">
+                  <span></span><span></span><span></span><i></i>
+                </div>
+                <div class="invert-storybook-card__canvas">
+                  <div class="invert-storybook-card__field"></div>
+                  <div class="invert-storybook-card__line invert-storybook-card__line--medium"></div>
+                </div>
+                <p>Input</p>
+              </article>
+              <article class="invert-storybook-card" data-reveal style="--reveal-delay: 0.18s">
+                <div class="invert-storybook-card__browser">
+                  <span></span><span></span><span></span><i></i>
+                </div>
+                <div class="invert-storybook-card__canvas">
+                  <div class="invert-storybook-card__line invert-storybook-card__line--strong"></div>
+                  <div class="invert-storybook-card__line"></div>
+                  <div class="invert-storybook-card__line"></div>
+                </div>
+                <p>Card</p>
+              </article>
+              <article class="invert-storybook-card" data-reveal style="--reveal-delay: 0.22s">
+                <div class="invert-storybook-card__browser">
+                  <span></span><span></span><span></span><i></i>
+                </div>
+                <div class="invert-storybook-card__canvas">
+                  <div class="invert-storybook-card__line invert-storybook-card__line--wide"></div>
+                  <div class="invert-storybook-card__textarea"></div>
+                  <div class="invert-storybook-card__button invert-storybook-card__button--small"></div>
+                </div>
+                <p>Modal</p>
+              </article>
+              <article class="invert-storybook-card" data-reveal style="--reveal-delay: 0.26s">
+                <div class="invert-storybook-card__browser">
+                  <span></span><span></span><span></span><i></i>
+                </div>
+                <div class="invert-storybook-card__canvas">
+                  <div class="invert-storybook-card__nav">
+                    <span class="is-active"></span><span></span><span></span>
+                  </div>
+                </div>
+                <p>Navigation</p>
+              </article>
+              <article class="invert-storybook-card" data-reveal style="--reveal-delay: 0.3s">
+                <div class="invert-storybook-card__browser">
+                  <span></span><span></span><span></span><i></i>
+                </div>
+                <div class="invert-storybook-card__canvas">
+                  <div class="invert-storybook-card__field"></div>
+                  <div class="invert-storybook-card__field"></div>
+                  <div class="invert-storybook-card__button invert-storybook-card__button--small invert-storybook-card__button--wide"></div>
+                </div>
+                <p>Form</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-impact invert-section" aria-labelledby="invert-impact-title">
+          <div class="invert-section__inner container">
+            <h2 class="invert-section__title" id="invert-impact-title" data-reveal style="--reveal-delay: 0s">
+              Как система влияет на продукт
+            </h2>
+
+            <div class="invert-section__lead" data-reveal style="--reveal-delay: 0.06s">
+              <p>Системность ускорила проектирование, выровняла поведение интерфейса и снизила число ошибок.</p>
+            </div>
+
+            <div class="invert-impact__grid">
+              <div class="invert-impact__row" data-reveal style="--reveal-delay: 0.1s">
+                <article class="invert-impact__card invert-impact__card--before">
+                  <p class="invert-impact__label">Было</p>
+                  <h3>Каждый экран собирался заново</h3>
+                </article>
+                <article class="invert-impact__card invert-impact__card--after">
+                  <p class="invert-impact__label invert-impact__label--after">Стало</p>
+                  <h3>Повторяемые компоненты ускоряют сборку экранов</h3>
+                </article>
+              </div>
+              <div class="invert-impact__row" data-reveal style="--reveal-delay: 0.16s">
+                <article class="invert-impact__card invert-impact__card--before">
+                  <p class="invert-impact__label">Было</p>
+                  <h3>Разные паттерны взаимодействия</h3>
+                </article>
+                <article class="invert-impact__card invert-impact__card--after">
+                  <p class="invert-impact__label invert-impact__label--after">Стало</p>
+                  <h3>Единое поведение снижает число ошибок</h3>
+                </article>
+              </div>
+              <div class="invert-impact__row" data-reveal style="--reveal-delay: 0.22s">
+                <article class="invert-impact__card invert-impact__card--before">
+                  <p class="invert-impact__label">Было</p>
+                  <h3>Медленная сборка новых интерфейсов</h3>
+                </article>
+                <article class="invert-impact__card invert-impact__card--after">
+                  <p class="invert-impact__label invert-impact__label--after">Стало</p>
+                  <h3>Новые фичи проектируются быстрее</h3>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-result invert-section invert-section--green" aria-labelledby="invert-result-title">
+          <div class="invert-section__inner container">
+            <h2 class="invert-section__title" id="invert-result-title" data-reveal style="--reveal-delay: 0s">
+              Результат
+            </h2>
+
+            <div class="invert-section__lead" data-reveal style="--reveal-delay: 0.06s">
+              <p>Проект дал не набор экранов, а понятную основу для развития B2B-сценариев.</p>
+            </div>
+
+            <div class="invert-result__grid">
+              <article class="invert-result__card" data-reveal style="--reveal-delay: 0.1s">
+                <h3>Сократил путь пользователя</h3>
+                <p>→ меньше возвратов назад и уточнений.</p>
+              </article>
+              <article class="invert-result__card" data-reveal style="--reveal-delay: 0.14s">
+                <h3>Убрал лишние ветки</h3>
+                <p>→ решение принимается быстрее.</p>
+              </article>
+              <article class="invert-result__card" data-reveal style="--reveal-delay: 0.18s">
+                <h3>Сделал путь прозрачным</h3>
+                <p>→ меньше ошибок на следующем шаге.</p>
+              </article>
+              <article class="invert-result__card" data-reveal style="--reveal-delay: 0.22s">
+                <h3>Создал основу для роста</h3>
+                <p>→ новые функции добавляются быстрее.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="invert-final invert-section invert-section--dark" aria-labelledby="invert-final-title">
+          <div class="invert-section__inner container">
+            <h2
+              class="invert-section__title invert-section__title--light invert-final__title"
+              id="invert-final-title"
+              data-reveal
+              style="--reveal-delay: 0s"
+            >
+              Я не нарисовал маркетплейс.
+              <br />
+              Я сделал сложный торговый сценарий понятным.
+            </h2>
+
+            <div class="invert-section__lead invert-section__lead--muted" data-reveal style="--reveal-delay: 0.06s">
+              <p>Теперь пользователь видит следующий шаг, а не ищет его.</p>
+            </div>
+
+            <div class="invert-final__panel" data-reveal style="--reveal-delay: 0.12s">
+              <div class="invert-final__copy">
+                <p class="invert-final__summary">
+                  Сложная B2B-логика превращается в понятную последовательность действий.
+                </p>
+
+                <div class="invert-final__flow" aria-label="Итоговый сценарий">
+                  <span class="invert-final__flow-pill">Запрос</span>
+                  <span class="invert-final__flow-pill">Условия</span>
+                  <span class="invert-final__flow-pill">Отклики</span>
+                  <span class="invert-final__flow-pill invert-final__flow-pill--active">Выбор</span>
+                </div>
+              </div>
+
+              <div class="invert-final-device" aria-hidden="true">
+                <div class="invert-final-device__header">
+                  <span class="invert-final-device__avatar"></span>
+                  <span class="invert-final-device__title">
+                    <i></i>
+                    <i></i>
+                  </span>
+                  <span class="invert-final-device__action"></span>
+                </div>
+                <div class="invert-final-device__hero"></div>
+                <div class="invert-final-device__caption"></div>
+                <div class="invert-final-device__card invert-final-device__card--accent"></div>
+                <div class="invert-final-device__card"></div>
+                <div class="invert-final-device__card"></div>
+                <div class="invert-final-device__cta"></div>
+              </div>
             </div>
           </div>
         </section>

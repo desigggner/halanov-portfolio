@@ -1,6 +1,7 @@
 (function attachPortfolioCaseCard(global) {
   const defaultCaseImageSizes =
     "(max-width: 767px) calc(100vw - 48px), (max-width: 1180px) calc(50vw - 42px), 520px";
+  const prefetchedPageUrls = new Set();
   const optimizedCaseImageMap = {
     "./assets/invert-case-bg.png": {
       src: "./assets/invert-case-bg.jpg",
@@ -78,6 +79,100 @@
     </svg>
   `;
 
+  let pagePrefetchObserver = null;
+
+  function resolveInternalPageUrl(href) {
+    if (typeof href !== "string" || !href.trim() || !global.location) {
+      return null;
+    }
+
+    try {
+      const url = new URL(href, global.location.href);
+
+      if (url.origin !== global.location.origin) {
+        return null;
+      }
+
+      return url;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function prefetchPage(urlLike) {
+    const url = typeof urlLike === "string" ? resolveInternalPageUrl(urlLike) : urlLike;
+
+    if (!url || prefetchedPageUrls.has(url.href) || !document.head) {
+      return;
+    }
+
+    prefetchedPageUrls.add(url.href);
+
+    const prefetchLink = document.createElement("link");
+    prefetchLink.rel = "prefetch";
+    prefetchLink.href = url.href;
+    prefetchLink.as = "document";
+    document.head.append(prefetchLink);
+
+    if (typeof fetch === "function") {
+      const scheduleFetch =
+        typeof global.requestIdleCallback === "function"
+          ? global.requestIdleCallback.bind(global)
+          : (callback) => global.setTimeout(callback, 180);
+
+      scheduleFetch(() => {
+        fetch(url.href, {
+          credentials: "same-origin",
+          cache: "force-cache",
+        }).catch(() => {});
+      });
+    }
+  }
+
+  function observeCardPrefetch(card, href) {
+    const url = resolveInternalPageUrl(href);
+
+    if (!url) {
+      return;
+    }
+
+    const triggerPrefetch = () => {
+      prefetchPage(url);
+    };
+
+    card.addEventListener("pointerenter", triggerPrefetch, { once: true });
+    card.addEventListener("focus", triggerPrefetch, { once: true });
+    card.addEventListener("touchstart", triggerPrefetch, { once: true, passive: true });
+
+    if (!("IntersectionObserver" in global)) {
+      return;
+    }
+
+    if (!pagePrefetchObserver) {
+      pagePrefetchObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            const observedHref = entry.target.dataset.prefetchHref || "";
+
+            prefetchPage(observedHref);
+            pagePrefetchObserver.unobserve(entry.target);
+          });
+        },
+        {
+          rootMargin: "220px 0px",
+          threshold: 0.01,
+        },
+      );
+    }
+
+    card.dataset.prefetchHref = url.href;
+    pagePrefetchObserver.observe(card);
+  }
+
   function resolveCaseImageAsset(image) {
     if (typeof image !== "string" || !image.trim()) {
       return null;
@@ -153,6 +248,7 @@
 
     if (tagName.toLowerCase() === "a") {
       card.href = cardHref;
+      observeCardPrefetch(card, cardHref);
     }
 
     if (ariaLabel) {
