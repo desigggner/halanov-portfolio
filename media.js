@@ -6,6 +6,7 @@ const elements = {
   status: document.querySelector("[data-media-status]"),
   feed: document.querySelector("[data-media-feed]"),
   fallback: document.querySelector("[data-media-fallback]"),
+  feedSection: document.querySelector(".media-feed-section"),
 };
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const mobileNavMedia = window.matchMedia("(max-width: 720px)");
@@ -18,6 +19,7 @@ const mobileNavLinks = Array.from(document.querySelectorAll(".site-mobile-nav__s
 
 let mediaVideoObserver = null;
 let isMobileNavOpen = false;
+let isFeedLoadingStarted = false;
 
 function applyTheme(theme) {
   root.dataset.theme = theme;
@@ -214,7 +216,7 @@ function createPostCoverMarkup(post, title) {
         ${posterMarkup}
         <video
           class="media-post__preview"
-          src="${escapeHtml(post.video)}"
+          data-media-video-src="${escapeHtml(post.video)}"
           ${posterAttribute}
           autoplay
           muted
@@ -272,6 +274,7 @@ function createPostCoverMarkup(post, title) {
           src="${escapeHtml(post.image)}"
           alt="${escapeHtml(title)}"
           loading="lazy"
+          decoding="async"
           referrerpolicy="no-referrer"
         />
       </div>
@@ -343,6 +346,24 @@ function pauseObservedVideo(video) {
   }
 }
 
+function loadMediaVideoSource(video) {
+  if (!(video instanceof HTMLVideoElement) || video.dataset.videoLoaded === "true") {
+    return false;
+  }
+
+  const videoSource = video.dataset.mediaVideoSrc || "";
+
+  if (!videoSource) {
+    return false;
+  }
+
+  video.src = videoSource;
+  video.dataset.videoLoaded = "true";
+  video.load();
+
+  return true;
+}
+
 function resetVideoPreviews() {
   if (!mediaVideoObserver) {
     return;
@@ -381,6 +402,8 @@ function setupVideoPreviews() {
     video.addEventListener("loadeddata", markVideoReady, { once: true });
     video.addEventListener("loadedmetadata", markVideoReady, { once: true });
     video.addEventListener("loadedmetadata", () => {
+      loadMediaVideoSource(video);
+
       const playPromise = video.play();
 
       if (playPromise && typeof playPromise.catch === "function") {
@@ -388,10 +411,12 @@ function setupVideoPreviews() {
       }
     });
     video.addEventListener("error", markVideoBroken, { once: true });
-    video.load();
   }
 
   if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    videos.forEach((video) => {
+      loadMediaVideoSource(video);
+    });
     return;
   }
 
@@ -401,6 +426,8 @@ function setupVideoPreviews() {
         const video = entry.target;
 
         if (entry.isIntersecting) {
+          loadMediaVideoSource(video);
+
           const playPromise = video.play();
 
           if (playPromise && typeof playPromise.catch === "function") {
@@ -413,6 +440,7 @@ function setupVideoPreviews() {
     },
     {
       threshold: 0.35,
+      rootMargin: "240px 0px",
     },
   );
 
@@ -449,6 +477,11 @@ function hideFallback() {
 }
 
 async function loadFeed() {
+  if (isFeedLoadingStarted) {
+    return;
+  }
+
+  isFeedLoadingStarted = true;
   const controller = new AbortController();
   const timeoutId = window.setTimeout(() => controller.abort(), 9000);
 
@@ -490,6 +523,43 @@ async function loadFeed() {
       true,
     );
   }
+}
+
+function scheduleFeedLoad() {
+  const startLoading = () => {
+    loadFeed();
+  };
+
+  if (!elements.feedSection || !("IntersectionObserver" in window)) {
+    if (typeof window.requestIdleCallback === "function") {
+      window.requestIdleCallback(startLoading, { timeout: 1500 });
+      return;
+    }
+
+    window.setTimeout(startLoading, 180);
+    return;
+  }
+
+  const fallbackTimerId = window.setTimeout(startLoading, 2500);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        window.clearTimeout(fallbackTimerId);
+        observer.disconnect();
+        startLoading();
+      });
+    },
+    {
+      threshold: 0.01,
+      rootMargin: "320px 0px",
+    },
+  );
+
+  observer.observe(elements.feedSection);
 }
 
 function syncMobileNavState() {
@@ -585,5 +655,5 @@ window.addEventListener("storage", (event) => {
 });
 
 ensureTopOnInitialLoad();
-loadFeed();
+scheduleFeedLoad();
 setupMobileNav();
