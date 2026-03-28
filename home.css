@@ -318,9 +318,9 @@ body.home-page {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 0;
-  padding: 8px 16px;
-  border-radius: 999px;
+  min-height: 44px;
+  padding: 4px 16px;
+  border-radius: 99px;
   background-color: #eeeeee;
   color: #4b4b4b;
 }
