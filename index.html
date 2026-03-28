@@ -177,14 +177,14 @@
 
       <main class="main-content">
         <section class="hero container" id="about" aria-labelledby="hero-title">
-          <h1 class="hero__title" id="hero-title">
-            <span class="hero__title-vapor" aria-hidden="true">Сложное делаю понятным</span>
+          <h1 class="hero__title" id="hero-title" data-hero-title>
+            <canvas class="hero__title-canvas" aria-hidden="true"></canvas>
             <span class="hero__title-text">Сложное делаю понятным</span>
           </h1>
 
-          <div class="hero__profile">
+          <div class="hero__profile" data-hero-profile>
             <img
-              class="hero__avatar"
+              class="hero__avatar hero__intro-item"
               src="./.figma-assets/ef0b65b68fe9d15a08f3b336bd82c6ebaf7c8287.png"
               alt="Портрет Влада Галанова"
               width="80"
@@ -194,8 +194,8 @@
             />
 
             <div class="hero__meta">
-              <p class="hero__name"><span>Влад Галанов</span></p>
-              <p class="hero__role"><span>Продуктовый дизайнер / Design Lead</span></p>
+              <p class="hero__name hero__intro-item"><span>Влад Галанов</span></p>
+              <p class="hero__role hero__intro-item"><span>Продуктовый дизайнер / Design Lead</span></p>
             </div>
           </div>
         </section>
