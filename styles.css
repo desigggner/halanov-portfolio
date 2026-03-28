@@ -2349,7 +2349,7 @@ html[data-theme="dark"] .about-cta__card {
 .site-footer__chip {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 12px;
   min-height: 60px;
   width: fit-content;
@@ -4102,7 +4102,7 @@ html[data-theme="dark"] .company__logo--dark {
   .site-footer__chip {
     width: 100%;
     min-height: 56px;
-    justify-content: center;
+    justify-content: flex-start;
     padding-inline: 14px;
   }
 

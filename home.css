@@ -318,8 +318,8 @@ body.home-page {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 44px;
-  padding: 4px 16px;
+  min-height: 50px;
+  padding: 16px 22px;
   border-radius: 99px;
   background-color: #eeeeee;
   color: #4b4b4b;
@@ -343,6 +343,16 @@ body.home-page {
 
 .figma-case__metric span {
   font-weight: 400;
+}
+
+html[data-theme="dark"] .figma-case__metric {
+  background-color: rgba(255, 246, 237, 0.1);
+  color: #f5efe8;
+}
+
+html[data-theme="dark"] .figma-case__metric strong,
+html[data-theme="dark"] .figma-case__metric span {
+  color: #f5efe8;
 }
 
 .figma-case__description {
