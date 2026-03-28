@@ -19,7 +19,7 @@ const siteFooterMarkup = `
             muted
             loop
             playsinline
-            preload="auto"
+            preload="metadata"
             aria-hidden="true"
           ></video>
         </div>

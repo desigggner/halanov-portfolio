@@ -976,8 +976,27 @@ html[data-theme="dark"] .admin-analytics-card {
   display: block;
   width: clamp(112px, 14vw, 140px);
   height: auto;
-  mix-blend-mode: difference;
-  filter: brightness(0) invert(1);
+  overflow: visible;
+  color: currentColor;
+}
+
+.brand__logo-fill {
+  fill: currentColor;
+  opacity: 0;
+  animation: brand-logo-fill 1.45s cubic-bezier(0.2, 0.8, 0.2, 1) 1 forwards;
+}
+
+.brand__logo-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation:
+    brand-logo-draw 1.45s cubic-bezier(0.2, 0.8, 0.2, 1) 1 forwards,
+    brand-logo-stroke-fade 120ms ease-out 1.36s 1 forwards;
 }
 
 .header-overlay {
@@ -4457,6 +4476,20 @@ html[data-theme="dark"] .company__logo--dark {
     animation: none !important;
   }
 
+  .brand__logo-fill,
+  .brand__logo-stroke {
+    animation: none !important;
+  }
+
+  .brand__logo-fill {
+    opacity: 1 !important;
+  }
+
+  .brand__logo-stroke {
+    opacity: 0 !important;
+    stroke-dashoffset: 0 !important;
+  }
+
   .case-card {
     opacity: 1 !important;
     transform: none !important;
@@ -4515,6 +4548,37 @@ html[data-theme="dark"] .company__logo--dark {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
+  }
+}
+
+@keyframes brand-logo-draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes brand-logo-stroke-fade {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes brand-logo-fill {
+  0%,
+  82% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }
 

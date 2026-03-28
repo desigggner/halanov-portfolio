@@ -61,15 +61,7 @@ function initHeroIntro() {
   };
 
   hero.dataset.heroIntro = "pending";
-
-  const readyPromise =
-    document.fonts && typeof document.fonts.ready?.then === "function"
-      ? document.fonts.ready.catch(() => undefined)
-      : Promise.resolve();
-
-  readyPromise.then(() => {
-    window.requestAnimationFrame(start);
-  });
+  window.requestAnimationFrame(start);
 }
 
 function applyTheme(theme) {
