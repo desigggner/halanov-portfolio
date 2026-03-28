@@ -312,15 +312,15 @@ body.home-page {
   min-height: 44px;
   padding: 4px 16px;
   border-radius: 99px;
-  background: #eeeeee;
-  color: #4b4b4b;
+  background-color: #eeeeee !important;
+  color: #4b4b4b !important;
   font-size: 20px;
   line-height: 35.84px;
 }
 
 html[data-theme="dark"] .figma-case__tag {
-  background: #eeeeee;
-  color: #4b4b4b;
+  background-color: #eeeeee !important;
+  color: #4b4b4b !important;
 }
 
 .figma-case__description {
