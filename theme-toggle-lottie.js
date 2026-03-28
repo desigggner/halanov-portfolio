@@ -2,8 +2,8 @@ const themeToggleLottieButtons = Array.from(document.querySelectorAll(".theme-to
 const themeToggleReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const themeToggleHoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
 const themeToggleAnimationPaths = {
-  sun: "/public/lottie/sun.json",
-  moon: "/public/lottie/moon.json",
+  sun: "/assets/lottie/sun.json",
+  moon: "/assets/lottie/moon.json",
 };
 const themeToggleAnimations = new WeakMap();
 
