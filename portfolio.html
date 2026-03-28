@@ -231,6 +231,7 @@
           class="cases container portfolio-gallery"
           aria-labelledby="portfolio-gallery-title"
           data-portfolio-grid
+          data-deferred-section
         >
           <h2 class="sr-only" id="portfolio-gallery-title">Все кейсы</h2>
 
@@ -238,7 +239,7 @@
           <div class="cases__column cases__column--right" data-portfolio-column="right"></div>
         </section>
 
-        <section class="portfolio-list container" data-portfolio-list hidden>
+        <section class="portfolio-list container" data-portfolio-list data-deferred-section hidden>
           <h2 class="sr-only">Все кейсы списком</h2>
 
           <div class="portfolio-list__header" aria-hidden="true">
@@ -456,5 +457,10 @@
     <script src="./case-card.js" defer></script>
     <script src="./analytics.js" defer></script>
     <script src="./portfolio.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"
+      defer
+    ></script>
+    <script src="./theme-toggle-lottie.js" defer></script>
   </body>
 </html>

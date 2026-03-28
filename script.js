@@ -174,27 +174,59 @@ function setupHeroAvatarVideo() {
 
   if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
     window.requestAnimationFrame(attemptPlayback);
-    return;
   }
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
+          avatarVideo.pause();
           return;
         }
 
         attemptPlayback();
-        observer.disconnect();
       });
     },
     {
-      threshold: 0.1,
+      threshold: 0.18,
       rootMargin: "160px 0px",
     },
   );
 
   observer.observe(hero);
+}
+
+function setupCompaniesMarquee() {
+  const companiesSection = document.querySelector(".companies");
+
+  if (!(companiesSection instanceof HTMLElement)) {
+    return;
+  }
+
+  const setInViewState = (isInView) => {
+    companiesSection.classList.toggle("is-in-view", isInView);
+  };
+
+  if (!("IntersectionObserver" in window) || prefersReducedMotion.matches) {
+    setInViewState(true);
+    return;
+  }
+
+  setInViewState(false);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        setInViewState(entry.isIntersecting);
+      });
+    },
+    {
+      threshold: 0.05,
+      rootMargin: "120px 0px",
+    },
+  );
+
+  observer.observe(companiesSection);
 }
 
 function syncMobileNavState() {
@@ -292,4 +324,5 @@ window.addEventListener("storage", (event) => {
 ensureTopOnInitialLoad();
 setupMobileNav();
 setupHeroAvatarVideo();
+setupCompaniesMarquee();
 initHeroIntro();

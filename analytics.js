@@ -9,6 +9,7 @@
 
   let maxScrollPercent = 0;
   let engagementSent = false;
+  let scrollFrameId = 0;
 
   function getOrCreateId(storage, key, prefix) {
     try {
@@ -247,6 +248,26 @@
     });
   }
 
+  function schedulePageview() {
+    if (typeof window.requestIdleCallback === "function") {
+      window.requestIdleCallback(sendPageview, { timeout: 1200 });
+      return;
+    }
+
+    window.setTimeout(sendPageview, 180);
+  }
+
+  function queueScrollDepthUpdate() {
+    if (scrollFrameId) {
+      return;
+    }
+
+    scrollFrameId = window.requestAnimationFrame(() => {
+      scrollFrameId = 0;
+      updateScrollDepth();
+    });
+  }
+
   function sendEngagement() {
     if (engagementSent) {
       return;
@@ -276,9 +297,7 @@
 
   document.addEventListener(
     "scroll",
-    () => {
-      updateScrollDepth();
-    },
+    queueScrollDepthUpdate,
     { passive: true },
   );
 
@@ -304,5 +323,5 @@
   });
 
   updateScrollDepth();
-  sendPageview();
+  schedulePageview();
 })();

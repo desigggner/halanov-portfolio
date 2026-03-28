@@ -1604,6 +1604,10 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     animation: invert-marquee-scroll 26s linear infinite;
   }
 
+  html.js-ready .invert-marquee-section:not(.is-in-view) .invert-marquee__track {
+    animation-play-state: paused;
+  }
+
   .invert-marquee--reverse .invert-marquee__track {
     animation-direction: reverse;
   }
@@ -2431,6 +2435,32 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 
   to {
     transform: translateX(-100%);
+  }
+}
+
+@supports (content-visibility: auto) {
+  .invert-marquee-section[data-deferred-section] {
+    --deferred-block-size: 780px;
+  }
+
+  .invert-metrics[data-deferred-section] {
+    --deferred-block-size: 560px;
+  }
+
+  .invert-logic[data-deferred-section],
+  .invert-scale[data-deferred-section],
+  .invert-entities[data-deferred-section],
+  .invert-rethink[data-deferred-section],
+  .invert-system[data-deferred-section],
+  .invert-storybook[data-deferred-section],
+  .invert-impact[data-deferred-section],
+  .invert-result[data-deferred-section],
+  .invert-final[data-deferred-section] {
+    --deferred-block-size: 1040px;
+  }
+
+  .invert-problem[data-deferred-section] {
+    --deferred-block-size: 1180px;
   }
 }
 

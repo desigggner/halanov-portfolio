@@ -35,6 +35,7 @@ let activeCategory = "all";
 let activeLayout = loadLayoutPreference();
 let caseRevealObserver = null;
 let casesSyncInFlight = false;
+let backgroundSyncTimerId = 0;
 let isMobileNavOpen = false;
 
 function applyTheme(theme) {
@@ -441,6 +442,25 @@ async function syncCasesFromServer() {
   }
 }
 
+function scheduleBackgroundCasesSync() {
+  if (backgroundSyncTimerId) {
+    window.clearTimeout(backgroundSyncTimerId);
+    backgroundSyncTimerId = 0;
+  }
+
+  const runSync = () => {
+    backgroundSyncTimerId = 0;
+    syncCasesFromServer();
+  };
+
+  if (typeof window.requestIdleCallback === "function") {
+    window.requestIdleCallback(runSync, { timeout: 1800 });
+    return;
+  }
+
+  backgroundSyncTimerId = window.setTimeout(runSync, 220);
+}
+
 async function bootstrapCases() {
   const hasCasesCache = typeof store?.hasCasesCache === "function" && store.hasCasesCache();
 
@@ -453,7 +473,7 @@ async function bootstrapCases() {
   }
 
   renderCases();
-  syncCasesFromServer();
+  scheduleBackgroundCasesSync();
 }
 
 function syncMobileNavState() {

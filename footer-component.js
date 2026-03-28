@@ -198,6 +198,7 @@ function setupFooterAvatarVideo(footer) {
   avatarVideo.addEventListener("error", hideVideo);
 
   if (!("IntersectionObserver" in window)) {
+    attemptPlayback();
     return;
   }
 
@@ -205,15 +206,15 @@ function setupFooterAvatarVideo(footer) {
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) {
+          avatarVideo.pause();
           return;
         }
 
         attemptPlayback();
-        observer.disconnect();
       });
     },
     {
-      threshold: 0.01,
+      threshold: 0.08,
       rootMargin: "240px 0px",
     },
   );

@@ -218,6 +218,39 @@ function setupCountGroups() {
   });
 }
 
+function setupMarqueePlayback() {
+  const marqueeSection = document.querySelector(".invert-marquee-section");
+
+  if (!(marqueeSection instanceof HTMLElement)) {
+    return;
+  }
+
+  const setInViewState = (isInView) => {
+    marqueeSection.classList.toggle("is-in-view", isInView);
+  };
+
+  if (!("IntersectionObserver" in window) || prefersReducedMotion.matches) {
+    setInViewState(true);
+    return;
+  }
+
+  setInViewState(false);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        setInViewState(entry.isIntersecting);
+      });
+    },
+    {
+      threshold: 0.05,
+      rootMargin: "120px 0px",
+    },
+  );
+
+  observer.observe(marqueeSection);
+}
+
 function syncMobileNavState() {
   document.body.classList.toggle("is-mobile-nav-open", isMobileNavOpen);
 
@@ -313,4 +346,5 @@ window.addEventListener("storage", (event) => {
 ensureTopOnInitialLoad();
 setupRevealObserver();
 setupCountGroups();
+setupMarqueePlayback();
 setupMobileNav();

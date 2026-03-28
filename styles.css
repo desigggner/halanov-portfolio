@@ -1137,6 +1137,29 @@ html[data-theme="dark"] .theme-toggle__thumb {
   line-height: 0;
 }
 
+.theme-toggle__lottie {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.theme-toggle__icon.is-lottie-ready .theme-toggle__lottie {
+  opacity: 1;
+}
+
+.theme-toggle__icon.is-lottie-ready > svg {
+  opacity: 0;
+}
+
+.theme-toggle__icon > svg {
+  transition: opacity 140ms ease;
+}
+
 .theme-toggle__icon svg {
   display: block;
   width: 20px;
@@ -1149,6 +1172,10 @@ html[data-theme="dark"] .theme-toggle__thumb {
 
 .theme-toggle__icon--moon svg {
   transform: translateX(-1px);
+}
+
+.theme-toggle__icon--moon > svg path:nth-child(-n + 4) {
+  display: none;
 }
 
 html[data-theme="light"] .theme-toggle__icon--sun,
@@ -2874,6 +2901,49 @@ html[data-theme="dark"] .site-footer__chip-icon {
   opacity: 1;
 }
 
+@supports (content-visibility: auto) {
+  [data-deferred-section] {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px var(--deferred-block-size, 960px);
+  }
+
+  .figma-cases[data-deferred-section] {
+    --deferred-block-size: 1760px;
+  }
+
+  .figma-timeline[data-deferred-section] {
+    --deferred-block-size: 1380px;
+  }
+
+  .figma-about[data-deferred-section] {
+    --deferred-block-size: 1520px;
+  }
+
+  .about-story[data-deferred-section],
+  .about-services[data-deferred-section],
+  .about-outside[data-deferred-section] {
+    --deferred-block-size: 920px;
+  }
+
+  .about-principles[data-deferred-section],
+  .about-facts[data-deferred-section] {
+    --deferred-block-size: 760px;
+  }
+
+  .about-cta[data-deferred-section] {
+    --deferred-block-size: 680px;
+  }
+
+  .media-feed-section[data-deferred-section] {
+    --deferred-block-size: 1280px;
+  }
+
+  .portfolio-gallery[data-deferred-section],
+  .portfolio-list[data-deferred-section] {
+    --deferred-block-size: 1840px;
+  }
+}
+
 .hero__meta {
   width: min(347px, 100%);
   text-align: left;
@@ -3020,6 +3090,10 @@ html[data-theme="dark"] .site-footer__chip-icon {
   padding: 0;
   animation: companies-marquee var(--companies-duration) linear infinite;
   will-change: transform;
+}
+
+html.js-ready .companies:not(.is-in-view) .companies__list {
+  animation-play-state: paused;
 }
 
 .company {
