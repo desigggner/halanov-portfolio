@@ -693,10 +693,24 @@ html[data-theme="dark"] .figma-timeline__logo {
 }
 
 .figma-timeline__dot {
+  position: relative;
   width: 10px;
   height: 10px;
+  flex: none;
   border-radius: 50%;
   background: #16d178;
+  animation: figma-timeline-dot-pulse 2.4s ease-out infinite;
+}
+
+.figma-timeline__dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(22, 209, 120, 0.42);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.82);
+  animation: figma-timeline-dot-ring 2.4s ease-out infinite;
 }
 
 .figma-timeline__item:nth-child(2) .figma-timeline__logo {
@@ -722,8 +736,40 @@ html[data-theme="dark"] .figma-timeline__logo {
   }
 }
 
+@keyframes figma-timeline-dot-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(22, 209, 120, 0);
+  }
+
+  40% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 4px rgba(22, 209, 120, 0.08);
+  }
+}
+
+@keyframes figma-timeline-dot-ring {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+
+  45% {
+    opacity: 0.55;
+  }
+
+  70% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .figma-timeline__logo {
+  .figma-timeline__logo,
+  .figma-timeline__dot,
+  .figma-timeline__dot::after {
     animation: none;
   }
 }
@@ -1304,7 +1350,7 @@ html[data-theme="dark"] .figma-timeline__logo {
   }
 
   .figma-timeline__inner {
-    width: calc(100vw - 32px);
+    width: calc(100vw - 24px);
   }
 
   .figma-timeline__intro {
@@ -1327,71 +1373,79 @@ html[data-theme="dark"] .figma-timeline__logo {
 
   .figma-timeline__list {
     gap: 60px;
-    margin-top: 40px;
+    margin-top: 60px;
   }
 
   .figma-timeline__item {
-    grid-template-columns: 72px minmax(0, 1fr);
-    column-gap: 16px;
-    row-gap: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 39px;
   }
 
   .figma-timeline__company {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 24px;
-    grid-column: 1 / -1;
-    grid-row: 1;
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .figma-timeline__logo {
-    width: 72px;
-    height: 72px;
-    border-radius: 18px;
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
   }
 
   .figma-timeline__company-copy {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4px;
+    gap: 12px;
     min-width: 0;
-  }
-
-  .figma-timeline__role {
-    grid-column: 2;
-    grid-row: 2;
-    gap: 10px;
+    width: 100%;
+    max-width: 328px;
+    padding: 4px 0;
   }
 
   .figma-timeline__date {
-    grid-column: 2;
-    grid-row: 3;
-    gap: 8px;
+    order: 2;
+    grid-column: auto;
+    grid-row: auto;
+    gap: 12px;
+    padding-top: 4px;
+  }
+
+  .figma-timeline__role {
+    order: 3;
+    grid-column: auto;
+    grid-row: auto;
+    gap: 12px;
+    padding-top: 4px;
   }
 
   .figma-timeline__company-name,
   .figma-timeline__role-name,
   .figma-timeline__date-primary,
   .figma-timeline__date-range {
-    font-size: 20px;
-    line-height: 1.12;
+    font-size: 28px;
+    line-height: 1.45;
   }
 
   .figma-timeline__company-name {
-    max-width: 11ch;
+    max-width: none;
   }
 
   .figma-timeline__location,
   .figma-timeline__date-current {
-    font-size: 16px;
-    line-height: 1.25;
+    font-size: 20px;
+    line-height: 1.35;
   }
 
   .figma-timeline__role-copy {
-    max-width: 25ch;
-    font-size: 16px;
-    line-height: 1.28;
+    max-width: 100%;
+    font-size: 20px;
+    line-height: 1.35;
   }
 
   .figma-timeline__download {
