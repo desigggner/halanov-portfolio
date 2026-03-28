@@ -110,7 +110,8 @@ async function hasValidSession(cookieHeader = "", options = {}) {
 function isAllowedStaticPath(pathname) {
   return (
     pathname.startsWith("/.well-known/") ||
-    pathname === "/favicon.ico"
+    pathname === "/favicon.ico" ||
+    pathname === "/favicon.svg"
   );
 }
 

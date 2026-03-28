@@ -1,9 +1,6 @@
 const root = document.documentElement;
 root.classList.add("js-ready");
-const store = window.PortfolioStore;
-const caseCard = window.PortfolioCaseCard;
-const themeStorageKey = store?.themeStorageKey || "portfolio-theme";
-const casesStorageKey = store?.casesStorageKey;
+const themeStorageKey = "portfolio-theme";
 const toggleButtons = Array.from(document.querySelectorAll(".theme-toggle"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const mobileNavMedia = window.matchMedia("(max-width: 720px)");
@@ -13,14 +10,6 @@ const mobileNavToggleButtons = Array.from(document.querySelectorAll("[data-mobil
 const mobileNavCloseButtons = Array.from(document.querySelectorAll("[data-mobile-nav-close]"));
 const mobileNavToggleLabels = Array.from(document.querySelectorAll("[data-mobile-nav-toggle-label]"));
 const mobileNavLinks = Array.from(document.querySelectorAll(".site-mobile-nav__sheet-link"));
-
-const caseColumns = {
-  left: document.querySelector('[data-cases-column="left"]'),
-  right: document.querySelector('[data-cases-column="right"]'),
-};
-
-let caseRevealObserver = null;
-let casesSyncInFlight = false;
 let isMobileNavOpen = false;
 
 function initHeroIntro() {
@@ -121,135 +110,91 @@ function ensureTopOnInitialLoad() {
   window.addEventListener("load", resetScroll, { once: true });
 }
 
-function renderCases(nextCases = store?.loadCases() || []) {
-  if (!store || !caseCard || !caseColumns.left || !caseColumns.right) {
-    return;
-  }
-
-  const cases = nextCases.filter((caseItem) => caseItem.showOnHome);
-
-  caseColumns.left.innerHTML = "";
-  caseColumns.right.innerHTML = "";
-
-  if (!cases.length) {
-    if (caseRevealObserver) {
-      caseRevealObserver.disconnect();
-      caseRevealObserver = null;
-    }
-
-    caseColumns.left.innerHTML =
-      '<p class="cases-empty">На главной пока нет выбранных кейсов. Включи показ в админке.</p>';
-    return;
-  }
-
-  for (const [index, caseItem] of cases.entries()) {
-    const column = caseItem.column === "right" ? caseColumns.right : caseColumns.left;
-    column.append(
-      caseCard.createCaseCard(caseItem, {
-        imageLoading: index < 2 ? "eager" : "lazy",
-        imageFetchPriority: index === 0 ? "high" : "auto",
-      }),
-    );
-  }
-
-  setupCaseMotion();
-}
-
-async function syncCasesFromServer() {
-  if (!store?.loadCasesFromServer || casesSyncInFlight) {
+function loadDeferredVideoSource(video) {
+  if (!(video instanceof HTMLVideoElement) || video.dataset.videoLoaded === "true") {
     return false;
   }
 
-  casesSyncInFlight = true;
+  const videoSource = video.dataset.videoSrc || "";
 
-  try {
-    const result = await store.loadCasesFromServer();
-    renderCases(result.cases || []);
-    return true;
-  } catch (error) {
+  if (!videoSource) {
     return false;
-  } finally {
-    casesSyncInFlight = false;
   }
+
+  video.src = videoSource;
+  video.dataset.videoLoaded = "true";
+  video.load();
+
+  return true;
 }
 
-async function bootstrapCases() {
-  const hasCasesCache = typeof store?.hasCasesCache === "function" && store.hasCasesCache();
+function setupHeroAvatarVideo() {
+  const avatarVideo = document.querySelector(".hero [data-avatar-video]");
 
-  if (!hasCasesCache) {
-    const synced = await syncCasesFromServer();
+  if (!(avatarVideo instanceof HTMLVideoElement)) {
+    return;
+  }
 
-    if (synced) {
+  avatarVideo.muted = true;
+  avatarVideo.defaultMuted = true;
+
+  const revealVideo = () => {
+    avatarVideo.classList.add("is-ready");
+  };
+
+  const hideVideo = () => {
+    avatarVideo.classList.remove("is-ready");
+  };
+
+  const attemptPlayback = () => {
+    loadDeferredVideoSource(avatarVideo);
+
+    const playPromise = avatarVideo.play();
+
+    if (playPromise && typeof playPromise.then === "function") {
+      playPromise.then(revealVideo).catch(hideVideo);
       return;
     }
-  }
 
-  renderCases();
-  syncCasesFromServer();
-}
+    revealVideo();
+  };
 
-function setupCaseReveal(cards) {
-  if (caseRevealObserver) {
-    caseRevealObserver.disconnect();
-    caseRevealObserver = null;
-  }
+  avatarVideo.addEventListener("loadeddata", attemptPlayback, { once: true });
+  avatarVideo.addEventListener("playing", revealVideo, { once: true });
+  avatarVideo.addEventListener("error", hideVideo);
 
-  const revealAll = prefersReducedMotion.matches || !("IntersectionObserver" in window);
+  const hero = avatarVideo.closest(".hero");
 
-  for (const [index, card] of cards.entries()) {
-    card.style.setProperty("--case-reveal-delay", `${index * 110}ms`);
-
-    if (revealAll) {
-      card.classList.remove("is-reveal-pending");
-      card.classList.add("is-revealed");
-    } else {
-      card.classList.remove("is-revealed");
-      card.classList.add("is-reveal-pending");
-    }
-  }
-
-  if (revealAll) {
+  if (!hero || !("IntersectionObserver" in window)) {
+    window.requestAnimationFrame(attemptPlayback);
     return;
   }
 
-  caseRevealObserver = new IntersectionObserver(
+  const heroRect = hero.getBoundingClientRect();
+
+  if (heroRect.bottom > 0 && heroRect.top < window.innerHeight) {
+    window.requestAnimationFrame(attemptPlayback);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
     (entries) => {
-      for (const entry of entries) {
+      entries.forEach((entry) => {
         if (!entry.isIntersecting) {
-          continue;
+          return;
         }
 
-        const delay = entry.target.style.getPropertyValue("--case-reveal-delay") || "0ms";
-
-        entry.target.style.transitionDelay = delay;
-        entry.target.classList.remove("is-reveal-pending");
-        entry.target.classList.add("is-revealed");
-        caseRevealObserver.unobserve(entry.target);
-
-        window.setTimeout(() => {
-          entry.target.style.transitionDelay = "";
-        }, 900);
-      }
+        attemptPlayback();
+        observer.disconnect();
+      });
     },
     {
-      threshold: 0.18,
-      rootMargin: "0px 0px -10% 0px",
+      threshold: 0.1,
+      rootMargin: "160px 0px",
     },
   );
 
-  for (const card of cards) {
-    caseRevealObserver.observe(card);
-  }
-}
-
-function setupCaseMotion() {
-  const cards = Array.from(document.querySelectorAll(".case-card"));
-
-  if (!cards.length) {
-    return;
-  }
-
-  setupCaseReveal(cards);
+  observer.observe(hero);
 }
 
 function syncMobileNavState() {
@@ -325,46 +270,6 @@ function setupMobileNav() {
   });
 }
 
-function setupAvatarVideos() {
-  const avatarVideos = Array.from(document.querySelectorAll("[data-avatar-video]"));
-
-  avatarVideos.forEach((avatarVideo) => {
-    if (!(avatarVideo instanceof HTMLVideoElement)) {
-      return;
-    }
-
-    avatarVideo.muted = true;
-    avatarVideo.defaultMuted = true;
-
-    const revealVideo = () => {
-      avatarVideo.classList.add("is-ready");
-    };
-
-    const hideVideo = () => {
-      avatarVideo.classList.remove("is-ready");
-    };
-
-    const attemptPlayback = () => {
-      const playPromise = avatarVideo.play();
-
-      if (playPromise && typeof playPromise.then === "function") {
-        playPromise.then(revealVideo).catch(hideVideo);
-        return;
-      }
-
-      revealVideo();
-    };
-
-    avatarVideo.addEventListener("loadeddata", attemptPlayback, { once: true });
-    avatarVideo.addEventListener("playing", revealVideo, { once: true });
-    avatarVideo.addEventListener("error", hideVideo);
-
-    if (avatarVideo.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      attemptPlayback();
-    }
-  });
-}
-
 if (toggleButtons.length) {
   applyTheme(root.dataset.theme || "light");
 
@@ -379,17 +284,12 @@ if (toggleButtons.length) {
 }
 
 window.addEventListener("storage", (event) => {
-  if (event.key === casesStorageKey) {
-    renderCases();
-  }
-
   if (event.key === themeStorageKey && event.newValue) {
     applyTheme(event.newValue);
   }
 });
 
 ensureTopOnInitialLoad();
-bootstrapCases();
 setupMobileNav();
-setupAvatarVideos();
+setupHeroAvatarVideo();
 initHeroIntro();

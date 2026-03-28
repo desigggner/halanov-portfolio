@@ -6,6 +6,12 @@
   var theme = "light";
   var pathname = window.location.pathname;
   var cleanPath = pathname;
+  var defaultTitle = "Galanov Lead Product Designer";
+  var hiddenTitle = "Окей, я жду✋";
+  var visibleReturnTitle = "Ты вернулся!🎉";
+  var titleResetDelay = 2500;
+  var titleResetTimerId = 0;
+  var hasBeenHidden = document.visibilityState === "hidden";
 
   if (pathname === "/index.html") {
     cleanPath = "/";
@@ -54,4 +60,59 @@
 
   root.dataset.theme = theme;
   root.style.colorScheme = theme;
+
+  function clearTitleResetTimer() {
+    if (!titleResetTimerId) {
+      return;
+    }
+
+    window.clearTimeout(titleResetTimerId);
+    titleResetTimerId = 0;
+  }
+
+  function setDocumentTitle(nextTitle) {
+    if (document.title === nextTitle) {
+      return;
+    }
+
+    document.title = nextTitle;
+  }
+
+  function handleVisibilityChange() {
+    clearTitleResetTimer();
+
+    if (document.visibilityState === "hidden") {
+      hasBeenHidden = true;
+      setDocumentTitle(hiddenTitle);
+      return;
+    }
+
+    if (hasBeenHidden) {
+      setDocumentTitle(visibleReturnTitle);
+
+      titleResetTimerId = window.setTimeout(function resetTitle() {
+        titleResetTimerId = 0;
+        setDocumentTitle(defaultTitle);
+      }, titleResetDelay);
+
+      hasBeenHidden = false;
+      return;
+    }
+
+    setDocumentTitle(defaultTitle);
+  }
+
+  function cleanupTitleVisibility(event) {
+    if (event && event.persisted) {
+      return;
+    }
+
+    clearTitleResetTimer();
+    document.removeEventListener("visibilitychange", handleVisibilityChange);
+    window.removeEventListener("pagehide", cleanupTitleVisibility);
+  }
+
+  handleVisibilityChange();
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+  window.addEventListener("pagehide", cleanupTitleVisibility);
 })();

@@ -10,11 +10,12 @@ const siteFooterMarkup = `
             width="200"
             height="200"
             loading="lazy"
+            decoding="async"
           />
           <video
             class="site-footer__avatar-media"
             data-avatar-video
-            src="./video/avatar2.mp4"
+            data-video-src="./video/avatar2.mp4"
             autoplay
             muted
             loop
@@ -71,6 +72,7 @@ const siteFooterMarkup = `
                 width="37"
                 height="37"
                 loading="lazy"
+                decoding="async"
               />
               <span class="site-footer__link-underline">
                 <span class="site-footer__button-label">телеграм-канал</span>
@@ -99,6 +101,7 @@ const siteFooterMarkup = `
                   width="32"
                   height="32"
                   loading="lazy"
+                  decoding="async"
                 />
                 <span class="site-footer__button-label">linkedin</span>
               </button>
@@ -116,6 +119,7 @@ const siteFooterMarkup = `
                   width="32"
                   height="32"
                   loading="lazy"
+                  decoding="async"
                 />
                 <span class="site-footer__button-label">резюме</span>
               </button>
@@ -140,7 +144,90 @@ const siteFooterMarkup = `
   </footer>
 `;
 
+function loadDeferredFooterVideo(video) {
+  if (!(video instanceof HTMLVideoElement) || video.dataset.videoLoaded === "true") {
+    return false;
+  }
+
+  const videoSource = video.dataset.videoSrc || "";
+
+  if (!videoSource) {
+    return false;
+  }
+
+  video.src = videoSource;
+  video.dataset.videoLoaded = "true";
+  video.load();
+
+  return true;
+}
+
+function setupFooterAvatarVideo(footer) {
+  const avatarVideo = footer.querySelector("[data-avatar-video]");
+
+  if (!(avatarVideo instanceof HTMLVideoElement)) {
+    return;
+  }
+
+  avatarVideo.muted = true;
+  avatarVideo.defaultMuted = true;
+
+  const revealVideo = () => {
+    avatarVideo.classList.add("is-ready");
+  };
+
+  const hideVideo = () => {
+    avatarVideo.classList.remove("is-ready");
+  };
+
+  const attemptPlayback = () => {
+    loadDeferredFooterVideo(avatarVideo);
+
+    const playPromise = avatarVideo.play();
+
+    if (playPromise && typeof playPromise.then === "function") {
+      playPromise.then(revealVideo).catch(hideVideo);
+      return;
+    }
+
+    revealVideo();
+  };
+
+  avatarVideo.addEventListener("loadeddata", attemptPlayback, { once: true });
+  avatarVideo.addEventListener("playing", revealVideo, { once: true });
+  avatarVideo.addEventListener("error", hideVideo);
+
+  if (!("IntersectionObserver" in window)) {
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        attemptPlayback();
+        observer.disconnect();
+      });
+    },
+    {
+      threshold: 0.01,
+      rootMargin: "240px 0px",
+    },
+  );
+
+  observer.observe(footer);
+}
+
 document.querySelectorAll("[data-site-footer]").forEach((placeholder) => {
   placeholder.insertAdjacentHTML("afterend", siteFooterMarkup);
+  const footer = placeholder.nextElementSibling;
+
+  if (footer instanceof HTMLElement) {
+    setupFooterAvatarVideo(footer);
+  }
+
   placeholder.remove();
 });
