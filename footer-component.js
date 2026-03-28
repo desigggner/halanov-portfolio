@@ -7,8 +7,8 @@ const siteFooterMarkup = `
             class="site-footer__avatar-fallback"
             src="./.figma-assets/99ddf8cb9e4200201fe9b07a6b34ed509081be54.png"
             alt=""
-            width="134"
-            height="134"
+            width="200"
+            height="200"
             loading="lazy"
           />
           <video
