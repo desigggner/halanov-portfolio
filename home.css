@@ -53,12 +53,18 @@ body.home-page {
 .figma-case__media--pulse {
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(62% 42% at 50% 112%, rgba(84, 97, 255, 0.92), rgba(84, 97, 255, 0) 76%),
-    linear-gradient(180deg, #2b2928 0%, #242220 100%);
+  background-color: #2b2928;
+  background-image: url("./assets/pulse-case-cover.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: #ffffff;
   text-decoration: none;
   isolation: isolate;
+}
+
+.figma-case__media--pulse > * {
+  display: none;
 }
 
 .figma-case__pulse-glow {
@@ -300,27 +306,43 @@ body.home-page {
   transition: background-size 0.28s ease;
 }
 
-.figma-case__tags {
+.figma-case__metrics {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-.figma-case__tag {
+.figma-case__metric {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  min-height: 44px;
-  padding: 4px 16px;
-  border-radius: 99px;
-  background-color: #eeeeee !important;
-  color: #4b4b4b !important;
-  font-size: 20px;
-  line-height: 35.84px;
+  justify-content: center;
+  gap: 10px;
+  min-height: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background-color: #eeeeee;
+  color: #4b4b4b;
 }
 
-html[data-theme="dark"] .figma-case__tag {
-  background-color: #eeeeee !important;
-  color: #4b4b4b !important;
+.figma-case__metric strong,
+.figma-case__metric span {
+  display: block;
+  margin: 0;
+  color: #4b4b4b;
+  font-family: "Google Sans", "Product Sans", "Segoe UI", system-ui, sans-serif;
+  font-size: 20pt;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.figma-case__metric strong {
+  font-weight: 600;
+}
+
+.figma-case__metric span {
+  font-weight: 400;
 }
 
 .figma-case__description {
@@ -328,40 +350,6 @@ html[data-theme="dark"] .figma-case__tag {
   color: var(--muted);
   font-size: 24px;
   line-height: 36px;
-  letter-spacing: -0.02em;
-}
-
-.figma-case__impact {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.figma-case__impact-item {
-  display: grid;
-  gap: 2px;
-  justify-items: start;
-  min-width: 0;
-}
-
-.figma-case__impact-item strong,
-.figma-case__impact-item span {
-  display: block;
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.figma-case__impact-item strong {
-  color: var(--text);
-  font-size: 32px;
-  line-height: 1;
-  letter-spacing: -0.04em;
-}
-
-.figma-case__impact-item span {
-  color: var(--muted);
-  font-size: 20px;
-  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
@@ -512,18 +500,22 @@ html[data-theme="dark"] .figma-timeline__lead {
 }
 
 .figma-timeline__company {
-  display: contents;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+  min-width: 0;
 }
 
 .figma-timeline__logo {
   position: relative;
-  display: grid;
-  place-items: center;
-  grid-column: 1;
-  grid-row: 1 / 3;
-  align-self: start;
-  width: 96px;
-  height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 72px;
+  height: 72px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 24px;
@@ -602,7 +594,10 @@ html[data-theme="dark"] .figma-timeline__logo {
 }
 
 .figma-timeline__company-copy {
-  display: contents;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
 }
 
 .figma-timeline__company-name,
@@ -624,9 +619,7 @@ html[data-theme="dark"] .figma-timeline__logo {
 }
 
 .figma-timeline__company-name {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: start;
+  align-self: auto;
 }
 
 .figma-timeline__company-name span {
@@ -642,9 +635,7 @@ html[data-theme="dark"] .figma-timeline__logo {
 }
 
 .figma-timeline__location {
-  grid-column: 2;
-  grid-row: 2;
-  align-self: start;
+  align-self: auto;
 }
 
 .figma-timeline__role {
@@ -1071,14 +1062,15 @@ html[data-theme="dark"] .figma-timeline__logo {
 
   .figma-timeline__company {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 24px;
   }
 
   .figma-timeline__company-copy {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     gap: 12px;
-    align-content: start;
   }
 
   .figma-timeline__role {
@@ -1104,10 +1096,6 @@ html[data-theme="dark"] .figma-timeline__logo {
   .figma-timeline__date-range {
     grid-column: auto;
     grid-row: auto;
-  }
-
-  .figma-timeline__logo {
-    margin-top: -12px;
   }
 
   .figma-cases__grid {
@@ -1339,25 +1327,25 @@ html[data-theme="dark"] .figma-timeline__logo {
   }
 
   .figma-timeline__company {
-    display: contents;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    grid-column: 1 / -1;
+    grid-row: 1;
   }
 
   .figma-timeline__logo {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: start;
     width: 72px;
     height: 72px;
-    flex-basis: 72px;
-    margin-top: 0;
     border-radius: 18px;
   }
 
   .figma-timeline__company-copy {
-    grid-column: 2;
-    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     gap: 4px;
-    padding-top: 3px;
+    min-width: 0;
   }
 
   .figma-timeline__role {
@@ -1402,11 +1390,6 @@ html[data-theme="dark"] .figma-timeline__logo {
     margin-top: 48px;
     justify-content: center;
     transform: none;
-  }
-
-  .figma-case__tag {
-    font-size: 16px;
-    line-height: 28px;
   }
 
   .figma-case__media--small {
