@@ -213,6 +213,52 @@
     return caseItem.backgroundColor || "transparent";
   }
 
+  function parseCaseStatus(statusText) {
+    const normalized =
+      typeof statusText === "string" ? statusText.replace(/\s+/g, " ").trim() : "";
+
+    if (!normalized) {
+      return null;
+    }
+
+    const accentMatch = normalized.match(/^([+\-−]?\d+(?:[.,]\d+)?%?)(?:\s+)(.+)$/u);
+
+    if (!accentMatch) {
+      return {
+        accent: "",
+        label: normalized,
+      };
+    }
+
+    return {
+      accent: accentMatch[1],
+      label: accentMatch[2],
+    };
+  }
+
+  function appendCaseStatusContent(element, statusText) {
+    const status = parseCaseStatus(statusText);
+
+    if (!status || !element) {
+      return;
+    }
+
+    if (!status.accent) {
+      element.textContent = status.label;
+      return;
+    }
+
+    const accent = document.createElement("span");
+    accent.className = "case-card__status-accent";
+    accent.textContent = status.accent;
+
+    const label = document.createElement("span");
+    label.className = "case-card__status-label";
+    label.textContent = status.label;
+
+    element.append(accent, label);
+  }
+
   function createCaseCard(caseItem, options = {}) {
     const {
       tagName = "a",
@@ -348,7 +394,7 @@
     if (caseItem.status) {
       const status = document.createElement("span");
       status.className = "case-card__status";
-      status.textContent = caseItem.status;
+      appendCaseStatusContent(status, caseItem.status);
       card.dataset.hasStatus = "true";
       card.append(status);
     }

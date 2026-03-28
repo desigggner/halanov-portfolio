@@ -408,9 +408,10 @@ a {
 .admin-case__card-stage .case-card__status {
   top: 18px;
   right: 18px;
-  min-height: 34px;
-  padding: 8px 14px;
-  font-size: 0.86rem;
+  min-height: 44px;
+  padding: 4px 16px;
+  font-size: 20px;
+  line-height: 35.84px;
 }
 
 .admin-case__card-stage .case-card__corner {
@@ -625,9 +626,10 @@ html[data-theme="dark"] .admin-analytics {
 .admin-dashboard__cases .case-card__status {
   top: 18px;
   right: 18px;
-  min-height: 34px;
-  padding: 8px 14px;
-  font-size: 0.86rem;
+  min-height: 44px;
+  padding: 4px 16px;
+  font-size: 20px;
+  line-height: 35.84px;
 }
 
 .admin-dashboard__cases .case-card__corner {
@@ -3241,18 +3243,26 @@ html[data-theme="dark"] .company__logo--dark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 40px;
-  padding: 10px 16px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: rgba(255, 255, 255, 0.94);
-  font-size: 0.95rem;
+  gap: 10px;
+  min-height: 44px;
+  max-width: calc(100% - 48px);
+  padding: 4px 16px;
+  border-radius: 99px;
+  background: #eeeeee;
+  color: #4b4b4b;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 35.84px;
+  letter-spacing: -0.32px;
+  white-space: nowrap;
+}
+
+.case-card__status-accent {
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.01em;
+}
+
+.case-card__status-label {
+  font-weight: 400;
 }
 
 .case-card__title--invert {
@@ -4224,9 +4234,10 @@ html[data-theme="dark"] .company__logo--dark {
   .case-card__status {
     top: 18px;
     right: 18px;
-    min-height: 36px;
+    min-height: 44px;
     padding-inline: 14px;
-    font-size: 0.9rem;
+    font-size: 20px;
+    line-height: 35.84px;
   }
 
   .admin-panel__actions,
