@@ -2830,8 +2830,14 @@ html[data-theme="dark"] .hero__title::after {
   position: absolute;
   inset: 0;
   z-index: 2;
+  opacity: 0;
   background: transparent;
   pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.hero__avatar-media.is-ready {
+  opacity: 1;
 }
 
 .hero__meta {
