@@ -970,13 +970,14 @@ html[data-theme="dark"] .admin-analytics-card {
   letter-spacing: 0.01em;
   color: var(--text);
   text-decoration: none;
-  mix-blend-mode: difference;
 }
 
 .brand__logo {
   display: block;
   width: clamp(112px, 14vw, 140px);
   height: auto;
+  mix-blend-mode: difference;
+  filter: brightness(0) invert(1);
 }
 
 .header-overlay {
@@ -2935,35 +2936,102 @@ html[data-theme="dark"] .site-footer__chip-icon {
 }
 
 .companies {
+  --companies-gap: 40px;
+  --companies-fade-edge: 13%;
+  --companies-logo-scale: 1;
+  --companies-slot-scale: 1;
+  --companies-duration: 18s;
   margin-top: 207px;
+  overflow: hidden;
 }
 
 .companies__marquee {
   position: relative;
+  display: flex;
+  gap: var(--companies-gap);
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--companies-fade-edge),
+    #000 calc(100% - var(--companies-fade-edge)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 var(--companies-fade-edge),
+    #000 calc(100% - var(--companies-fade-edge)),
+    transparent 100%
+  );
 }
 
 .companies__list {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  justify-content: center;
+  display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 66px;
+  gap: var(--companies-gap);
+  min-width: max-content;
   list-style: none;
   margin: 0;
   padding: 0;
+  animation: companies-marquee var(--companies-duration) linear infinite;
+  will-change: transform;
 }
 
 .company {
-  display: grid;
-  place-items: center;
-  min-width: 0;
+  --company-slot-width: 138px;
+  --company-logo-width: 130px;
+  --company-logo-height: 36px;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(var(--company-slot-width) * var(--companies-slot-scale));
+}
+
+.company--hh {
+  --company-slot-width: 108px;
+  --company-logo-width: 92px;
+  --company-logo-height: 46px;
+}
+
+.company--frame {
+  --company-slot-width: 150px;
+  --company-logo-width: 144px;
+  --company-logo-height: 35px;
+}
+
+.company--group {
+  --company-slot-width: 160px;
+  --company-logo-width: 154px;
+  --company-logo-height: 31px;
+}
+
+.company--spbrsi {
+  --company-slot-width: 132px;
+  --company-logo-width: 126px;
+  --company-logo-height: 38px;
+}
+
+.company--sber {
+  --company-slot-width: 146px;
+  --company-logo-width: 140px;
+  --company-logo-height: 33px;
+}
+
+.company--vector {
+  --company-slot-width: 152px;
+  --company-logo-width: 148px;
+  --company-logo-height: 31px;
 }
 
 .company__logo {
   display: block;
   width: auto;
-  max-width: 100%;
-  max-height: 44px;
+  max-width: calc(var(--company-logo-width) * var(--companies-logo-scale));
+  max-height: calc(var(--company-logo-height) * var(--companies-logo-scale));
   object-fit: contain;
   opacity: 0.74;
   filter: grayscale(1) saturate(0) brightness(0.72);
@@ -2977,11 +3045,11 @@ html[data-theme="dark"] .site-footer__chip-icon {
 }
 
 .company__logo--hh {
-  max-height: 52px;
+  max-height: calc(var(--company-logo-height) * var(--companies-logo-scale));
 }
 
 .companies__list--duplicate {
-  display: none;
+  display: flex;
 }
 
 html[data-theme="light"] .company__logo--light {
@@ -3384,17 +3452,10 @@ html[data-theme="dark"] .company__logo--dark {
     gap: 8px;
   }
 
-  .companies__list {
-    grid-template-columns: repeat(3, minmax(0, auto));
-    gap: 28px 42px;
-  }
-
-  .company__logo {
-    max-height: 38px;
-  }
-
-  .company__logo--hh {
-    max-height: 44px;
+  .companies {
+    --companies-gap: 36px;
+    --companies-logo-scale: 0.92;
+    --companies-slot-scale: 0.9;
   }
 
   .site-footer__main {
@@ -4152,58 +4213,9 @@ html[data-theme="dark"] .company__logo--dark {
   .companies {
     width: 100%;
     margin-top: 116px;
-    overflow: hidden;
-  }
-
-  .companies__marquee {
-    display: flex;
-    gap: 32px;
-    overflow: hidden;
-    width: 100%;
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent 0,
-      #000 12%,
-      #000 88%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0,
-      #000 12%,
-      #000 88%,
-      transparent 100%
-    );
-  }
-
-  .companies__list {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: 32px;
-    min-width: max-content;
-    padding-right: 0;
-    text-align: center;
-    animation: companies-marquee 18s linear infinite;
-  }
-
-  .companies__list--duplicate {
-    display: flex;
-  }
-
-  .company {
-    flex: 0 0 auto;
-    min-width: 120px;
-    white-space: normal;
-  }
-
-  .company__logo {
-    max-height: 32px;
-    max-width: 120px;
-  }
-
-  .company__logo--hh {
-    max-height: 38px;
+    --companies-gap: 32px;
+    --companies-logo-scale: 0.86;
+    --companies-slot-scale: 0.84;
   }
 
   .case-card {
