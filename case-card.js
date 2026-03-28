@@ -79,7 +79,7 @@
     </svg>
   `;
 
-  let pagePrefetchObserver = null;
+  let managedVideoObserver = null;
 
   function resolveInternalPageUrl(href) {
     if (typeof href !== "string" || !href.trim() || !global.location) {
@@ -143,34 +143,84 @@
     card.addEventListener("pointerenter", triggerPrefetch, { once: true });
     card.addEventListener("focus", triggerPrefetch, { once: true });
     card.addEventListener("touchstart", triggerPrefetch, { once: true, passive: true });
+  }
 
-    if (!("IntersectionObserver" in global)) {
+  function loadManagedVideo(video) {
+    if (!(video instanceof HTMLVideoElement) || video.dataset.videoLoaded === "true") {
+      return false;
+    }
+
+    const videoSource = video.dataset.videoSrc || "";
+
+    if (!videoSource) {
+      return false;
+    }
+
+    video.src = videoSource;
+    video.dataset.videoLoaded = "true";
+    video.load();
+
+    return true;
+  }
+
+  function attemptManagedVideoPlayback(video) {
+    loadManagedVideo(video);
+
+    const playPromise = video.play();
+
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+  }
+
+  function observeManagedVideo(video) {
+    if (!(video instanceof HTMLVideoElement)) {
       return;
     }
 
-    if (!pagePrefetchObserver) {
-      pagePrefetchObserver = new IntersectionObserver(
+    const triggerLoad = () => {
+      loadManagedVideo(video);
+    };
+
+    const card = video.closest(".case-card");
+
+    if (card) {
+      card.addEventListener("pointerenter", triggerLoad, { once: true });
+      card.addEventListener("focus", triggerLoad, { once: true });
+      card.addEventListener("touchstart", triggerLoad, { once: true, passive: true });
+    }
+
+    if (!("IntersectionObserver" in global)) {
+      attemptManagedVideoPlayback(video);
+      return;
+    }
+
+    if (!managedVideoObserver) {
+      managedVideoObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
-            if (!entry.isIntersecting) {
+            const observedVideo = entry.target;
+
+            if (!(observedVideo instanceof HTMLVideoElement)) {
               return;
             }
 
-            const observedHref = entry.target.dataset.prefetchHref || "";
+            if (entry.isIntersecting) {
+              attemptManagedVideoPlayback(observedVideo);
+              return;
+            }
 
-            prefetchPage(observedHref);
-            pagePrefetchObserver.unobserve(entry.target);
+            observedVideo.pause();
           });
         },
         {
-          rootMargin: "220px 0px",
-          threshold: 0.01,
+          threshold: 0.2,
+          rootMargin: "240px 0px",
         },
       );
     }
 
-    card.dataset.prefetchHref = url.href;
-    pagePrefetchObserver.observe(card);
+    managedVideoObserver.observe(video);
   }
 
   function resolveCaseImageAsset(image) {
@@ -329,16 +379,9 @@
 
     if (videoAsset?.src) {
       const media = document.createElement("video");
-      const attemptPlay = () => {
-        const playPromise = media.play();
-
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.catch(() => {});
-        }
-      };
 
       media.className = "case-card__media";
-      media.src = videoAsset.src;
+      media.dataset.videoSrc = videoAsset.src;
       media.poster = imageAsset?.src || "";
       media.autoplay = true;
       media.loop = true;
@@ -346,7 +389,7 @@
       media.defaultMuted = true;
       media.controls = false;
       media.playsInline = true;
-      media.preload = "auto";
+      media.preload = "metadata";
       media.disablePictureInPicture = true;
       media.disableRemotePlayback = true;
       media.tabIndex = -1;
@@ -358,11 +401,12 @@
       media.setAttribute("muted", "");
       media.setAttribute("controlslist", "nodownload nofullscreen noremoteplayback");
       media.removeAttribute("controls");
-      media.addEventListener("loadedmetadata", attemptPlay);
-      media.addEventListener("loadeddata", attemptPlay);
-      media.addEventListener("canplay", attemptPlay);
+      media.addEventListener("loadedmetadata", () => {
+        attemptManagedVideoPlayback(media);
+      });
 
       card.append(media);
+      observeManagedVideo(media);
     } else if (imageAsset?.src) {
       const media = document.createElement("img");
       const fetchPriority = normalizeFetchPriority(imageFetchPriority);
