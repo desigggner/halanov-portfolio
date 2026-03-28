@@ -2,14 +2,27 @@ const siteFooterMarkup = `
   <footer class="site-footer container" aria-labelledby="site-footer-title">
     <div class="site-footer__inner">
       <div class="site-footer__main site-footer__reveal">
-        <img
-          class="site-footer__avatar"
-          src="./.figma-assets/99ddf8cb9e4200201fe9b07a6b34ed509081be54.png"
-          alt="Портрет Влада Галанова"
-          width="134"
-          height="134"
-          loading="lazy"
-        />
+        <div class="site-footer__avatar" aria-hidden="true">
+          <img
+            class="site-footer__avatar-fallback"
+            src="./.figma-assets/99ddf8cb9e4200201fe9b07a6b34ed509081be54.png"
+            alt=""
+            width="134"
+            height="134"
+            loading="lazy"
+          />
+          <video
+            class="site-footer__avatar-media"
+            data-avatar-video
+            src="./video/avatar2.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+          ></video>
+        </div>
 
         <div class="site-footer__lead">
           <p class="site-footer__eyebrow" id="site-footer-title">Напиши привет</p>
