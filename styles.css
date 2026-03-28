@@ -2240,8 +2240,14 @@ html[data-theme="dark"] .about-cta__card {
   display: grid;
   justify-items: center;
   align-content: start;
-  gap: 20px;
+  gap: 32px;
   width: 100%;
+}
+
+.site-footer__contact {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
 }
 
 .site-footer__eyebrow,
@@ -4051,7 +4057,7 @@ html[data-theme="dark"] .company__logo--dark {
   }
 
   .site-footer__lead {
-    gap: 16px;
+    gap: 24px;
   }
 
   .site-footer__email {

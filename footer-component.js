@@ -25,10 +25,12 @@ const siteFooterMarkup = `
         </div>
 
         <div class="site-footer__lead">
-          <p class="site-footer__eyebrow" id="site-footer-title">Напиши привет</p>
-          <a class="site-footer__email site-footer__link-underline" href="mailto:desigggner@gmail.com">
-            <span>desigggner@gmail.com</span>
-          </a>
+          <div class="site-footer__contact">
+            <p class="site-footer__eyebrow" id="site-footer-title">Напиши привет</p>
+            <a class="site-footer__email site-footer__link-underline" href="mailto:desigggner@gmail.com">
+              <span>desigggner@gmail.com</span>
+            </a>
+          </div>
           <a
             class="site-footer__telegram"
             href="https://t.me/desigggner"
