@@ -1166,6 +1166,11 @@ html[data-theme="dark"] .theme-toggle__thumb {
   height: 20px;
 }
 
+.theme-toggle__icon > svg [stroke],
+.theme-toggle__lottie svg [stroke] {
+  stroke-width: 1.55px;
+}
+
 .theme-toggle__icon--sun svg {
   transform: translateX(1px);
 }
