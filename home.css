@@ -1357,8 +1357,8 @@ html[data-theme="dark"] .figma-timeline__logo {
   }
 
   .figma-timeline__intro {
-    justify-items: start;
-    text-align: left;
+    justify-items: center;
+    text-align: center;
     gap: 16px;
   }
 

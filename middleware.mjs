@@ -115,7 +115,7 @@ function isAllowedStaticPath(pathname) {
     pathname === "/404.html" ||
     pathname === "/500.html" ||
     pathname.startsWith("/errors/") ||
-    pathname === "/assets/error-statham.gif" ||
+    pathname.startsWith("/assets/error-statham") ||
     pathname === "/assets/logo/header-logo.svg"
   );
 }

@@ -13,6 +13,7 @@ const mobileNavToggleButtons = Array.from(document.querySelectorAll("[data-mobil
 const mobileNavCloseButtons = Array.from(document.querySelectorAll("[data-mobile-nav-close]"));
 const mobileNavToggleLabels = Array.from(document.querySelectorAll("[data-mobile-nav-toggle-label]"));
 const mobileNavLinks = Array.from(document.querySelectorAll(".invert-mobile-nav__sheet-link"));
+const lazyVideos = Array.from(document.querySelectorAll("[data-lazy-video]"));
 
 let isMobileNavOpen = false;
 
@@ -251,6 +252,116 @@ function setupMarqueePlayback() {
   observer.observe(marqueeSection);
 }
 
+// Lazy-load decorative videos only when their section is close to the viewport.
+function setupLazyVideos() {
+  if (!lazyVideos.length) {
+    return;
+  }
+
+  const markVideoReady = (video) => {
+    const rootElement = video.closest("[data-lazy-video-root]");
+
+    if (!(rootElement instanceof HTMLElement)) {
+      return;
+    }
+
+    rootElement.classList.remove("is-video-error");
+    rootElement.classList.add("is-video-ready");
+  };
+
+  const markVideoError = (video) => {
+    const rootElement = video.closest("[data-lazy-video-root]");
+
+    if (!(rootElement instanceof HTMLElement)) {
+      return;
+    }
+
+    rootElement.classList.remove("is-video-ready");
+    rootElement.classList.add("is-video-error");
+  };
+
+  const attemptPlayback = (video) => {
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const playPromise = video.play();
+
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {
+        // Keep the poster visible if autoplay is blocked or the file is unavailable.
+      });
+    }
+  };
+
+  const loadVideo = (video) => {
+    if (video.dataset.videoLoaded === "true") {
+      attemptPlayback(video);
+      return;
+    }
+
+    const sources = Array.from(video.querySelectorAll("source[data-src]"));
+
+    sources.forEach((source) => {
+      if (!(source instanceof HTMLSourceElement) || !source.dataset.src) {
+        return;
+      }
+
+      source.src = source.dataset.src;
+    });
+
+    video.dataset.videoLoaded = "true";
+    video.load();
+    attemptPlayback(video);
+  };
+
+  lazyVideos.forEach((video) => {
+    video.addEventListener("loadeddata", () => {
+      markVideoReady(video);
+      attemptPlayback(video);
+    });
+
+    video.addEventListener("playing", () => {
+      markVideoReady(video);
+    });
+
+    video.addEventListener("error", () => {
+      markVideoError(video);
+    });
+  });
+
+  if (!("IntersectionObserver" in window)) {
+    lazyVideos.forEach(loadVideo);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        const video = entry.target instanceof HTMLVideoElement ? entry.target : null;
+
+        if (!video) {
+          return;
+        }
+
+        loadVideo(video);
+        observer.unobserve(video);
+      });
+    },
+    {
+      threshold: 0.2,
+      rootMargin: "160px 0px",
+    },
+  );
+
+  lazyVideos.forEach((video) => {
+    observer.observe(video);
+  });
+}
+
 function syncMobileNavState() {
   document.body.classList.toggle("is-mobile-nav-open", isMobileNavOpen);
 
@@ -347,4 +458,5 @@ ensureTopOnInitialLoad();
 setupRevealObserver();
 setupCountGroups();
 setupMarqueePlayback();
+setupLazyVideos();
 setupMobileNav();

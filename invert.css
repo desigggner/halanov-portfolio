@@ -148,6 +148,10 @@ body.is-mobile-nav-open {
   pointer-events: auto;
 }
 
+.invert-mobile-nav__bar--case {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .invert-mobile-nav__button,
 .invert-mobile-nav__theme-button.theme-toggle {
   min-height: 64px;
@@ -2255,6 +2259,10 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     gap: 8px;
   }
 
+  .invert-mobile-nav__bar--case {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .invert-mobile-nav__button,
   .invert-mobile-nav__theme-button.theme-toggle {
     min-height: 60px;
@@ -2573,9 +2581,14 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   color: #ffffff;
 }
 
+.invert-case-tldr {
+  background: #252525;
+}
+
 .invert-case-block__eyebrow,
 .invert-case-block__title,
 .invert-case-block__lead,
+.invert-case-tldr__title,
 .invert-case-tldr__text,
 .invert-case-intro__text,
 .invert-case-strip__value,
@@ -2595,16 +2608,19 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 
 .invert-case-block__title {
   max-width: 1020px;
-  font-size: clamp(2.4rem, 4.2vw, 4.2rem);
-  line-height: 1.06;
-  letter-spacing: -0.05em;
+  font-size: clamp(2rem, 3.35vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  font-weight: 400;
 }
 
 .invert-case-block__lead {
   max-width: 1000px;
   margin-top: 18px;
-  font-size: clamp(1.12rem, 1.8vw, 1.35rem);
-  line-height: 1.78;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.792;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   color: rgba(255, 255, 255, 0.86);
 }
 
@@ -2620,12 +2636,13 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   align-items: center;
   justify-content: center;
   min-height: 56px;
-  padding: 10px 24px;
+  padding: 12px 24px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  font-size: 1.12rem;
-  line-height: 1.4;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.792;
+  font-weight: 400;
   text-align: center;
 }
 
@@ -2633,11 +2650,26 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   background: #11c765;
 }
 
+.invert-case-tldr__inner {
+  display: grid;
+  gap: 24px;
+}
+
+.invert-case-tldr__title {
+  width: 100%;
+  font-size: clamp(2.25rem, 3.15vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+}
+
 .invert-case-tldr__text {
-  max-width: 1260px;
-  font-size: clamp(2rem, 3.85vw, 3.7rem);
-  line-height: 1.08;
-  letter-spacing: -0.05em;
+  max-width: 1020px;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.792;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .invert-case-strip {
@@ -2659,22 +2691,25 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 }
 
 .invert-case-strip__value {
-  font-size: clamp(1.5rem, 2.15vw, 2.2rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.9rem);
   line-height: 1;
   letter-spacing: -0.05em;
+  font-weight: 400;
 }
 
 .invert-case-strip__label {
-  font-size: 1rem;
-  line-height: 1.35;
+  font-size: 0.94rem;
+  line-height: 1.32;
+  font-weight: 400;
   color: rgba(4, 23, 11, 0.7);
 }
 
 .invert-case-intro__text {
   max-width: 1200px;
-  font-size: clamp(1.8rem, 3.15vw, 3.05rem);
-  line-height: 1.16;
-  letter-spacing: -0.045em;
+  font-size: clamp(1.7rem, 2.9vw, 2.85rem);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  font-weight: 400;
 }
 
 .invert-case-problems__gallery {
@@ -2684,6 +2719,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   margin-top: 32px;
 }
 
+.invert-case-problems__stage,
 .invert-case-problems__card,
 .invert-case-flow__card,
 .invert-case-screens__wide-card,
@@ -2692,6 +2728,21 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   overflow: hidden;
   border-radius: 24px;
   background: #1f1f1f;
+}
+
+.invert-case-problems__stage {
+  display: grid;
+  place-items: end center;
+  min-height: 464px;
+  margin-top: 32px;
+  padding: 42px 24px 0;
+  background: #1f1f1f;
+}
+
+.invert-case-problems__stage img {
+  display: block;
+  width: min(100%, 825px);
+  height: auto;
 }
 
 .invert-case-problems__card {
@@ -2712,60 +2763,46 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   margin-top: 32px;
   overflow: hidden;
   border-radius: 24px;
-  background:
-    radial-gradient(circle at 56% 48%, rgba(149, 252, 121, 0.5), rgba(149, 252, 121, 0) 18%),
-    linear-gradient(90deg, #34db2b 0%, #073a0d 100%);
+  background: linear-gradient(90deg, #34db2b 0%, #073a0d 100%);
 }
 
-.invert-case-goals__visual::before {
-  content: "";
+.invert-case-goals__poster,
+.invert-case-goals__video {
   position: absolute;
-  inset: auto -10% -22% auto;
-  width: 52%;
-  height: 70%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0));
-  filter: blur(10px);
-}
-
-.invert-case-goals__logo {
-  position: absolute;
-  left: 27%;
-  top: 53%;
-  width: clamp(130px, 14vw, 236px);
-  height: auto;
-  transform: translate(-50%, -50%) rotate(-11deg);
-  opacity: 0.94;
-}
-
-.invert-case-goals__device {
-  position: absolute;
-  left: 50%;
-  bottom: 58px;
-  width: clamp(210px, 23vw, 310px);
-  transform: translateX(-50%);
-  z-index: 1;
-}
-
-.invert-case-goals__device img {
-  display: block;
+  inset: 0;
   width: 100%;
-  height: auto;
-  border-radius: 28px;
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.42);
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
 }
 
-.invert-case-goals__base {
-  position: absolute;
-  left: -4%;
-  right: -4%;
-  bottom: -28px;
-  height: 122px;
-  background:
-    radial-gradient(circle at 12px 12px, rgba(255, 255, 255, 0.14) 0 4px, transparent 4.5px) 0 0 / 24px 24px,
-    linear-gradient(180deg, #4d4d4d, #101010 72%);
-  transform: rotate(4deg);
-  opacity: 0.9;
+.invert-case-goals__poster {
+  display: block;
+  z-index: 0;
+  transition: opacity 280ms ease;
+}
+
+.invert-case-goals__video {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+}
+
+.invert-case-goals__visual.is-video-ready .invert-case-goals__poster {
+  opacity: 0;
+}
+
+.invert-case-goals__visual.is-video-ready .invert-case-goals__video {
+  opacity: 1;
+}
+
+.invert-case-goals__visual.is-video-error .invert-case-goals__poster {
+  opacity: 1;
+}
+
+.invert-case-goals__visual.is-video-error .invert-case-goals__video {
+  opacity: 0;
 }
 
 .invert-case-role__inner {
@@ -2795,8 +2832,10 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   margin: 32px 0 0;
   padding: 0;
   list-style: none;
-  font-size: 1.12rem;
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: -0.01em;
   color: rgba(255, 255, 255, 0.88);
 }
 
@@ -2810,39 +2849,33 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   content: "—";
 }
 
-.invert-case-flow__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
-  margin-top: 32px;
-}
-
-.invert-case-flow__card {
-  min-height: 464px;
-  padding: 28px;
-}
-
-.invert-case-flow__triptych {
+.invert-case-flow__stage {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: center;
-  gap: 16px;
-  height: 100%;
-}
-
-.invert-case-flow__triptych img {
-  display: block;
-  width: clamp(116px, 12vw, 184px);
-  height: auto;
+  gap: 0;
+  min-height: 408px;
+  margin-top: 32px;
+  padding: 8px 24px 0;
   border-radius: 24px;
+  background: #1f1f1f;
+  overflow: hidden;
 }
 
-.invert-case-flow__triptych--left img:nth-child(2) {
-  align-self: center;
+.invert-case-flow__stage img {
+  display: block;
+  width: min(20.1%, 196px);
+  height: auto;
+  margin-left: -8px;
 }
 
-.invert-case-flow__triptych--left img:nth-child(3) {
-  align-self: flex-start;
+.invert-case-flow__stage img:first-child {
+  margin-left: 0;
+}
+
+.invert-case-flow__stage img:nth-child(2),
+.invert-case-flow__stage img:nth-child(5) {
+  transform: translateY(10px);
 }
 
 .invert-case-screens__wide-card {
@@ -2877,8 +2910,9 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 }
 
 .invert-case-screens__label {
-  font-size: 1.05rem;
-  line-height: 1.3;
+  font-size: clamp(0.98rem, 1.15vw, 1.125rem);
+  line-height: 1.45;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.4);
   text-align: center;
 }
@@ -2893,11 +2927,55 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
 }
 
 .invert-case-system-board {
+  position: relative;
   margin-top: 32px;
-  padding: 22px;
+  min-height: 320px;
+  padding: 0;
   border-radius: 24px;
+  overflow: hidden;
   background: #f2f1ed;
   color: #1e1e1e;
+  aspect-ratio: 1600 / 822;
+}
+
+.invert-case-system-board__poster,
+.invert-case-system-board__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: inherit;
+}
+
+.invert-case-system-board__poster {
+  display: block;
+  z-index: 0;
+  transition: opacity 280ms ease;
+}
+
+.invert-case-system-board__video {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease;
+}
+
+.invert-case-system-board.is-video-ready .invert-case-system-board__poster {
+  opacity: 0;
+}
+
+.invert-case-system-board.is-video-ready .invert-case-system-board__video {
+  opacity: 1;
+}
+
+.invert-case-system-board.is-video-error .invert-case-system-board__poster {
+  opacity: 1;
+}
+
+.invert-case-system-board.is-video-error .invert-case-system-board__video {
+  opacity: 0;
 }
 
 .invert-case-system-board__toolbar {
@@ -3204,7 +3282,6 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-case-strip__grid,
-  .invert-case-problems__gallery,
   .invert-case-flow__grid,
   .invert-case-screens__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3237,14 +3314,18 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   .invert-case-pill {
     min-height: 48px;
     padding: 10px 18px;
-    font-size: 0.98rem;
+    font-size: 0.94rem;
+    line-height: 1.55;
   }
 
   .invert-case-strip__grid,
-  .invert-case-problems__gallery,
-  .invert-case-flow__grid,
   .invert-case-screens__grid {
     grid-template-columns: 1fr;
+  }
+
+  .invert-case-problems__stage {
+    min-height: auto;
+    padding: 28px 16px 0;
   }
 
   .invert-case-role__media {
@@ -3252,21 +3333,26 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-case-role__visual,
-  .invert-case-flow__card,
   .invert-case-screens__card {
     min-height: auto;
   }
 
-  .invert-case-flow__card {
-    padding: 24px 18px;
-  }
-
-  .invert-case-flow__triptych {
+  .invert-case-flow__stage {
+    min-height: auto;
+    padding: 16px 18px 0;
+    flex-wrap: wrap;
     gap: 10px;
   }
 
-  .invert-case-flow__triptych img {
-    width: calc((100% - 20px) / 3);
+  .invert-case-flow__stage img {
+    width: calc((100% - 10px) / 2);
+    max-width: 184px;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .invert-case-flow__stage img:last-child {
+    width: min(100%, 184px);
   }
 
   .invert-case-screens__wide-card {
@@ -3275,7 +3361,7 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
   }
 
   .invert-case-system-board {
-    padding: 18px;
+    min-height: 220px;
   }
 
   .invert-case-system-board__toolbar {
@@ -3293,18 +3379,21 @@ html.js-ready .invert-flow.is-visible .invert-flow__item--response::before {
     margin-bottom: 14px;
   }
 
+  .invert-case-problems__stage {
+    padding: 24px 12px 0;
+  }
+
+  .invert-case-tldr__inner {
+    gap: 18px;
+  }
+
+  .invert-case-tldr__text {
+    font-size: 0.94rem;
+    line-height: 1.65;
+  }
+
   .invert-case-goals__visual {
     min-height: 340px;
-  }
-
-  .invert-case-goals__logo {
-    left: 25%;
-    top: 50%;
-  }
-
-  .invert-case-goals__device {
-    bottom: 46px;
-    width: 190px;
   }
 
   .invert-case-strip {
