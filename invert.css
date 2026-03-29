@@ -27,6 +27,10 @@
   background: #ffffff;
 }
 
+.invert-footer-shell {
+  background: var(--bg);
+}
+
 .invert-marquee-section,
 .invert-metrics,
 .invert-logic,
