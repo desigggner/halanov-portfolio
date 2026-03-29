@@ -111,7 +111,12 @@ function isAllowedStaticPath(pathname) {
   return (
     pathname.startsWith("/.well-known/") ||
     pathname === "/favicon.ico" ||
-    pathname === "/favicon.svg"
+    pathname === "/favicon.svg" ||
+    pathname === "/404.html" ||
+    pathname === "/500.html" ||
+    pathname.startsWith("/errors/") ||
+    pathname === "/assets/error-statham.gif" ||
+    pathname === "/assets/logo/header-logo.svg"
   );
 }
 
@@ -208,7 +213,7 @@ export default async function middleware(request) {
       return createUnauthorizedApiResponse();
     }
 
-    const loginUrl = new URL("/auth", request.url);
+    const loginUrl = new URL("/errors/401", request.url);
     const nextTarget = `${pathname}${url.search}`;
 
     if (isSafeNextPath(nextTarget)) {
@@ -227,6 +232,13 @@ export default async function middleware(request) {
       return createForbiddenApiResponse();
     }
 
-    return Response.redirect(new URL("/admin", request.url), 307);
+    const forbiddenUrl = new URL("/errors/403", request.url);
+    const nextTarget = `${pathname}${url.search}`;
+
+    if (isSafeNextPath(nextTarget)) {
+      forbiddenUrl.searchParams.set("next", nextTarget);
+    }
+
+    return Response.redirect(forbiddenUrl, 307);
   }
 }

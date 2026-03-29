@@ -42,6 +42,22 @@
       "destination": "/index.html"
     },
     {
+      "source": "/errors/401",
+      "destination": "/errors/401/index.html"
+    },
+    {
+      "source": "/errors/403",
+      "destination": "/errors/403/index.html"
+    },
+    {
+      "source": "/errors/404",
+      "destination": "/errors/404/index.html"
+    },
+    {
+      "source": "/errors/500",
+      "destination": "/errors/500/index.html"
+    },
+    {
       "source": "/about",
       "destination": "/about.html"
     },
