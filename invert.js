@@ -352,8 +352,8 @@ function setupLazyVideos() {
       });
     },
     {
-      threshold: 0.2,
-      rootMargin: "160px 0px",
+      threshold: 0.01,
+      rootMargin: "900px 0px",
     },
   );
 
