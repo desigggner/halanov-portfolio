@@ -3049,6 +3049,10 @@ html[data-theme="dark"] .site-footer__chip-icon {
     --deferred-block-size: 1380px;
   }
 
+  .message-scroll[data-deferred-section] {
+    --deferred-block-size: 960px;
+  }
+
   .figma-about[data-deferred-section] {
     --deferred-block-size: 1520px;
   }

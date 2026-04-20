@@ -101,6 +101,172 @@ body.home-page {
   letter-spacing: -0.03em;
 }
 
+.featured-project {
+  margin-top: 118px;
+  overflow-x: clip;
+}
+
+.featured-project__inner {
+  display: grid;
+  gap: 64px;
+  width: min(1260px, calc(100vw - 48px));
+  margin: 0 auto;
+  padding-bottom: 120px;
+}
+
+.featured-project__media {
+  display: block;
+  width: 100vw;
+  width: 100dvw;
+  max-width: none;
+  margin-inline: calc(50% - 50vw);
+  margin-inline: calc(50% - 50dvw);
+  height: 562px;
+  border-radius: 32px;
+  background:
+    #16c46c
+    url("./assets/invert-case-cover.jpg")
+    center center / cover no-repeat;
+  transition:
+    transform 220ms ease,
+    opacity 220ms ease;
+}
+
+.featured-project__media:hover {
+  transform: translateY(-2px);
+}
+
+.featured-project__media:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 4px;
+}
+
+.featured-project__content {
+  display: grid;
+  gap: 24px;
+  padding: 0 120px;
+}
+
+.featured-project__title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+
+.featured-project__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.featured-project__tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 4px 16px;
+  border-radius: 99px;
+  background: rgba(238, 238, 238, 0.1);
+  color: #8e8e8e;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.792;
+  letter-spacing: -0.016em;
+}
+
+.featured-project__description {
+  max-width: 1040px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.792;
+  letter-spacing: -0.016em;
+}
+
+.message-scroll {
+  min-height: 900px;
+  padding: 120px 0;
+}
+
+.message-scroll__inner {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 65px;
+  width: min(1280px, calc(100vw - 48px));
+  min-height: 660px;
+  margin: 0 auto;
+}
+
+.message-scroll__circles {
+  position: relative;
+  width: 358px;
+  height: 29px;
+}
+
+.message-scroll__circle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 29px;
+  height: 29px;
+  margin-left: -14.5px;
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  transform: translate3d(0, 0, 0);
+  will-change: transform, border-color;
+}
+
+.message-scroll__circle--left {
+  margin-left: -29px;
+}
+
+.message-scroll__circle--right {
+  margin-left: 0;
+}
+
+.message-scroll__text-wrap {
+  position: relative;
+  width: min(663px, 100%);
+}
+
+.message-scroll__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.13;
+  letter-spacing: -0.06em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.message-scroll__text span {
+  display: block;
+}
+
+.message-scroll__text--base {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.message-scroll__text--fill {
+  position: absolute;
+  inset: 0;
+  color: #ffffff;
+  clip-path: inset(0 100% 0 0);
+  pointer-events: none;
+  will-change: clip-path;
+}
+
 .figma-cases {
   margin-top: 118px;
 }
@@ -1107,6 +1273,14 @@ html[data-theme="dark"] .figma-timeline__logo {
     width: calc(100vw - 64px);
   }
 
+  .featured-project__inner {
+    width: calc(100vw - 64px);
+  }
+
+  .message-scroll__inner {
+    width: calc(100vw - 64px);
+  }
+
   .figma-cases__inner {
     width: calc(100vw - 64px);
   }
@@ -1138,6 +1312,43 @@ html[data-theme="dark"] .figma-timeline__logo {
   .superpowers__icon {
     width: 92px;
     height: 92px;
+  }
+
+  .featured-project {
+    margin-top: 88px;
+  }
+
+  .featured-project__inner {
+    gap: 48px;
+    padding-bottom: 96px;
+  }
+
+  .featured-project__media {
+    height: 460px;
+  }
+
+  .featured-project__content {
+    padding: 0 56px;
+  }
+
+  .featured-project__title {
+    font-size: 42px;
+  }
+
+  .featured-project__tag,
+  .featured-project__description {
+    font-size: 18px;
+    line-height: 1.65;
+  }
+
+  .message-scroll {
+    min-height: 780px;
+    padding: 96px 0;
+  }
+
+  .message-scroll__inner {
+    gap: 52px;
+    min-height: 560px;
   }
 
   .figma-cases {
@@ -1382,6 +1593,67 @@ html[data-theme="dark"] .figma-timeline__logo {
     margin-top: 10px;
     font-size: 15px;
     line-height: 1.38;
+  }
+
+  .featured-project__inner {
+    width: calc(100vw - 32px);
+    gap: 36px;
+    padding-bottom: 80px;
+  }
+
+  .featured-project__media {
+    height: auto;
+    aspect-ratio: 1.78 / 1;
+    border-radius: 24px;
+  }
+
+  .featured-project__content {
+    gap: 20px;
+    padding: 0 16px;
+  }
+
+  .featured-project__title {
+    font-size: 36px;
+  }
+
+  .featured-project__tags {
+    gap: 10px;
+  }
+
+  .featured-project__tag {
+    min-height: 38px;
+    padding: 4px 14px;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .featured-project__description {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .message-scroll {
+    min-height: 620px;
+    padding: 72px 0 84px;
+  }
+
+  .message-scroll__inner {
+    width: calc(100vw - 32px);
+    gap: 40px;
+    min-height: 420px;
+  }
+
+  .message-scroll__circles {
+    width: min(300px, 100%);
+  }
+
+  .message-scroll__text-wrap {
+    width: min(100%, 560px);
+  }
+
+  .message-scroll__text {
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.16;
   }
 
   .figma-cases__inner {
@@ -1741,5 +2013,63 @@ html[data-theme="dark"] .figma-timeline__logo {
   .superpowers__icon {
     width: 88px;
     height: 88px;
+  }
+
+  .featured-project {
+    margin-top: 84px;
+  }
+
+  .featured-project__inner {
+    gap: 28px;
+    padding-bottom: 64px;
+  }
+
+  .featured-project__content {
+    padding: 0;
+  }
+
+  .featured-project__title {
+    font-size: 32px;
+  }
+
+  .featured-project__tag {
+    min-height: 34px;
+    padding: 4px 12px;
+    font-size: 15px;
+  }
+
+  .featured-project__description {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .message-scroll {
+    min-height: 540px;
+    padding: 64px 0 72px;
+  }
+
+  .message-scroll__inner {
+    gap: 28px;
+    min-height: 360px;
+  }
+
+  .message-scroll__circles {
+    width: min(220px, 100%);
+    height: 24px;
+  }
+
+  .message-scroll__circle {
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+  }
+
+  .message-scroll__circle--left {
+    margin-left: -24px;
+  }
+
+  .message-scroll__text {
+    font-size: clamp(22px, 7.5vw, 30px);
+    line-height: 1.18;
   }
 }

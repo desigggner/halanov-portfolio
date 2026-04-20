@@ -213,6 +213,87 @@ function setupCompaniesMarquee() {
   observer.observe(companiesSection);
 }
 
+function setupMessageScroll() {
+  const section = document.querySelector(".message-scroll");
+  const fillText = section?.querySelector(".message-scroll__text--fill");
+  const leftCircle = section?.querySelector(".message-scroll__circle--left");
+  const rightCircle = section?.querySelector(".message-scroll__circle--right");
+  const gsapLib = window.gsap;
+  const scrollTrigger = window.ScrollTrigger;
+
+  if (
+    !(section instanceof HTMLElement) ||
+    !(fillText instanceof HTMLElement) ||
+    !(leftCircle instanceof HTMLElement) ||
+    !(rightCircle instanceof HTMLElement)
+  ) {
+    return;
+  }
+
+  if (!gsapLib || !scrollTrigger || prefersReducedMotion.matches) {
+    fillText.style.clipPath = "inset(0 0 0 0)";
+    leftCircle.style.borderColor = "#2bd4ff";
+    rightCircle.style.borderColor = "#2bd4ff";
+    leftCircle.style.transform = "translate3d(0, 0, 0)";
+    rightCircle.style.transform = "translate3d(0, 0, 0)";
+    return;
+  }
+
+  gsapLib.registerPlugin(scrollTrigger);
+
+  const getCircleTravel = () => {
+    const sectionWidth = section.clientWidth || window.innerWidth;
+    return Math.min(136, Math.max(56, sectionWidth * 0.11));
+  };
+
+  gsapLib.timeline({
+    defaults: {
+      ease: "none",
+    },
+    scrollTrigger: {
+      trigger: section,
+      start: "top 75%",
+      end: "top 35%",
+      scrub: true,
+      invalidateOnRefresh: true,
+    },
+  })
+    .fromTo(
+      fillText,
+      {
+        clipPath: "inset(0 100% 0 0)",
+      },
+      {
+        clipPath: "inset(0 0% 0 0)",
+      },
+      0,
+    )
+    .fromTo(
+      leftCircle,
+      {
+        x: () => -getCircleTravel(),
+        borderColor: "rgba(255, 255, 255, 0.18)",
+      },
+      {
+        x: 0,
+        borderColor: "#2bd4ff",
+      },
+      0,
+    )
+    .fromTo(
+      rightCircle,
+      {
+        x: () => getCircleTravel(),
+        borderColor: "rgba(255, 255, 255, 0.18)",
+      },
+      {
+        x: 0,
+        borderColor: "#2bd4ff",
+      },
+      0,
+    );
+}
+
 function syncMobileNavState() {
   document.body.classList.toggle("is-mobile-nav-open", isMobileNavOpen);
 
@@ -291,4 +372,5 @@ ensureTopOnInitialLoad();
 setupMobileNav();
 setupHeroAvatarVideo();
 setupCompaniesMarquee();
+setupMessageScroll();
 initHeroIntro();
