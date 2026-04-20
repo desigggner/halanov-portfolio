@@ -1027,15 +1027,15 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
   flex: 0 1 auto;
   align-items: center;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 20px;
   min-width: 0;
   width: auto;
   max-width: min(100%, 891px);
   margin-left: auto;
-  padding: 10px 12px;
+  padding: 8px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.14);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
   backdrop-filter: blur(18px);
 }
 
@@ -1050,7 +1050,7 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
   flex: 0 1 auto;
   align-items: center;
   justify-content: flex-start;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: nowrap;
   min-width: 0;
 }
@@ -1063,9 +1063,7 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
   padding: 12px 18px;
   border-radius: 999px;
   font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  color: #323232;
+  color: var(--text);
   transition:
     opacity 180ms ease,
     transform 180ms ease,
@@ -1073,13 +1071,12 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
 }
 
 .nav-link:hover {
-  opacity: 0.68;
+  opacity: 0.82;
   transform: translateY(-1px);
 }
 
 .nav-link.is-active {
-  background: transparent;
-  font-weight: 500;
+  background: var(--chip-active);
 }
 
 .header-actions {
@@ -1087,7 +1084,7 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
   flex: 0 0 auto;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 0;
+  gap: 8px;
 }
 
 .header-actions--case {
@@ -1105,10 +1102,10 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 28px;
+  padding: 12px 16px;
   line-height: 1;
-  color: #f5f5f5;
-  background: #323232;
+  color: var(--button-text-on-dark);
+  background: var(--button-dark);
   cursor: pointer;
   transition:
     transform 180ms ease,
@@ -1363,8 +1360,8 @@ body.is-mobile-nav-open {
 }
 
 .site-mobile-nav__button--contact {
-  background: #323232;
-  color: #f5f5f5;
+  background: var(--button-dark);
+  color: var(--button-text-on-dark);
 }
 
 .site-mobile-nav__button--contact.contact-link {
