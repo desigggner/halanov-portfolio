@@ -215,6 +215,37 @@
     window.addEventListener("load", scheduleToneSync, { once: true });
   }
 
+  function setupHeaderScrollState() {
+    var header = document.querySelector(".site-header");
+    var desktopMedia = window.matchMedia("(min-width: 721px)");
+    var lastScrolledState = null;
+
+    if (!(header instanceof HTMLElement) || isCasePage) {
+      return;
+    }
+
+    var syncHeaderState = function syncHeaderState() {
+      var shouldUseScrolledState = desktopMedia.matches && window.scrollY > 10;
+
+      if (shouldUseScrolledState === lastScrolledState) {
+        return;
+      }
+
+      lastScrolledState = shouldUseScrolledState;
+      header.classList.toggle("is-scrolled", shouldUseScrolledState);
+    };
+
+    syncHeaderState();
+    window.addEventListener("scroll", syncHeaderState, { passive: true });
+    window.addEventListener("resize", syncHeaderState);
+
+    if (typeof desktopMedia.addEventListener === "function") {
+      desktopMedia.addEventListener("change", syncHeaderState);
+    } else if (typeof desktopMedia.addListener === "function") {
+      desktopMedia.addListener(syncHeaderState);
+    }
+  }
+
   function clearTitleResetTimer() {
     if (!titleResetTimerId) {
       return;
@@ -269,5 +300,6 @@
   handleVisibilityChange();
   document.addEventListener("visibilitychange", handleVisibilityChange);
   window.addEventListener("pagehide", cleanupTitleVisibility);
+  window.addEventListener("DOMContentLoaded", setupHeaderScrollState, { once: true });
   window.addEventListener("DOMContentLoaded", setupCaseLogoContrast, { once: true });
 })();

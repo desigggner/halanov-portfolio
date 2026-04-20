@@ -1124,6 +1124,83 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
   height: 20px;
 }
 
+@media (min-width: 721px) {
+  html[data-page-kind="default"] .site-header .brand,
+  html[data-page-kind="default"] .site-header .nav-link,
+  html[data-page-kind="default"] .site-header .contact-link {
+    transition:
+      background-color 200ms ease,
+      color 200ms ease,
+      border-radius 200ms ease,
+      padding 200ms ease,
+      opacity 200ms ease,
+      transform 200ms ease;
+  }
+
+  html[data-page-kind="default"] .site-header .header-overlay {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    transition: background-color 200ms ease;
+  }
+
+  html[data-page-kind="default"] .site-header .brand,
+  html[data-page-kind="default"] .site-header .nav-link,
+  html[data-page-kind="default"] .site-header .contact-link {
+    color: #ffffff;
+  }
+
+  html[data-page-kind="default"] .site-header .nav-link,
+  html[data-page-kind="default"] .site-header .contact-link {
+    min-height: 44px;
+    padding: 12px 18px;
+    font-size: 1rem;
+    font-weight: 400;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  html[data-page-kind="default"] .site-header .nav-link.is-active {
+    background: transparent;
+  }
+
+  html[data-page-kind="default"] .site-header .contact-link {
+    justify-content: center;
+    border: 0;
+    border-radius: 0;
+  }
+
+  html[data-page-kind="default"] .site-header .contact-link:hover {
+    background: transparent;
+    opacity: 0.82;
+  }
+
+  html[data-page-kind="default"] .site-header .contact-link__icon {
+    display: none;
+  }
+
+  html[data-page-kind="default"] .site-header.is-scrolled .header-overlay {
+    background: #ffffff;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  html[data-page-kind="default"] .site-header.is-scrolled .brand,
+  html[data-page-kind="default"] .site-header.is-scrolled .nav-link {
+    color: #000000;
+  }
+
+  html[data-page-kind="default"] .site-header.is-scrolled .contact-link,
+  html[data-page-kind="default"] .site-header.is-scrolled .contact-link:hover {
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    opacity: 1;
+  }
+}
+
 .theme-toggle {
   position: relative;
   display: grid;
