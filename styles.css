@@ -1179,17 +1179,6 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
     display: none;
   }
 
-  html[data-page-kind="default"] .site-header.is-scrolled .header-overlay {
-    background: #ffffff;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-
-  html[data-page-kind="default"] .site-header.is-scrolled .brand,
-  html[data-page-kind="default"] .site-header.is-scrolled .nav-link {
-    color: #000000;
-  }
-
   html[data-page-kind="default"] .site-header.is-scrolled .contact-link,
   html[data-page-kind="default"] .site-header.is-scrolled .contact-link:hover {
     padding: 10px 18px;
@@ -1197,6 +1186,7 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
     background: #ffffff;
     color: #000000;
     font-weight: 600;
+    box-shadow: none;
     opacity: 1;
   }
 }
