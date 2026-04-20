@@ -12,7 +12,12 @@
     },
     {
       "source": "/portfolio.html",
-      "destination": "/portfolio",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/",
       "permanent": true
     },
     {
@@ -60,10 +65,6 @@
     {
       "source": "/about",
       "destination": "/about.html"
-    },
-    {
-      "source": "/portfolio",
-      "destination": "/portfolio.html"
     },
     {
       "source": "/media",

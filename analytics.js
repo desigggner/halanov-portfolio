@@ -54,10 +54,6 @@
       return "about";
     }
 
-    if (window.location.pathname === "/portfolio" || window.location.pathname === "/portfolio.html") {
-      return "portfolio";
-    }
-
     if (window.location.pathname === "/media" || window.location.pathname === "/media.html") {
       return "media";
     }

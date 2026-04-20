@@ -16,8 +16,6 @@
     cleanPath = "/";
   } else if (pathname === "/about.html") {
     cleanPath = "/about";
-  } else if (pathname === "/portfolio.html") {
-    cleanPath = "/portfolio";
   } else if (pathname === "/media.html") {
     cleanPath = "/media";
   } else if (pathname === "/auth.html") {

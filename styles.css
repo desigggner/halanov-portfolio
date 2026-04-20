@@ -956,6 +956,8 @@ html[data-theme="dark"] .admin-analytics-card {
   justify-content: space-between;
   gap: 24px;
   min-width: 0;
+  position: relative;
+  isolation: isolate;
 }
 
 .site-header__inner--case {
@@ -1125,6 +1127,27 @@ html[data-page-kind="case"][data-case-logo-tone="auto"] .brand {
 }
 
 @media (min-width: 721px) {
+  html[data-page-kind="default"] .site-header .site-header__inner::before {
+    content: "";
+    position: absolute;
+    inset: -8px 0;
+    z-index: -1;
+    border-radius: 28px;
+    background: transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      background-color 200ms ease,
+      opacity 200ms ease;
+  }
+
+  html[data-page-kind="default"] .site-header.is-scrolled .site-header__inner::before {
+    background: rgba(46, 46, 46, 0.86);
+    opacity: 1;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
   html[data-page-kind="default"] .site-header .brand,
   html[data-page-kind="default"] .site-header .nav-link,
   html[data-page-kind="default"] .site-header .contact-link {
