@@ -137,8 +137,8 @@ body.error-page {
 }
 
 .error-theme-toggle {
+  display: none;
   position: relative;
-  display: grid;
   grid-template-columns: 32px 32px;
   column-gap: 8px;
   align-items: center;

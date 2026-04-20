@@ -1,3 +1,7 @@
+const linkedInUrl = "https://www.linkedin.com/in/владислав-галанов-7aa7a0196/";
+const cvDownloadPath = "/assets/cv/galanov-vladislav-dmitrievich.pdf";
+const cvDownloadName = "Галанов Владислав Дмитриевич.pdf";
+
 const siteFooterMarkup = `
   <footer class="site-footer container" aria-labelledby="site-footer-title">
     <div class="site-footer__inner">
@@ -87,12 +91,11 @@ const siteFooterMarkup = `
           </div>
           <div class="site-footer__column-body">
             <div class="site-footer__chips">
-              <button
-                class="site-footer__chip site-footer__chip--disabled"
-                type="button"
-                disabled
-                aria-disabled="true"
-                title="Ссылку на LinkedIn добавлю отдельно"
+              <a
+                class="site-footer__chip"
+                href="${linkedInUrl}"
+                target="_blank"
+                rel="noreferrer"
               >
                 <img
                   class="site-footer__chip-icon"
@@ -104,13 +107,11 @@ const siteFooterMarkup = `
                   decoding="async"
                 />
                 <span class="site-footer__button-label">linkedin</span>
-              </button>
-              <button
-                class="site-footer__chip site-footer__chip--disabled"
-                type="button"
-                disabled
-                aria-disabled="true"
-                title="Резюме добавлю отдельно"
+              </a>
+              <a
+                class="site-footer__chip"
+                href="${cvDownloadPath}"
+                download="${cvDownloadName}"
               >
                 <img
                   class="site-footer__chip-icon"
@@ -121,8 +122,8 @@ const siteFooterMarkup = `
                   loading="lazy"
                   decoding="async"
                 />
-                <span class="site-footer__button-label">резюме</span>
-              </button>
+                <span class="site-footer__button-label">cv</span>
+              </a>
             </div>
           </div>
         </section>

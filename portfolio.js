@@ -1,9 +1,7 @@
 const root = document.documentElement;
 const store = window.PortfolioStore;
 const caseCard = window.PortfolioCaseCard;
-const themeStorageKey = store?.themeStorageKey || "portfolio-theme";
 const casesStorageKey = store?.casesStorageKey;
-const toggleButtons = Array.from(document.querySelectorAll(".theme-toggle"));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const layoutStorageKey = "portfolio-layout";
 const mobileNavMedia = window.matchMedia("(max-width: 720px)");
@@ -38,23 +36,9 @@ let casesSyncInFlight = false;
 let backgroundSyncTimerId = 0;
 let isMobileNavOpen = false;
 
-function applyTheme(theme) {
-  root.dataset.theme = theme;
-  root.style.colorScheme = theme;
-
-  toggleButtons.forEach((button) => {
-    button.setAttribute("aria-pressed", String(theme === "dark"));
-    button.setAttribute(
-      "aria-label",
-      theme === "dark"
-        ? "Переключить на светлую тему"
-        : "Переключить на тёмную тему",
-    );
-  });
-}
-
-function getNextTheme() {
-  return root.dataset.theme === "dark" ? "light" : "dark";
+function applyTheme() {
+  root.dataset.theme = "dark";
+  root.style.colorScheme = "dark";
 }
 
 function shouldResetScrollOnLoad() {
@@ -549,19 +533,6 @@ function setupMobileNav() {
   });
 }
 
-if (toggleButtons.length) {
-  applyTheme(root.dataset.theme || "light");
-
-  toggleButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const nextTheme = getNextTheme();
-
-      localStorage.setItem(themeStorageKey, nextTheme);
-      applyTheme(nextTheme);
-    });
-  });
-}
-
 if (portfolioElements.filters) {
   portfolioElements.filters.addEventListener("click", (event) => {
     const button = event.target.closest("[data-portfolio-filter]");
@@ -593,16 +564,13 @@ window.addEventListener("storage", (event) => {
     renderCases();
   }
 
-  if (event.key === themeStorageKey && event.newValue) {
-    applyTheme(event.newValue);
-  }
-
   if (event.key === layoutStorageKey) {
     setActiveLayout(event.newValue || "grid", { persist: false });
     renderCases();
   }
 });
 
+applyTheme();
 ensureTopOnInitialLoad();
 syncLayoutState();
 bootstrapCases();

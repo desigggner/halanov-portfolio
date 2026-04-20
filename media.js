@@ -1,6 +1,4 @@
 const root = document.documentElement;
-const themeStorageKey = "portfolio-theme";
-const toggleButtons = Array.from(document.querySelectorAll(".theme-toggle"));
 
 const elements = {
   status: document.querySelector("[data-media-status]"),
@@ -21,23 +19,9 @@ let mediaVideoObserver = null;
 let isMobileNavOpen = false;
 let isFeedLoadingStarted = false;
 
-function applyTheme(theme) {
-  root.dataset.theme = theme;
-  root.style.colorScheme = theme;
-
-  toggleButtons.forEach((button) => {
-    button.setAttribute("aria-pressed", String(theme === "dark"));
-    button.setAttribute(
-      "aria-label",
-      theme === "dark"
-        ? "Переключить на светлую тему"
-        : "Переключить на тёмную тему",
-    );
-  });
-}
-
-function getNextTheme() {
-  return root.dataset.theme === "dark" ? "light" : "dark";
+function applyTheme() {
+  root.dataset.theme = "dark";
+  root.style.colorScheme = "dark";
 }
 
 function shouldResetScrollOnLoad() {
@@ -635,25 +619,7 @@ function setupMobileNav() {
   });
 }
 
-if (toggleButtons.length) {
-  applyTheme(root.dataset.theme || "light");
-
-  toggleButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const nextTheme = getNextTheme();
-
-      localStorage.setItem(themeStorageKey, nextTheme);
-      applyTheme(nextTheme);
-    });
-  });
-}
-
-window.addEventListener("storage", (event) => {
-  if (event.key === themeStorageKey && event.newValue) {
-    applyTheme(event.newValue);
-  }
-});
-
+applyTheme();
 ensureTopOnInitialLoad();
 scheduleFeedLoad();
 setupMobileNav();

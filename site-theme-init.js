@@ -1,9 +1,7 @@
 (function initSiteTheme() {
   var root = document.documentElement;
   var currentScript = document.currentScript;
-  var storedTheme = null;
-  var prefersDark = false;
-  var theme = "light";
+  var theme = "dark";
   var pathname = window.location.pathname;
   var cleanPath = pathname;
   var defaultTitle = "Galanov Lead Product Designer";
@@ -35,20 +33,6 @@
       cleanPath + window.location.search + window.location.hash,
     );
   }
-
-  try {
-    storedTheme = window.localStorage.getItem("portfolio-theme");
-  } catch (error) {
-    storedTheme = null;
-  }
-
-  try {
-    prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  } catch (error) {
-    prefersDark = false;
-  }
-
-  theme = storedTheme || (prefersDark ? "dark" : "light");
 
   function isCasePath(path) {
     return (

@@ -1,7 +1,5 @@
 (function initErrorPages() {
   var root = document.documentElement;
-  var themeStorageKey = "portfolio-theme";
-  var toggleButtons = Array.from(document.querySelectorAll("[data-error-theme-toggle]"));
   var nextFromQuery = new URLSearchParams(window.location.search).get("next");
 
   function isSafeNextPath(value) {
@@ -14,23 +12,9 @@
     );
   }
 
-  function applyTheme(theme) {
-    root.dataset.theme = theme;
-    root.style.colorScheme = theme;
-
-    toggleButtons.forEach(function (button) {
-      button.setAttribute("aria-pressed", String(theme === "dark"));
-      button.setAttribute(
-        "aria-label",
-        theme === "dark"
-          ? "Переключить на светлую тему"
-          : "Переключить на тёмную тему",
-      );
-    });
-  }
-
-  function getNextTheme() {
-    return root.dataset.theme === "dark" ? "light" : "dark";
+  function applyTheme() {
+    root.dataset.theme = "dark";
+    root.style.colorScheme = "dark";
   }
 
   function resolveNextUrl() {
@@ -91,24 +75,7 @@
     });
   }
 
-  if (toggleButtons.length) {
-    applyTheme(root.dataset.theme || "light");
-
-    toggleButtons.forEach(function (button) {
-      button.addEventListener("click", function () {
-        var nextTheme = getNextTheme();
-
-        try {
-          window.localStorage.setItem(themeStorageKey, nextTheme);
-        } catch (error) {
-          // Ignore storage errors and still switch theme for the current view.
-        }
-
-        applyTheme(nextTheme);
-      });
-    });
-  }
-
+  applyTheme();
   bindLoginLinks();
   bindNextLabels();
   bindReloadButtons();
